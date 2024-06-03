@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/src/db.rs;/Users/THarpool/RustroverProjects/ocfs/src/handlers.rs;/Users/THarpool/RustroverProjects/ocfs/src/main.rs;/Users/THarpool/RustroverProjects/ocfs/src/models.rs" />
+    <option name="forceFullIndex" value="false" />
+    <option name="fileSummaryMaps" value="{&quot;/Users/THarpool/RustroverProjects/ocfs&quot;:&quot;{}&quot;}" />
+    <option name="fileSkeletonMaps" value="{&quot;/Users/THarpool/RustroverProjects/ocfs&quot;:&quot;{\&quot;/src/db.rs\&quot;:{\&quot;file_path\&quot;:\&quot;/src/db.rs\&quot;,\&quot;file_name\&quot;:\&quot;db.rs\&quot;,\&quot;methods\&quot;:[]},\&quot;/src/handlers.rs\&quot;:{\&quot;file_path\&quot;:\&quot;/src/handlers.rs\&quot;,\&quot;file_name\&quot;:\&quot;handlers.rs\&quot;,\&quot;methods\&quot;:[]},\&quot;/src/main.rs\&quot;:{\&quot;file_path\&quot;:\&quot;/src/main.rs\&quot;,\&quot;file_name\&quot;:\&quot;main.rs\&quot;,\&quot;methods\&quot;:[]},\&quot;/src/models.rs\&quot;:{\&quot;file_path\&quot;:\&quot;/src/models.rs\&quot;,\&quot;file_name\&quot;:\&quot;models.rs\&quot;,\&quot;methods\&quot;:[]}}&quot;}" />
+  </component>
+</project>

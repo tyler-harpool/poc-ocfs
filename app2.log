@@ -1,0 +1,40 @@
+   Compiling ocfs v0.1.0 (/Users/THarpool/RustroverProjects/ocfs)
+warning: unused import: `tokio::net::TcpListener`
+ --> src/main.rs:7:5
+  |
+7 | use tokio::net::TcpListener;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `error`
+ --> src/main.rs:9:21
+  |
+9 | use tracing::{info, error};
+  |                     ^^^^^
+
+warning: unused import: `error`
+  --> src/handlers.rs:10:21
+   |
+10 | use tracing::{info, error};
+   |                     ^^^^^
+
+error[E0277]: `CaseData` doesn't implement `std::fmt::Debug`
+  --> src/handlers.rs:16:39
+   |
+16 |     info!("Creating case data: {:?}", input);
+   |                                       ^^^^^ `CaseData` cannot be formatted using `{:?}`
+   |
+   = help: the trait `std::fmt::Debug` is not implemented for `CaseData`
+   = note: add `#[derive(Debug)]` to `CaseData` or manually `impl std::fmt::Debug for CaseData`
+   = note: this error originates in the macro `::core::format_args` which comes from the expansion of the macro `info` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider annotating `CaseData` with `#[derive(Debug)]`
+  --> src/models.rs:5:1
+   |
+5  + #[derive(Debug)]
+6  | pub struct CaseData {
+   |
+
+For more information about this error, try `rustc --explain E0277`.
+warning: `ocfs` (bin "ocfs") generated 3 warnings
+error: could not compile `ocfs` (bin "ocfs") due to 2 previous errors; 3 warnings emitted

@@ -1,40 +1,49 @@
    Compiling ocfs v0.1.0 (/Users/THarpool/RustroverProjects/ocfs)
-warning: unused import: `tokio::net::TcpListener`
- --> src/main.rs:7:5
-  |
-7 | use tokio::net::TcpListener;
-  |     ^^^^^^^^^^^^^^^^^^^^^^^
-  |
-  = note: `#[warn(unused_imports)]` on by default
+error[E0277]: the trait bound `fn(Extension<Pool<Postgres>>, axum::Json<CaseData>, TypedHeader<XTestClient>) -> impl std::future::Future<Output = impl IntoResponse> {create_case_data}: Handler<_, _>` is not satisfied
+   --> src/main.rs:32:35
+    |
+32  |         .route("/case_data", post(handlers::create_case_data))
+    |                              ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(Extension<Pool<Postgres>>, Json<CaseData>, TypedHeader<XTestClient>) -> ... {create_case_data}`
+    |                              |
+    |                              required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `Handler<T, S>`:
+              <axum_extra::handler::Or<L, R, Lt, Rt, S> as Handler<(M, Lt, Rt), S>>
+              <IntoHandler<H, T, S> as Handler<T, S>>
+              <axum::handler::Layered<L, H, T, S> as Handler<T, S>>
+              <MethodRouter<S> as Handler<(), S>>
+note: required by a bound in `post`
+   --> /Users/THarpool/.cargo/registry/src/index.crates.io-6f17d22bba15001f/axum-0.7.5/src/routing/method_routing.rs:389:1
+    |
+389 | top_level_handler_fn!(post, POST);
+    | ^^^^^^^^^^^^^^^^^^^^^^----^^^^^^^
+    | |                     |
+    | |                     required by a bound in this function
+    | required by this bound in `post`
+    = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-warning: unused import: `error`
- --> src/main.rs:9:21
-  |
-9 | use tracing::{info, error};
-  |                     ^^^^^
-
-warning: unused import: `error`
-  --> src/handlers.rs:10:21
-   |
-10 | use tracing::{info, error};
-   |                     ^^^^^
-
-error[E0277]: `CaseData` doesn't implement `std::fmt::Debug`
-  --> src/handlers.rs:16:39
-   |
-16 |     info!("Creating case data: {:?}", input);
-   |                                       ^^^^^ `CaseData` cannot be formatted using `{:?}`
-   |
-   = help: the trait `std::fmt::Debug` is not implemented for `CaseData`
-   = note: add `#[derive(Debug)]` to `CaseData` or manually `impl std::fmt::Debug for CaseData`
-   = note: this error originates in the macro `::core::format_args` which comes from the expansion of the macro `info` (in Nightly builds, run with -Z macro-backtrace for more info)
-help: consider annotating `CaseData` with `#[derive(Debug)]`
-  --> src/models.rs:5:1
-   |
-5  + #[derive(Debug)]
-6  | pub struct CaseData {
-   |
+error[E0277]: the trait bound `fn(Extension<Pool<Postgres>>, axum::extract::Path<i32>, axum::Json<UpdateCaseData>, TypedHeader<XTestClient>) -> impl std::future::Future<Output = impl IntoResponse> {update_case_data}: Handler<_, _>` is not satisfied
+   --> src/main.rs:33:40
+    |
+33  |         .route("/case_data/:id", patch(handlers::update_case_data))
+    |                                  ----- ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(Extension<Pool<Postgres>>, Path<i32>, Json<UpdateCaseData>, TypedHeader<...>) -> ... {update_case_data}`
+    |                                  |
+    |                                  required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `Handler<T, S>`:
+              <axum_extra::handler::Or<L, R, Lt, Rt, S> as Handler<(M, Lt, Rt), S>>
+              <IntoHandler<H, T, S> as Handler<T, S>>
+              <axum::handler::Layered<L, H, T, S> as Handler<T, S>>
+              <MethodRouter<S> as Handler<(), S>>
+note: required by a bound in `patch`
+   --> /Users/THarpool/.cargo/registry/src/index.crates.io-6f17d22bba15001f/axum-0.7.5/src/routing/method_routing.rs:388:1
+    |
+388 | top_level_handler_fn!(patch, PATCH);
+    | ^^^^^^^^^^^^^^^^^^^^^^-----^^^^^^^^
+    | |                     |
+    | |                     required by a bound in this function
+    | required by this bound in `patch`
+    = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 For more information about this error, try `rustc --explain E0277`.
-warning: `ocfs` (bin "ocfs") generated 3 warnings
-error: could not compile `ocfs` (bin "ocfs") due to 2 previous errors; 3 warnings emitted
+error: could not compile `ocfs` (bin "ocfs") due to 2 previous errors

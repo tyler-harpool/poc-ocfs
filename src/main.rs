@@ -1,6 +1,7 @@
 use axum::{
+    extract::Extension,
     routing::{delete, get, patch, post},
-    Extension, Router,
+    Router,
 };
 use dotenv::dotenv;
 use tokio::net::TcpListener;
@@ -25,9 +26,7 @@ async fn main() {
     // Optional: Run migrations
     db::run_migrations(&pool).await;
 
-    // Spawn the health check monitor
-    // tokio::spawn(db::monitor_db_health(pool.clone()));
-
+    // Define the application routes
     let app = Router::new()
         .route("/case_data/:id", get(handlers::get_case_data))
         .route("/case_data", post(handlers::create_case_data))
@@ -35,6 +34,7 @@ async fn main() {
         .route("/case_data/:id", delete(handlers::delete_case_data))
         .layer(ServiceBuilder::new().layer(Extension(pool)).into_inner());
 
+    // Bind to the address and serve the application
     let listener = TcpListener::bind("0.0.0.0:3000").await.unwrap();
 
     axum::serve(listener, app.into_make_service())

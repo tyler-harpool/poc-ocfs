@@ -1,10 +1,10 @@
 use axum::{
-    extract::Path,
-    http::StatusCode,
+    extract::{Extension, Path},
+    http::{StatusCode, HeaderMap},
     response::IntoResponse,
     Json,
-    Extension,
 };
+
 use serde::Serialize;
 use sqlx::{PgPool, Row};
 use tracing::{info, error};
@@ -16,14 +16,21 @@ struct DeleteResponse {
     message: String,
 }
 
+
 pub async fn create_case_data(
+    headers:HeaderMap,
     Extension(pool): Extension<PgPool>,
     Json(input): Json<CaseData>,
+
 ) -> impl IntoResponse {
+    let message = headers.get("X-Test-Client").unwrap();
+    info!("Request from test client: {:?}", 1);
     info!("Creating case data: {:?}", input);
+    println!("test, {:?}", message);
+
 
     let result = sqlx::query(
-        "INSERT INTO CaseData (civ, fam, prob, dep, juv, crim, traf, data_element, definition, values, currently_collected, if_no_is_this_needed, if_yes_where, comments) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *"
+        "INSERT INTO CaseData (civ, fam, prob, dep, juv, crim, traf, data_element, definition, values, currently_collected, if_no_is_this_needed, if_yes_where, comments) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id"
     )
         .bind(&input.civ)
         .bind(&input.fam)
@@ -44,27 +51,29 @@ pub async fn create_case_data(
 
     match result {
         Ok(record) => {
-            let case_data = CaseData {
-                id: record.get("id"),
-                civ: record.get("civ"),
-                fam: record.get("fam"),
-                prob: record.get("prob"),
-                dep: record.get("dep"),
-                juv: record.get("juv"),
-                crim: record.get("crim"),
-                traf: record.get("traf"),
-                data_element: record.get("data_element"),
-                definition: record.get("definition"),
-                values: record.get("values"),
-                currently_collected: record.get("currently_collected"),
-                if_no_is_this_needed: record.get("if_no_is_this_needed"),
-                if_yes_where: record.get("if_yes_where"),
-                comments: record.get("comments"),
+            let id: i32 = record.get("id");
+
+            info!("Case data created with id: {}", id);
+
+            let response_data = CaseData {
+                id: Some(id),
+                civ: input.civ.clone(),
+                fam: input.fam.clone(),
+                prob: input.prob.clone(),
+                dep: input.dep.clone(),
+                juv: input.juv.clone(),
+                crim: input.crim.clone(),
+                traf: input.traf.clone(),
+                data_element: input.data_element.clone(),
+                definition: input.definition.clone(),
+                values: input.values.clone(),
+                currently_collected: input.currently_collected.clone(),
+                if_no_is_this_needed: input.if_no_is_this_needed.clone(),
+                if_yes_where: input.if_yes_where.clone(),
+                comments: input.comments.clone(),
             };
 
-            info!("Case data created with id: {}", case_data.id);
-
-            (StatusCode::CREATED, Json(case_data)).into_response()
+            (StatusCode::CREATED, Json(response_data)).into_response()
         }
         Err(e) => {
             error!("Failed to create case data: {:?}", e);
@@ -77,6 +86,7 @@ pub async fn update_case_data(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
     Json(input): Json<UpdateCaseData>,
+
 ) -> impl IntoResponse {
     info!("Updating case data with ID: {}", id);
 
@@ -135,8 +145,11 @@ pub async fn update_case_data(
 
 pub async fn get_case_data(
     Extension(pool): Extension<PgPool>,
-    Path(id): Path<i64>,
+    Path(id): Path<i32>,
 ) -> impl IntoResponse {
+    // info!("Request from test client: {:?}", test_client.0);
+    info!("Fetching case data with ID: {}", id);
+
     let result = sqlx::query_as::<_, CaseData>(
         "SELECT * FROM CaseData WHERE id = $1"
     )
@@ -148,27 +161,18 @@ pub async fn get_case_data(
         Ok(case_data) => (StatusCode::OK, Json(case_data)).into_response(),
         Err(e) => {
             error!("Failed to fetch case data for id {}: {:?}", id, e);
-            (StatusCode::INTERNAL_SERVER_ERROR, Json("Internal server error")).into_response()
+            (StatusCode::NOT_FOUND, Json("Case data not found")).into_response()
         }
     }
 }
 
 pub async fn delete_case_data(
     Extension(pool): Extension<PgPool>,
-    Path(id): Path<String>,
-) -> impl IntoResponse {
-    info!("Attempting to delete case data with ID: {}", id);
+    Path(id): Path<i32>,
 
-    // Parse the ID to an integer
-    let id: i32 = match id.parse() {
-        Ok(id) => id,
-        Err(_) => {
-            error!("Invalid ID format: {}", id);
-            return (StatusCode::BAD_REQUEST, Json(DeleteResponse {
-                message: format!("Invalid ID format: {}", id),
-            })).into_response();
-        }
-    };
+) -> impl IntoResponse {
+    // info!("Request from test client: {:?}", test_client.0);
+    info!("Attempting to delete case data with ID: {}", id);
 
     let result = sqlx::query(
         "DELETE FROM CaseData WHERE id = $1"
@@ -178,11 +182,19 @@ pub async fn delete_case_data(
         .await;
 
     match result {
-        Ok(_) => {
-            info!("Successfully deleted case data with ID: {}", id);
-            (StatusCode::OK, Json(DeleteResponse {
-                message: format!("Successfully deleted case data with ID: {}", id),
-            })).into_response()
+        Ok(rows_affected) => {
+            let affected = rows_affected.rows_affected();
+            if affected == 0 {
+                error!("Case data not found with ID: {}", id);
+                (StatusCode::NOT_FOUND, Json(DeleteResponse {
+                    message: format!("Case data not found with ID: {}", id),
+                })).into_response()
+            } else {
+                info!("Successfully deleted {} case data record(s) with ID: {}", affected, id);
+                (StatusCode::NO_CONTENT, Json(DeleteResponse {
+                    message: format!("Successfully deleted case data with ID: {}", id),
+                })).into_response()
+            }
         }
         Err(e) => {
             error!("Failed to delete case data with ID: {}: {:?}", id, e);

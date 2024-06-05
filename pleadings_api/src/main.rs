@@ -1,6 +1,6 @@
-use attorney_advocate_api::{create_app, setup_logging, start_server};
 use database_utils::{establish_connection, run_migrations};
 use dotenv::dotenv;
+use pleadings_api::{create_app, setup_logging, start_server};
 
 #[tokio::main]
 async fn main() {

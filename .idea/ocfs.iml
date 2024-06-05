@@ -10,9 +10,15 @@
       <sourceFolder url="file://$MODULE_DIR$/database_utils/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/participants_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/participants_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/attorney_advocate_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/attorney_advocate_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/pleadings_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/pleadings_api/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/case_data_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/participants_api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/attorney_advocate_api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/pleadings_api/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

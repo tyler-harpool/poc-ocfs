@@ -22,32 +22,17 @@ pub fn setup_logging() {
 
 pub fn create_app(pool: PgPool) -> Router {
     Router::new()
-        .route("/", get(|| async { "Welcome to OCFS!" }))
-        .route(
-            "/attorney_advocates",
-            get(handlers::list_all_attorney_advocates),
-        )
-        .route(
-            "/attorney_advocates/:id",
-            get(handlers::get_attorney_advocate),
-        )
-        .route(
-            "/attorney_advocates",
-            post(handlers::create_attorney_advocate),
-        )
-        .route(
-            "/attorney_advocates/:id",
-            patch(handlers::update_attorney_advocate),
-        )
-        .route(
-            "/attorney_advocates/:id",
-            delete(handlers::delete_attorney_advocate),
-        )
+        .route("/", get(|| async { "Welcome to the Pleadings API!" }))
+        .route("/pleadings", get(handlers::list_all_pleadings))
+        .route("/pleadings/:id", get(handlers::get_pleading))
+        .route("/pleadings", post(handlers::create_pleading))
+        .route("/pleadings/:id", patch(handlers::update_pleading))
+        .route("/pleadings/:id", delete(handlers::delete_pleading))
         .layer(ServiceBuilder::new().layer(Extension(pool)).into_inner())
 }
 
 pub async fn start_server(app: Router) {
-    let addr = SocketAddr::from(([0, 0, 0, 0], 3002));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 3004));
     let listener = TcpListener::bind(addr).await.unwrap();
     println!("Listening on {}", addr);
     axum::serve(listener, app.into_make_service())

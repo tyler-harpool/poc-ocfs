@@ -1,7 +1,7 @@
-use attorney_advocate_api::{create_app, setup_logging}; // Correctly reference the attorney_advocate_api crate
 use database_utils::{establish_connection, run_migrations};
 use dotenv::dotenv;
 use log::{debug, info};
+use pleadings_api::{create_app, setup_logging}; // Correctly reference the pleadings_api crate
 use reqwest::Client;
 use serde_json::json;
 use std::net::SocketAddr;
@@ -27,7 +27,7 @@ async fn start_test_server() -> SocketAddr {
 }
 
 #[tokio::test]
-async fn test_create_get_update_delete_attorney_advocate() {
+async fn test_create_get_update_delete_pleading() {
     dotenv().ok();
 
     // Set up logging
@@ -41,10 +41,10 @@ async fn test_create_get_update_delete_attorney_advocate() {
     let client = Client::new();
     let base_url = format!("http://{}", addr);
 
-    // Step 1: Create Attorney Advocate
-    info!("Step 1: Creating Attorney Advocate");
+    // Step 1: Create Pleading
+    info!("Step 1: Creating Pleading");
     let create_response = client
-        .post(&format!("{}/attorney_advocates", base_url))
+        .post(&format!("{}/pleadings", base_url))
         .header("X-Test-Client", "IntegrationTest")
         .json(&json!({
             "civ": "Civil data",
@@ -75,30 +75,24 @@ async fn test_create_get_update_delete_attorney_advocate() {
 
     if create_status != 201 {
         panic!(
-            "Failed to create attorney advocate. Status: {}, Body: {}",
+            "Failed to create pleading. Status: {}, Body: {}",
             create_status, create_body
         );
     }
 
     assert_eq!(create_status, 201);
     let create_body: serde_json::Value = serde_json::from_str(&create_body).unwrap();
-    let attorney_advocate_id = create_body
+    let pleading_id = create_body
         .get("id")
         .and_then(|id| id.as_i64())
         .expect("ID missing") as i32;
 
-    info!(
-        "Created Attorney Advocate with ID: {}",
-        attorney_advocate_id
-    );
+    info!("Created Pleading with ID: {}", pleading_id);
 
-    // Step 2: Get Attorney Advocate
-    info!("Step 2: Getting Attorney Advocate");
+    // Step 2: Get Pleading
+    info!("Step 2: Getting Pleading");
     let get_response = client
-        .get(&format!(
-            "{}/attorney_advocates/{}",
-            base_url, attorney_advocate_id
-        ))
+        .get(&format!("{}/pleadings/{}", base_url, pleading_id))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -109,19 +103,13 @@ async fn test_create_get_update_delete_attorney_advocate() {
 
     debug!("Get Response Body: {}", get_body);
 
-    // Step 3: Update Attorney Advocate
-    info!(
-        "Step 3: Updating Attorney Advocate with ID: {}",
-        attorney_advocate_id
-    );
+    // Step 3: Update Pleading
+    info!("Step 3: Updating Pleading with ID: {}", pleading_id);
     let update_response = client
-        .patch(&format!(
-            "{}/attorney_advocates/{}",
-            base_url, attorney_advocate_id
-        ))
+        .patch(&format!("{}/pleadings/{}", base_url, pleading_id))
         .header("X-Test-Client", "IntegrationTest")
         .json(&json!({
-          "civ": "Updated Civil data",
+            "civ": "Updated Civil data",
             "fam": "Updated Family data",
             "prob": "Updated Probate data",
             "dep": "Updated Dependency data",
@@ -141,21 +129,15 @@ async fn test_create_get_update_delete_attorney_advocate() {
         .unwrap();
     assert_eq!(update_response.status(), 200);
 
-    info!(
-        "Updated Attorney Advocate with ID: {}",
-        attorney_advocate_id
-    );
+    info!("Updated Pleading with ID: {}", pleading_id);
 
     // Step 4: Verify Update
     info!(
-        "Step 4: Verifying Update for Attorney Advocate with ID: {}",
-        attorney_advocate_id
+        "Step 4: Verifying Update for Pleading with ID: {}",
+        pleading_id
     );
     let get_response = client
-        .get(&format!(
-            "{}/attorney_advocates/{}",
-            base_url, attorney_advocate_id
-        ))
+        .get(&format!("{}/pleadings/{}", base_url, pleading_id))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -166,16 +148,10 @@ async fn test_create_get_update_delete_attorney_advocate() {
 
     debug!("Get After Update Response Body: {}", get_body);
 
-    // Step 5: Delete Attorney Advocate
-    info!(
-        "Step 5: Deleting Attorney Advocate with ID: {}",
-        attorney_advocate_id
-    );
+    // Step 5: Delete Pleading
+    info!("Step 5: Deleting Pleading with ID: {}", pleading_id);
     let delete_response = client
-        .delete(&format!(
-            "{}/attorney_advocates/{}",
-            base_url, attorney_advocate_id
-        ))
+        .delete(&format!("{}/pleadings/{}", base_url, pleading_id))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -186,21 +162,15 @@ async fn test_create_get_update_delete_attorney_advocate() {
             || delete_response.status() == 404
     );
 
-    info!(
-        "Deleted Attorney Advocate with ID: {}",
-        attorney_advocate_id
-    );
+    info!("Deleted Pleading with ID: {}", pleading_id);
 
     // Step 6: Verify Deletion
     info!(
-        "Step 6: Verifying Deletion for Attorney Advocate with ID: {}",
-        attorney_advocate_id
+        "Step 6: Verifying Deletion for Pleading with ID: {}",
+        pleading_id
     );
     let get_response = client
-        .get(&format!(
-            "{}/attorney_advocates/{}",
-            base_url, attorney_advocate_id
-        ))
+        .get(&format!("{}/pleadings/{}", base_url, pleading_id))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -212,5 +182,6 @@ async fn test_create_get_update_delete_attorney_advocate() {
         get_status, get_body
     );
 
+    // Expecting a 404 Not Found status since the pleading was deleted
     assert_eq!(get_status, 404);
 }

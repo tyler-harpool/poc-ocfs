@@ -3,6 +3,8 @@ members = [
     "case_data_api",
     "participants_api",
     "attorney_advocate_api",
+    "pleadings_api",
+   # utils
     "database_utils",
     "common"
 ]

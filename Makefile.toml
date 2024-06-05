@@ -20,7 +20,7 @@ command = "cargo"
 args = ["test"]
 dependencies = ["clean"]
 
-[tasks.my-flow]
+[tasks.ocfs]
 dependencies = [
     "format",
     "build",

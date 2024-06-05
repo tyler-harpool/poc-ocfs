@@ -1,8 +1,9 @@
 use sqlx::{Pool, Postgres, migrate::Migrator};
-use std::path::Path;
 use sqlx::{postgres::PgPoolOptions, PgPool};
 use std::env;
+use std::path::Path;
 use tracing::info;
+
 pub async fn establish_connection() -> PgPool {
     info!("Starting database connection");
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
@@ -29,6 +30,7 @@ pub async fn establish_connection() -> PgPool {
 }
 
 pub async fn run_migrations(pool: &Pool<Postgres>) {
-    let migrator = Migrator::new(Path::new("./migrations")).await.unwrap();
+    let migrations_dir = env::var("MIGRATIONS_DIR").expect("MIGRATIONS_DIR must be set");
+    let migrator = Migrator::new(Path::new(&migrations_dir)).await.unwrap();
     migrator.run(pool).await.unwrap();
 }

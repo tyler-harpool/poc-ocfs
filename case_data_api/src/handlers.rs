@@ -94,7 +94,7 @@ pub async fn create_case_data(
 }
 
 pub async fn update_case_data(
-    headers: HeaderMap,
+    _headers: HeaderMap,
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
     Json(input): Json<UpdateCaseData>,
@@ -214,10 +214,10 @@ pub async fn delete_case_data(
 }
 
 pub async fn list_all_case_data(
-    headers: HeaderMap,
+    _headers: HeaderMap, // Prefix with an underscore if not used
     Extension(pool): Extension<PgPool>,
 ) -> impl IntoResponse {
-    log_request(&headers, None, "Listing all case data");
+    log_request(&_headers, None, "Listing all case data");
 
     let query = "SELECT * FROM CaseData";
 

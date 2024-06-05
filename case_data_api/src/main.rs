@@ -1,3 +1,5 @@
+use database_utils::{establish_connection, run_migrations};
+
 use axum::{
     extract::Extension,
     routing::{delete, get, patch, post},
@@ -7,7 +9,7 @@ use dotenv::dotenv;
 use tokio::net::TcpListener;
 use tower::ServiceBuilder;
 use tracing_subscriber::EnvFilter;
-mod db;
+
 mod handlers;
 mod models;
 
@@ -15,16 +17,32 @@ mod models;
 async fn main() {
     dotenv().ok();
 
+    // Debug statement to verify environment variable loading
+    match dotenv::var("DATABASE_URL") {
+        Ok(val) => println!("DATABASE_URL is set to: {}", val),
+        Err(e) => println!("DATABASE_URL is not set: {}", e),
+    }
+
+    match dotenv::var("MIGRATIONS_DIR") {
+        Ok(val) => println!("MIGRATIONS_DIR is set to: {}", val),
+        Err(e) => println!("MIGRATIONS_DIR is not set: {}", e),
+    }
+
+
+    match dotenv::var("DATABASE_URL") {
+        Ok(val) => println!("DATABASE_URL is set to: {}", val),
+        Err(e) => println!("DATABASE_URL is not set: {}", e),
+    }
     // Set up logging
     tracing_subscriber::fmt()
         .with_env_filter(EnvFilter::from_default_env())
         .init();
 
-    // Establish connection to the database using the function from db.rs
-    let pool = db::establish_connection().await;
+    // Establish database connection
+    let pool = establish_connection().await;
 
-    // Optional: Run migrations
-    db::run_migrations(&pool).await;
+    // Run migrations
+    run_migrations(&pool).await;
 
     // Define the application routes
     let app = Router::new()

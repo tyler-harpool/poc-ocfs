@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 use serde_json::Value;
 
-#[derive(Serialize, Deserialize, FromRow, Debug)]
+#[derive(Serialize, Deserialize, FromRow, Clone, Debug)]
 pub struct CaseData {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub id: Option<i32>, // Use i32 instead of i64

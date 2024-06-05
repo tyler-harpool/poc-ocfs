@@ -28,6 +28,8 @@ async fn main() {
 
     // Define the application routes
     let app = Router::new()
+        .route("/", get(|| async { "Welcome to OCFS!" }))
+        .route("/case_data", get(handlers::list_all_case_data))
         .route("/case_data/:id", get(handlers::get_case_data))
         .route("/case_data", post(handlers::create_case_data))
         .route("/case_data/:id", patch(handlers::update_case_data))

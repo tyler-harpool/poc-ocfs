@@ -5,6 +5,8 @@
       <sourceFolder url="file://$MODULE_DIR$/case_data_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/case_data_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/database_utils/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/common/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/common/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/database_utils/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/participants_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/participants_api/tests" isTestSource="true" />

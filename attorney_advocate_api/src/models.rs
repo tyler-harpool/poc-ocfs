@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
 #[derive(Serialize, Deserialize, Debug, Clone, FromRow)]
-pub struct Participant {
+pub struct AttorneyAdvocate {
     pub id: Option<i32>,
     pub civ: String,
     pub fam: String,
@@ -21,7 +21,7 @@ pub struct Participant {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct UpdateParticipantData {
+pub struct UpdateAttorneyAdvocate {
     pub civ: Option<String>,
     pub fam: Option<String>,
     pub prob: Option<String>,

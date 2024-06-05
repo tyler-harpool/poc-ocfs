@@ -9,23 +9,23 @@ use serde::Serialize;
 use sqlx::{PgPool, Row};
 use tracing::{error, info};
 
-use crate::models::{CaseData, UpdateCaseData};
+use crate::models::{AttorneyAdvocate, UpdateAttorneyAdvocate};
 
 #[derive(Serialize)]
 struct DeleteResponse {
     message: String,
 }
 
-pub async fn create_case_data(
+pub async fn create_attorney_advocate(
     headers: HeaderMap,
     Extension(pool): Extension<PgPool>,
-    Json(input): Json<CaseData>,
+    Json(input): Json<AttorneyAdvocate>,
 ) -> impl IntoResponse {
     let query = r#"
-        INSERT INTO CaseData (
-            civ, fam, prob, dep, juv, crim, traf, data_element,
-            definition, values, currently_collected, if_no_is_this_needed,
-            if_yes_where, comments
+        INSERT INTO attorneyAdvocate (
+            civ, fam, prob, dep, juv, crim, traf, dataElement,
+            definition, values, currentlyCollected, ifNoIsThisNeeded,
+            ifYesWhere, comments
         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
         RETURNING id
     "#;
@@ -51,9 +51,9 @@ pub async fn create_case_data(
     match result {
         Ok(record) => {
             let id: i32 = record.get("id");
-            log_request(&headers, Some(id), "Case data created");
+            log_request(&headers, Some(id), "Attorney Advocate created");
 
-            let response_data = CaseData {
+            let response_data = AttorneyAdvocate {
                 id: Some(id),
                 civ: input.civ.clone(),
                 fam: input.fam.clone(),
@@ -74,22 +74,22 @@ pub async fn create_case_data(
             (StatusCode::CREATED, Json(response_data)).into_response()
         }
         Err(e) => {
-            error!("Failed to create case data: {:?}", e);
+            error!("Failed to create attorney advocate: {:?}", e);
             StatusCode::INTERNAL_SERVER_ERROR.into_response()
         }
     }
 }
 
-pub async fn update_case_data(
+pub async fn update_attorney_advocate(
     _headers: HeaderMap,
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
-    Json(input): Json<UpdateCaseData>,
+    Json(input): Json<UpdateAttorneyAdvocate>,
 ) -> impl IntoResponse {
-    info!("Updating case data with ID: {}", id);
+    info!("Updating attorney advocate with ID: {}", id);
 
     let query = r#"
-        UPDATE CaseData
+        UPDATE attorneyAdvocate
         SET
             civ = COALESCE($1, civ),
             fam = COALESCE($2, fam),
@@ -98,12 +98,12 @@ pub async fn update_case_data(
             juv = COALESCE($5, juv),
             crim = COALESCE($6, crim),
             traf = COALESCE($7, traf),
-            data_element = COALESCE($8, data_element),
+            dataElement = COALESCE($8, dataElement),
             definition = COALESCE($9, definition),
             values = COALESCE($10, values),
-            currently_collected = COALESCE($11, currently_collected),
-            if_no_is_this_needed = COALESCE($12, if_no_is_this_needed),
-            if_yes_where = COALESCE($13, if_yes_where),
+            currentlyCollected = COALESCE($11, currentlyCollected),
+            ifNoIsThisNeeded = COALESCE($12, ifNoIsThisNeeded),
+            ifYesWhere = COALESCE($13, ifYesWhere),
             comments = COALESCE($14, comments)
         WHERE id = $15
     "#;
@@ -129,89 +129,89 @@ pub async fn update_case_data(
     {
         Ok(result) => {
             if result.rows_affected() == 0 {
-                error!("No case data found with ID: {}", id);
-                (StatusCode::NOT_FOUND, "No case data found").into_response()
+                error!("No attorney advocate found with ID: {}", id);
+                (StatusCode::NOT_FOUND, "No attorney advocate found").into_response()
             } else {
-                info!("Successfully updated case data with ID: {}", id);
-                (StatusCode::OK, "Case data updated successfully").into_response()
+                info!("Successfully updated attorney advocate with ID: {}", id);
+                (StatusCode::OK, "Attorney advocate updated successfully").into_response()
             }
         }
         Err(e) => {
-            error!("Failed to update case data with ID: {}: {:?}", id, e);
+            error!("Failed to update attorney advocate with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
-                "Failed to update case data",
+                "Failed to update attorney advocate",
             )
                 .into_response()
         }
     }
 }
 
-pub async fn get_case_data(
+pub async fn get_attorney_advocate(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(&HeaderMap::new(), Some(id), "Fetching case data");
+    log_request(&HeaderMap::new(), Some(id), "Fetching attorney advocate");
 
-    let query = "SELECT * FROM CaseData WHERE id = $1";
+    let query = "SELECT * FROM attorneyAdvocate WHERE id = $1";
 
-    match sqlx::query_as::<_, CaseData>(query)
+    match sqlx::query_as::<_, AttorneyAdvocate>(query)
         .bind(id)
         .fetch_one(&pool)
         .await
     {
-        Ok(case_data) => (StatusCode::OK, Json(case_data)).into_response(),
+        Ok(attorney_advocate) => (StatusCode::OK, Json(attorney_advocate)).into_response(),
         Err(e) => {
-            error!("Failed to fetch case data for id {}: {:?}", id, e);
-            (StatusCode::NOT_FOUND, Json("Case data not found")).into_response()
+            error!("Failed to fetch attorney advocate for id {}: {:?}", id, e);
+            (StatusCode::NOT_FOUND, Json("Attorney advocate not found")).into_response()
         }
     }
 }
 
-pub async fn delete_case_data(
+pub async fn delete_attorney_advocate(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
     log_request(
         &HeaderMap::new(),
         Some(id),
-        "Attempting to delete case data",
+        "Attempting to delete attorney advocate",
     );
 
-    let query = "DELETE FROM CaseData WHERE id = $1";
+    let query = "DELETE FROM attorneyAdvocate WHERE id = $1";
 
     match sqlx::query(query).bind(id).execute(&pool).await {
         Ok(result) => {
             let affected = result.rows_affected();
             if affected == 0 {
-                error!("Case data not found with ID: {}", id);
+                error!("Attorney advocate not found with ID: {}", id);
                 (
                     StatusCode::NOT_FOUND,
                     Json(DeleteResponse {
-                        message: format!("Case data not found with ID: {}", id),
+                        message: format!("Attorney advocate not found with ID: {}", id),
                     }),
                 )
                     .into_response()
             } else {
                 info!(
-                    "Successfully deleted {} case data record(s) with ID: {}",
+                    "Successfully deleted {} attorney advocate record(s) with ID: {}",
                     affected, id
                 );
                 (
                     StatusCode::NO_CONTENT,
                     Json(DeleteResponse {
-                        message: format!("Successfully deleted case data with ID: {}", id),
+                        message: format!("Successfully deleted attorney advocate with ID: {}", id),
                     }),
                 )
                     .into_response()
             }
         }
         Err(e) => {
-            error!("Failed to delete case data with ID: {}: {:?}", id, e);
+            error!("Failed to delete attorney advocate with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
-                    message: format!("Failed to delete case data with ID: {}", id),
+                    message: format!("Failed to delete attorney advocate with ID: {}", id),
                 }),
             )
                 .into_response()
@@ -219,21 +219,24 @@ pub async fn delete_case_data(
     }
 }
 
-pub async fn list_all_case_data(
+pub async fn list_all_attorney_advocates(
     _headers: HeaderMap, // Prefix with an underscore if not used
     Extension(pool): Extension<PgPool>,
 ) -> impl IntoResponse {
-    log_request(&_headers, None, "Listing all case data");
+    log_request(&_headers, None, "Listing all attorney advocates");
 
-    let query = "SELECT * FROM CaseData";
+    let query = "SELECT * FROM attorneyAdvocate";
 
-    match sqlx::query_as::<_, CaseData>(query).fetch_all(&pool).await {
-        Ok(case_data_list) => (StatusCode::OK, Json(case_data_list)).into_response(),
+    match sqlx::query_as::<_, AttorneyAdvocate>(query)
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(attorney_advocate_list) => (StatusCode::OK, Json(attorney_advocate_list)).into_response(),
         Err(e) => {
-            error!("Failed to fetch case data list: {:?}", e);
+            error!("Failed to fetch attorney advocate list: {:?}", e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
-                Json("Failed to fetch case data list"),
+                Json("Failed to fetch attorney advocate list"),
             )
                 .into_response()
         }

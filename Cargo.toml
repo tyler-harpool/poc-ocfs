@@ -2,6 +2,8 @@
 members = [
     "case_data_api",
     "participants_api",
+    "attorney_advocate_api",
     "database_utils",
+    "common"
 ]
 resolver = "2" # Add this line

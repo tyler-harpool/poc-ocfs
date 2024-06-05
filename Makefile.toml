@@ -26,3 +26,24 @@ dependencies = [
     "build",
     "test"
 ]
+
+
+
+
+[tasks.start-case-data-api]
+description = "Start the case_data_api"
+command = "cargo"
+args = ["run", "--package", "case_data_api"]
+cwd = "case_data_api/"
+
+[tasks.start-participants-api]
+description = "Start the participants_api"
+command = "cargo"
+args = ["run", "--package", "participants_api"]
+cwd = "participants_api/"
+
+[tasks.start-all]
+description = "Start all APIs"
+dependencies = ["start-case-data-api", "start-participants-api"]
+
+

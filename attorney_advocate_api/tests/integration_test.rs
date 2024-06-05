@@ -1,12 +1,13 @@
-use case_data_api::{create_app, setup_logging}; // Correctly reference the case_data_api crate
 use database_utils::{establish_connection, run_migrations};
 use dotenv::dotenv;
 use log::{debug, info};
+use attorney_advocate_api::{create_app, setup_logging}; // Correctly reference the attorney_advocate_api crate
 use reqwest::Client;
 use serde_json::json;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
 use tokio::time::{sleep, Duration};
+
 async fn start_test_server() -> SocketAddr {
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let addr = listener.local_addr().unwrap();
@@ -26,7 +27,7 @@ async fn start_test_server() -> SocketAddr {
 }
 
 #[tokio::test]
-async fn test_create_get_update_delete_case_data() {
+async fn test_create_get_update_delete_attorney_advocate() {
     dotenv().ok();
 
     // Set up logging
@@ -40,10 +41,10 @@ async fn test_create_get_update_delete_case_data() {
     let client = Client::new();
     let base_url = format!("http://{}", addr);
 
-    // Step 1: Create Case Data
-    info!("Step 1: Creating Case Data");
+    // Step 1: Create Attorney Advocate
+    info!("Step 1: Creating Attorney Advocate");
     let create_response = client
-        .post(&format!("{}/case_data", base_url))
+        .post(&format!("{}/attorney_advocates", base_url))
         .header("X-Test-Client", "IntegrationTest")
         .json(&json!({
             "civ": "Civil data",
@@ -74,24 +75,24 @@ async fn test_create_get_update_delete_case_data() {
 
     if create_status != 201 {
         panic!(
-            "Failed to create case data. Status: {}, Body: {}",
+            "Failed to create attorney advocate. Status: {}, Body: {}",
             create_status, create_body
         );
     }
 
     assert_eq!(create_status, 201);
     let create_body: serde_json::Value = serde_json::from_str(&create_body).unwrap();
-    let case_id = create_body
+    let attorney_advocate_id = create_body
         .get("id")
         .and_then(|id| id.as_i64())
         .expect("ID missing") as i32;
 
-    info!("Created Case Data with ID: {}", case_id);
+    info!("Created Attorney Advocate with ID: {}", attorney_advocate_id);
 
-    // Step 2: Get Case Data
-    info!("Step 2: Getting Case Data");
+    // Step 2: Get Attorney Advocate
+    info!("Step 2: Getting Attorney Advocate");
     let get_response = client
-        .get(&format!("{}/case_data/{}", base_url, case_id))
+        .get(&format!("{}/attorney_advocates/{}", base_url, attorney_advocate_id))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -102,10 +103,10 @@ async fn test_create_get_update_delete_case_data() {
 
     debug!("Get Response Body: {}", get_body);
 
-    // Step 3: Update Case Data
-    info!("Step 3: Updating Case Data with ID: {}", case_id);
+    // Step 3: Update Attorney Advocate
+    info!("Step 3: Updating Attorney Advocate with ID: {}", attorney_advocate_id);
     let update_response = client
-        .patch(&format!("{}/case_data/{}", base_url, case_id))
+        .patch(&format!("{}/attorney_advocates/{}", base_url, attorney_advocate_id))
         .header("X-Test-Client", "IntegrationTest")
         .json(&json!({
             "civ": "Updated Civil data",
@@ -128,15 +129,15 @@ async fn test_create_get_update_delete_case_data() {
         .unwrap();
     assert_eq!(update_response.status(), 200);
 
-    info!("Updated Case Data with ID: {}", case_id);
+    info!("Updated Attorney Advocate with ID: {}", attorney_advocate_id);
 
     // Step 4: Verify Update
     info!(
-        "Step 4: Verifying Update for Case Data with ID: {}",
-        case_id
+        "Step 4: Verifying Update for Attorney Advocate with ID: {}",
+        attorney_advocate_id
     );
     let get_response = client
-        .get(&format!("{}/case_data/{}", base_url, case_id))
+        .get(&format!("{}/attorney_advocates/{}", base_url, attorney_advocate_id))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -147,10 +148,10 @@ async fn test_create_get_update_delete_case_data() {
 
     debug!("Get After Update Response Body: {}", get_body);
 
-    // Step 5: Delete Case Data
-    info!("Step 5: Deleting Case Data with ID: {}", case_id);
+    // Step 5: Delete Attorney Advocate
+    info!("Step 5: Deleting Attorney Advocate with ID: {}", attorney_advocate_id);
     let delete_response = client
-        .delete(&format!("{}/case_data/{}", base_url, case_id))
+        .delete(&format!("{}/attorney_advocates/{}", base_url, attorney_advocate_id))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -161,15 +162,15 @@ async fn test_create_get_update_delete_case_data() {
             || delete_response.status() == 404
     );
 
-    info!("Deleted Case Data with ID: {}", case_id);
+    info!("Deleted Attorney Advocate with ID: {}", attorney_advocate_id);
 
     // Step 6: Verify Deletion
     info!(
-        "Step 6: Verifying Deletion for Case Data with ID: {}",
-        case_id
+        "Step 6: Verifying Deletion for Attorney Advocate with ID: {}",
+        attorney_advocate_id
     );
     let get_response = client
-        .get(&format!("{}/case_data/{}", base_url, case_id))
+        .get(&format!("{}/attorney_advocates/{}", base_url, attorney_advocate_id))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await

@@ -1,10 +1,6 @@
 use database_utils::{establish_connection, run_migrations};
-
 use dotenv::dotenv;
-
-use ::case_data_api::{create_app, setup_logging, start_server};
-pub mod handlers;
-pub mod models;
+use attorney_advocate_api::{create_app, setup_logging, start_server};
 
 #[tokio::main]
 async fn main() {

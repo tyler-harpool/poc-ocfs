@@ -1,10 +1,8 @@
 #[cfg(test)]
 mod tests {
-    use super::*;
     use dotenv::dotenv;
     use sqlx::{migrate::Migrator, postgres::PgPoolOptions, Pool, Postgres};
     use std::env;
-    use std::fs;
     use std::path::Path;
     use std::time::Duration;
 
@@ -30,7 +28,8 @@ mod tests {
 
         // Retrieve the database URL and migrations directory from the environment
         let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-        let migrations_dir = env::var("MIGRATIONS_TESTDIR").expect("MIGRATIONS_TESTDIR must be set");
+        let migrations_dir =
+            env::var("MIGRATIONS_TESTDIR").expect("MIGRATIONS_TESTDIR must be set");
 
         // Ensure the migrations directory exists
         assert!(

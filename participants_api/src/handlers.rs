@@ -4,6 +4,7 @@ use axum::{
     response::IntoResponse,
     Json,
 };
+use common::utils::log_request;
 use serde::Serialize;
 use sqlx::{PgPool, Row};
 use tracing::{error, info};
@@ -14,19 +15,6 @@ use crate::models::{Participant, UpdateParticipantData};
 struct DeleteResponse {
     message: String,
 }
-
-// Utility function for logging
-fn log_request(headers: &HeaderMap, id: Option<i32>, action: &str) {
-    let id_str = id.map_or("unknown".to_string(), |id| id.to_string());
-    if let Some(header_value) = headers.get("X-Test-Client") {
-        info!("<-- TEST -- Request from test client: {:?}", header_value);
-        info!("<-- TEST -- {} with id: {}", action, id_str);
-    } else {
-        info!("{} with id: {}", action, id_str);
-    }
-}
-
-// Participants Handlers
 
 pub async fn create_participant(
     headers: HeaderMap,

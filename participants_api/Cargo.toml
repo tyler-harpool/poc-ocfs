@@ -23,7 +23,7 @@ env_logger = "0.11.3"
 headers = "0.4.0"
 axum-extra = {  version = "0.9.3", features=["typed-header"] }
 database_utils = { path = "../database_utils" }
-
+common = { path = "../common"}
 
 [dev-dependencies]
 tokio = { version = "1", features = ["full"] }

@@ -1,5 +1,5 @@
 [package]
-name = "case_data_api"
+name = "attorney_advocate_api"
 version = "0.1.0"
 edition = "2021"
 
@@ -19,7 +19,7 @@ tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter", "fmt", "json"] }
 tokio-retry = "0.3.0"
 env_logger = "0.11.3"
-reqwest = { version = "0.12.4", features = ["json"] }
+
 headers = "0.4.0"
 axum-extra = {  version = "0.9.3", features=["typed-header"] }
 database_utils = { path = "../database_utils" }
@@ -27,8 +27,10 @@ common = { path = "../common"}
 
 [dev-dependencies]
 tokio = { version = "1", features = ["full"] }
-
+axum-test = "14.10.0"
+dotenv = "0.15.0"
+reqwest = { version = "0.12.4", features = ["json"] }
 
 [[bin]]
-name = "case_data_api"
+name = "attorney_advocate_api"
 path = "src/main.rs"

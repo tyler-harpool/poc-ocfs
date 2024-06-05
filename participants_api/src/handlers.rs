@@ -4,12 +4,11 @@ use axum::{
     response::IntoResponse,
     Json,
 };
-
 use serde::Serialize;
 use sqlx::{PgPool, Row};
 use tracing::{error, info};
 
-use crate::models::{CaseData, UpdateCaseData};
+use crate::models::{Participant, UpdateParticipantData};
 
 #[derive(Serialize)]
 struct DeleteResponse {
@@ -27,13 +26,15 @@ fn log_request(headers: &HeaderMap, id: Option<i32>, action: &str) {
     }
 }
 
-pub async fn create_case_data(
+// Participants Handlers
+
+pub async fn create_participant(
     headers: HeaderMap,
     Extension(pool): Extension<PgPool>,
-    Json(input): Json<CaseData>,
+    Json(input): Json<Participant>,
 ) -> impl IntoResponse {
     let query = r#"
-        INSERT INTO CaseData (
+        INSERT INTO participants (
             civ, fam, prob, dep, juv, crim, traf, data_element,
             definition, values, currently_collected, if_no_is_this_needed,
             if_yes_where, comments
@@ -62,9 +63,9 @@ pub async fn create_case_data(
     match result {
         Ok(record) => {
             let id: i32 = record.get("id");
-            log_request(&headers, Some(id), "Case data created");
+            log_request(&headers, Some(id), "Participant created");
 
-            let response_data = CaseData {
+            let response_data = Participant {
                 id: Some(id),
                 civ: input.civ.clone(),
                 fam: input.fam.clone(),
@@ -85,22 +86,22 @@ pub async fn create_case_data(
             (StatusCode::CREATED, Json(response_data)).into_response()
         }
         Err(e) => {
-            error!("Failed to create case data: {:?}", e);
+            error!("Failed to create participant: {:?}", e);
             StatusCode::INTERNAL_SERVER_ERROR.into_response()
         }
     }
 }
 
-pub async fn update_case_data(
+pub async fn update_participant(
     _headers: HeaderMap,
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
-    Json(input): Json<UpdateCaseData>,
+    Json(input): Json<UpdateParticipantData>,
 ) -> impl IntoResponse {
-    info!("Updating case data with ID: {}", id);
+    info!("Updating participant with ID: {}", id);
 
     let query = r#"
-        UPDATE CaseData
+        UPDATE participants
         SET
             civ = COALESCE($1, civ),
             fam = COALESCE($2, fam),
@@ -140,89 +141,89 @@ pub async fn update_case_data(
     {
         Ok(result) => {
             if result.rows_affected() == 0 {
-                error!("No case data found with ID: {}", id);
-                (StatusCode::NOT_FOUND, "No case data found").into_response()
+                error!("No participant found with ID: {}", id);
+                (StatusCode::NOT_FOUND, "No participant found").into_response()
             } else {
-                info!("Successfully updated case data with ID: {}", id);
-                (StatusCode::OK, "Case data updated successfully").into_response()
+                info!("Successfully updated participant with ID: {}", id);
+                (StatusCode::OK, "Participant updated successfully").into_response()
             }
         }
         Err(e) => {
-            error!("Failed to update case data with ID: {}: {:?}", id, e);
+            error!("Failed to update participant with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
-                "Failed to update case data",
+                "Failed to update participant",
             )
                 .into_response()
         }
     }
 }
 
-pub async fn get_case_data(
+pub async fn get_participant(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(&HeaderMap::new(), Some(id), "Fetching case data");
+    log_request(&HeaderMap::new(), Some(id), "Fetching participant");
 
-    let query = "SELECT * FROM CaseData WHERE id = $1";
+    let query = "SELECT * FROM participants WHERE id = $1";
 
-    match sqlx::query_as::<_, CaseData>(query)
+    match sqlx::query_as::<_, Participant>(query)
         .bind(id)
         .fetch_one(&pool)
         .await
     {
-        Ok(case_data) => (StatusCode::OK, Json(case_data)).into_response(),
+        Ok(participant) => (StatusCode::OK, Json(participant)).into_response(),
         Err(e) => {
-            error!("Failed to fetch case data for id {}: {:?}", id, e);
-            (StatusCode::NOT_FOUND, Json("Case data not found")).into_response()
+            error!("Failed to fetch participant for id {}: {:?}", id, e);
+            (StatusCode::NOT_FOUND, Json("Participant not found")).into_response()
         }
     }
 }
 
-pub async fn delete_case_data(
+pub async fn delete_participant(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
     log_request(
         &HeaderMap::new(),
         Some(id),
-        "Attempting to delete case data",
+        "Attempting to delete participant",
     );
 
-    let query = "DELETE FROM CaseData WHERE id = $1";
+    let query = "DELETE FROM participants WHERE id = $1";
 
     match sqlx::query(query).bind(id).execute(&pool).await {
         Ok(result) => {
             let affected = result.rows_affected();
             if affected == 0 {
-                error!("Case data not found with ID: {}", id);
+                error!("Participant not found with ID: {}", id);
                 (
                     StatusCode::NOT_FOUND,
                     Json(DeleteResponse {
-                        message: format!("Case data not found with ID: {}", id),
+                        message: format!("Participant not found with ID: {}", id),
                     }),
                 )
                     .into_response()
             } else {
                 info!(
-                    "Successfully deleted {} case data record(s) with ID: {}",
+                    "Successfully deleted {} participant record(s) with ID: {}",
                     affected, id
                 );
                 (
                     StatusCode::NO_CONTENT,
                     Json(DeleteResponse {
-                        message: format!("Successfully deleted case data with ID: {}", id),
+                        message: format!("Successfully deleted participant with ID: {}", id),
                     }),
                 )
                     .into_response()
             }
         }
         Err(e) => {
-            error!("Failed to delete case data with ID: {}: {:?}", id, e);
+            error!("Failed to delete participant with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
-                    message: format!("Failed to delete case data with ID: {}", id),
+                    message: format!("Failed to delete participant with ID: {}", id),
                 }),
             )
                 .into_response()
@@ -230,21 +231,24 @@ pub async fn delete_case_data(
     }
 }
 
-pub async fn list_all_case_data(
+pub async fn list_all_participants(
     _headers: HeaderMap, // Prefix with an underscore if not used
     Extension(pool): Extension<PgPool>,
 ) -> impl IntoResponse {
-    log_request(&_headers, None, "Listing all case data");
+    log_request(&_headers, None, "Listing all participants");
 
-    let query = "SELECT * FROM CaseData";
+    let query = "SELECT * FROM participants";
 
-    match sqlx::query_as::<_, CaseData>(query).fetch_all(&pool).await {
-        Ok(case_data_list) => (StatusCode::OK, Json(case_data_list)).into_response(),
+    match sqlx::query_as::<_, Participant>(query)
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(participant_list) => (StatusCode::OK, Json(participant_list)).into_response(),
         Err(e) => {
-            error!("Failed to fetch case data list: {:?}", e);
+            error!("Failed to fetch participant list: {:?}", e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
-                Json("Failed to fetch case data list"),
+                Json("Failed to fetch participant list"),
             )
                 .into_response()
         }

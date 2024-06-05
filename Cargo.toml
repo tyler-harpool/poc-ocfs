@@ -1,5 +1,7 @@
 [workspace]
 members = [
     "case_data_api",
+    "participants_api",
     "database_utils",
 ]
+resolver = "2" # Add this line

@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use sqlx::FromRow;
+use serde_json::Value;
 
 #[derive(Serialize, Deserialize, FromRow, Clone, Debug)]
-pub struct CaseData {
+pub struct Participant {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub id: Option<i32>, // Use i32 instead of i64
     pub civ: Option<String>,
@@ -23,7 +23,7 @@ pub struct CaseData {
 }
 
 #[derive(Serialize, Deserialize, FromRow, Debug)]
-pub struct UpdateCaseData {
+pub struct UpdateParticipantData {
     pub civ: Option<String>,
     pub fam: Option<String>,
     pub prob: Option<String>,

@@ -1,14 +1,14 @@
-name: Attorney Advocate API CI Pipeline
+name: Case Data API CI Pipeline
 
 on:
   pull_request:
     paths:
-      - .github/workflows/attorney_advocate_api.yml
-      - attorney_advocate_api/**
+      - .github/workflows/case_data_api.yml
+      - case_data_api/**
   push:
     paths:
-      - .github/workflows/attorney_advocate_api.yml
-      - attorney_advocate_api/**
+      - .github/workflows/case_data_api.yml
+      - case_data_api/**
     branches:
       - main
 env:
@@ -77,10 +77,10 @@ jobs:
         run: sqlx migrate run --source database_utils/migrations
 
       - name: Build
-        run: cargo build --release --manifest-path attorney_advocate_api/Cargo.toml
+        run: cargo build --release --manifest-path case_data_api/Cargo.toml
 
       - name: Run tests
-        run: cargo test --manifest-path attorney_advocate_api/Cargo.toml -- --test-threads=1
+        run: cargo test --manifest-path case_data_api/Cargo.toml -- --test-threads=1
 
   docker-build-and-push:
     needs: build-and-test
@@ -117,7 +117,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./attorney_advocate_api
+          context: ./case_data_api
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

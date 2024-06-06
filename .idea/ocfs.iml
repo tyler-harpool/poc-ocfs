@@ -10,6 +10,8 @@
       <sourceFolder url="file://$MODULE_DIR$/database_utils/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/participants_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/participants_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/adr_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/adr_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/attorney_advocate_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/attorney_advocate_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/charges_api/src" isTestSource="false" />
@@ -41,6 +43,7 @@
       <excludeFolder url="file://$MODULE_DIR$/case_data_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/participants_api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/adr_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/attorney_advocate_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/charges_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/civil_judgments_api/target" />

@@ -23,9 +23,9 @@ pub async fn create_attorney_advocate(
 ) -> impl IntoResponse {
     let query = r#"
         INSERT INTO attorneyAdvocate (
-            civ, fam, prob, dep, juv, crim, traf, dataElement,
-            definition, values, currentlyCollected, ifNoIsThisNeeded,
-            ifYesWhere, comments
+            civ, fam, prob, dep, juv, crim, traf, data_element,
+            definition, values, currently_collected, if_no_is_this_needed,
+            if_yes_where, comments
         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
         RETURNING id
     "#;
@@ -98,12 +98,12 @@ pub async fn update_attorney_advocate(
             juv = COALESCE($5, juv),
             crim = COALESCE($6, crim),
             traf = COALESCE($7, traf),
-            dataElement = COALESCE($8, dataElement),
+            data_element = COALESCE($8, data_element),
             definition = COALESCE($9, definition),
             values = COALESCE($10, values),
-            currentlyCollected = COALESCE($11, currentlyCollected),
-            ifNoIsThisNeeded = COALESCE($12, ifNoIsThisNeeded),
-            ifYesWhere = COALESCE($13, ifYesWhere),
+            currently_collected = COALESCE($11, currently_collected),
+            if_no_is_this_needed = COALESCE($12, if_no_is_this_needed),
+            if_yes_where = COALESCE($13, if_yes_where),
             comments = COALESCE($14, comments)
         WHERE id = $15
     "#;

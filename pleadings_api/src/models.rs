@@ -11,15 +11,11 @@ pub struct Pleading {
     pub juv: String,
     pub crim: String,
     pub traf: String,
-    #[sqlx(rename = "dataelement")]
     pub data_element: String,
     pub definition: String,
     pub values: serde_json::Value,
-    #[sqlx(rename = "currentlycollected")]
     pub currently_collected: String,
-    #[sqlx(rename = "ifnoisthisneeded")]
     pub if_no_is_this_needed: String,
-    #[sqlx(rename = "ifyeswhere")]
     pub if_yes_where: String,
     pub comments: String,
 }
@@ -33,15 +29,11 @@ pub struct UpdatePleading {
     pub juv: Option<String>,
     pub crim: Option<String>,
     pub traf: Option<String>,
-    #[serde(rename = "dataelement")]
     pub data_element: Option<String>,
     pub definition: Option<String>,
     pub values: Option<serde_json::Value>,
-    #[serde(rename = "currentlycollected")]
     pub currently_collected: Option<String>,
-    #[serde(rename = "ifnoisthisneeded")]
     pub if_no_is_this_needed: Option<String>,
-    #[serde(rename = "ifyeswhere")]
     pub if_yes_where: Option<String>,
     pub comments: Option<String>,
 }

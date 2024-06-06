@@ -2,7 +2,7 @@ use axum::http::HeaderMap;
 use common::utils::log_request;
 use lazy_static::lazy_static;
 use std::sync::Mutex;
-use tracing_subscriber::{fmt, EnvFilter};
+use tracing_subscriber::EnvFilter;
 
 lazy_static! {
     static ref LOGS: Mutex<Vec<String>> = Mutex::new(vec![]);

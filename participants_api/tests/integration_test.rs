@@ -176,11 +176,21 @@ async fn test_create_get_update_delete_participant() {
         .await
         .unwrap();
     let get_status = get_response.status();
-    let get_body = get_response.text().await.unwrap();
-    debug!(
-        "Get after Delete Response Status: {}, Body: {}",
-        get_status, get_body
-    );
-
+    if get_status == 404 {
+        info!(
+            "Participant with ID: {} was successfully deleted",
+            participant_id
+        );
+    } else {
+        let get_body = get_response.text().await.unwrap();
+        debug!(
+            "Get after Delete Response Status: {}, Body: {}",
+            get_status, get_body
+        );
+        panic!(
+            "Failed to delete participant. Status: {}, Body: {}",
+            get_status, get_body
+        );
+    }
     assert_eq!(get_status, 404);
 }

@@ -23,9 +23,9 @@ pub async fn create_pleading(
 ) -> impl IntoResponse {
     let query = r#"
         INSERT INTO pleadings (
-            civ, fam, prob, dep, juv, crim, traf, dataElement,
-            definition, values, currentlyCollected, ifNoIsThisNeeded,
-            ifYesWhere, comments
+            civ, fam, prob, dep, juv, crim, traf, data_element,
+            definition, values, currently_collected, if_no_is_this_needed,
+            if_yes_where, comments
         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
         RETURNING id
     "#;
@@ -50,33 +50,28 @@ pub async fn create_pleading(
 
     match result {
         Ok(record) => {
-            let id: Option<i32> = record.try_get("id").ok();
-            if let Some(id) = id {
-                log_request(&headers, Some(id), "Pleading created");
+            let id: i32 = record.get("id");
+            log_request(&headers, Some(id), "Pleading created");
 
-                let response_data = Pleading {
-                    id: Some(id),
-                    civ: input.civ.clone(),
-                    fam: input.fam.clone(),
-                    prob: input.prob.clone(),
-                    dep: input.dep.clone(),
-                    juv: input.juv.clone(),
-                    crim: input.crim.clone(),
-                    traf: input.traf.clone(),
-                    data_element: input.data_element.clone(),
-                    definition: input.definition.clone(),
-                    values: input.values.clone(),
-                    currently_collected: input.currently_collected.clone(),
-                    if_no_is_this_needed: input.if_no_is_this_needed.clone(),
-                    if_yes_where: input.if_yes_where.clone(),
-                    comments: input.comments.clone(),
-                };
+            let response_data = Pleading {
+                id: Some(id),
+                civ: input.civ.clone(),
+                fam: input.fam.clone(),
+                prob: input.prob.clone(),
+                dep: input.dep.clone(),
+                juv: input.juv.clone(),
+                crim: input.crim.clone(),
+                traf: input.traf.clone(),
+                data_element: input.data_element.clone(),
+                definition: input.definition.clone(),
+                values: input.values.clone(),
+                currently_collected: input.currently_collected.clone(),
+                if_no_is_this_needed: input.if_no_is_this_needed.clone(),
+                if_yes_where: input.if_yes_where.clone(),
+                comments: input.comments.clone(),
+            };
 
-                (StatusCode::CREATED, Json(response_data)).into_response()
-            } else {
-                error!("Failed to retrieve the id of the created pleading.");
-                StatusCode::INTERNAL_SERVER_ERROR.into_response()
-            }
+            (StatusCode::CREATED, Json(response_data)).into_response()
         }
         Err(e) => {
             error!("Failed to create pleading: {:?}", e);
@@ -103,12 +98,12 @@ pub async fn update_pleading(
             juv = COALESCE($5, juv),
             crim = COALESCE($6, crim),
             traf = COALESCE($7, traf),
-            dataElement = COALESCE($8, dataElement),
+            data_element = COALESCE($8, data_element),
             definition = COALESCE($9, definition),
             values = COALESCE($10, values),
-            currentlyCollected = COALESCE($11, currentlyCollected),
-            ifNoIsThisNeeded = COALESCE($12, ifNoIsThisNeeded),
-            ifYesWhere = COALESCE($13, ifYesWhere),
+            currently_collected = COALESCE($11, currently_collected),
+            if_no_is_this_needed = COALESCE($12, if_no_is_this_needed),
+            if_yes_where = COALESCE($13, if_yes_where),
             comments = COALESCE($14, comments)
         WHERE id = $15
     "#;
@@ -177,11 +172,7 @@ pub async fn delete_pleading(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(
-        &HeaderMap::new(),
-        Some(id),
-        "Attempting to delete pleading",
-    );
+    log_request(&HeaderMap::new(), Some(id), "Attempting to delete pleading");
 
     let query = "DELETE FROM pleadings WHERE id = $1";
 

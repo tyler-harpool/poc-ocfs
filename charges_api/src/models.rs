@@ -16,9 +16,8 @@ pub struct Charge {
     pub values: Option<serde_json::Value>, // Allow NULL values
     pub currently_collected: Option<String>, // Allow NULL values
     pub if_no_is_this_needed: Option<String>, // Allow NULL values
-    pub if_yes_where: Option<String>, // Allow NULL values
-    pub comments: Option<String>, // Allow NULL values
-
+    pub if_yes_where: Option<String>,      // Allow NULL values
+    pub comments: Option<String>,          // Allow NULL values
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -35,7 +34,6 @@ pub struct UpdateCharge {
     pub values: Option<serde_json::Value>, // Allow NULL values
     pub currently_collected: Option<String>, // Allow NULL values
     pub if_no_is_this_needed: Option<String>, // Allow NULL values
-    pub if_yes_where: Option<String>, // Allow NULL values
-    pub comments: Option<String>, // Allow NULL values
-
+    pub if_yes_where: Option<String>,      // Allow NULL values
+    pub comments: Option<String>,          // Allow NULL values
 }

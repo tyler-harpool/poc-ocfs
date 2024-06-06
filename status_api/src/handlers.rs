@@ -211,8 +211,6 @@ pub async fn delete_status(
     }
 }
 
-
-
 pub async fn list_all_statuses(
     _headers: HeaderMap, // Prefix with an underscore if not used
     Extension(pool): Extension<PgPool>,
@@ -222,7 +220,11 @@ pub async fn list_all_statuses(
     match sqlx::query_as::<_, Status>(query).fetch_all(&pool).await {
         Ok(status_list) => {
             let total_records = status_list.len();
-            log_request(&_headers, Some(total_records.try_into().unwrap()), "Listing all statuses");
+            log_request(
+                &_headers,
+                Some(total_records.try_into().unwrap()),
+                "Listing all statuses",
+            );
 
             (StatusCode::OK, Json(status_list)).into_response()
         }

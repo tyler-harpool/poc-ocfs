@@ -1,29 +1,20 @@
-# Use the official Rust image as a base image
-FROM rust:latest as builder
+FROM lukemathwalker/cargo-chef:latest-rust-1 AS chef
+WORKDIR /app
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
+FROM chef AS planner
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
 
-# Copy the Cargo.toml and Cargo.lock files
-COPY Cargo.toml Cargo.lock ./
+FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+# Build dependencies - this is the caching Docker layer!
+RUN cargo chef cook --release --recipe-path recipe.json
+# Build application
+COPY . .
+RUN cargo build --release --bin adr_api
 
-# Copy the source code
-COPY src ./src
-
-# Build the application in release mode
-RUN cargo build --release
-
-# Create a new stage with a smaller base image
-FROM debian:buster-slim
-
-# Set the working directory inside the container
-WORKDIR /usr/src/app
-
-# Copy the compiled binary from the builder stage
-COPY --from=builder /usr/src/app/target/release/adr_api ./
-
-# Set the entrypoint to the binary
-ENTRYPOINT ["./adr_api"]
-
-# Expose the port that the application will run on
-EXPOSE 3000
+# We do not need the Rust toolchain to run the binary!
+FROM debian:bookworm-slim AS runtime
+WORKDIR /app
+COPY --from=builder /app/target/release/adr_api /usr/local/bin
+ENTRYPOINT ["/usr/local/bin/adr_api"]

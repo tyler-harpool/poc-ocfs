@@ -1,37 +1,29 @@
-# Stage 1: Build the application
+# Use the official Rust image as a base image
 FROM rust:latest as builder
 
-# Create a new empty shell project
-RUN USER=root cargo new --bin adr_api
-WORKDIR /adr_api
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
-# Copy the manifests
+# Copy the Cargo.toml and Cargo.lock files
 COPY Cargo.toml Cargo.lock ./
 
-# This build step will cache your dependencies
-RUN cargo build --release
-RUN rm src/*.rs
+# Copy the source code
+COPY src ./src
 
-# Copy source tree
-COPY . .
-
-# Build for release
+# Build the application in release mode
 RUN cargo build --release
 
-# Stage 2: Create the runtime image
+# Create a new stage with a smaller base image
 FROM debian:buster-slim
 
-# Install necessary runtime dependencies
-RUN apt-get update && apt-get install -y \
-    libssl-dev \
-    ca-certificates \
- && rm -rf /var/lib/apt/lists/*
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
-# Copy the build artifact from the builder stage
-COPY --from=builder /adr_api/target/release/adr_api /usr/local/bin/adr_api
+# Copy the compiled binary from the builder stage
+COPY --from=builder /usr/src/app/target/release/adr_api ./
 
-# Expose the application port
-EXPOSE 8080
+# Set the entrypoint to the binary
+ENTRYPOINT ["./adr_api"]
 
-# Run the application
-CMD ["adr_api"]
+# Expose the port that the application will run on
+EXPOSE 3000

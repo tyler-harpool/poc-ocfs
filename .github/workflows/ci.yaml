@@ -34,17 +34,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install GitVersion
-        run: dotnet tool install --global GitVersion.Tool --version 5.*
-        env:
-          DOTNET_ROOT: /usr/share/dotnet
-          PATH: /usr/share/dotnet:$PATH
-
-      - name: Set up GitVersion
-        run: gitversion /output json /config gitversion.yaml
-        env:
-          DOTNET_ROOT: /usr/share/dotnet
-          PATH: /usr/share/dotnet:$PATH
+      - name: Use the version
+        run: |
+          echo ${{ steps.version.outputs.version }}
+      - name: Use the previous version
+        run: |
+          echo ${{ steps.version.outputs.previous-version }}
 
       - name: Set up Rust
         uses: actions-rs/toolchain@v1

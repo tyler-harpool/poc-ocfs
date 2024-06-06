@@ -97,7 +97,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            name/app
+            ghcr.io/tyler-harpool/poc-ocfs/case_data_api
           tags: |
             type=ref,event=branch
             type=ref,event=pr

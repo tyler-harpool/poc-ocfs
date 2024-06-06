@@ -16,6 +16,8 @@
       <sourceFolder url="file://$MODULE_DIR$/hearings_events_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/motions_filings_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/motions_filings_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/orders_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/orders_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/pleadings_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/pleadings_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/status_api/src" isTestSource="false" />
@@ -26,6 +28,7 @@
       <excludeFolder url="file://$MODULE_DIR$/attorney_advocate_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/hearings_events_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/motions_filings_api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/orders_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/pleadings_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/status_api/target" />
     </content>

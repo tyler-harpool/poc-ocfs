@@ -97,10 +97,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install GitVersion
-        run: dotnet tool install --global GitVersion.Tool --version 5.*
-        env:
-          DOTNET_ROOT: /usr/share/dotnet
-          PATH: /usr/share/dotnet:$PATH
+        uses: gittools/actions/gitversion/setup@v1.1.1
+        with:
+          versionSpec: '5.x'
 
       - name: Set up GitVersion
         run: gitversion /output json /config gitversion.yaml

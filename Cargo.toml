@@ -4,6 +4,10 @@ members = [
     "participants_api",
     "attorney_advocate_api",
     "pleadings_api",
+    "status_api",
+    "motions_filings_api",
+    "hearings_events_api",
+    "orders_api",
    # utils
     "database_utils",
     "common"

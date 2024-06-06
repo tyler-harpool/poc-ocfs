@@ -1,7 +1,7 @@
+use charges_api::{create_app, setup_logging}; // Correctly reference the charges_api crate
 use database_utils::{establish_connection, run_migrations};
 use dotenv::dotenv;
 use log::{debug, info};
-use charges_api::{create_app, setup_logging}; // Correctly reference the charges_api crate
 use reqwest::Client;
 use serde_json::json;
 use std::net::SocketAddr;
@@ -132,10 +132,7 @@ async fn test_create_get_update_delete_charge() {
     info!("Updated Charge with ID: {}", charge_id);
 
     // Step 4: Verify Update
-    info!(
-        "Step 4: Verifying Update for Charge with ID: {}",
-        charge_id
-    );
+    info!("Step 4: Verifying Update for Charge with ID: {}", charge_id);
     let get_response = client
         .get(&format!("{}/charges/{}", base_url, charge_id))
         .header("X-Test-Client", "IntegrationTest")

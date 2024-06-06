@@ -92,7 +92,10 @@ async fn test_create_get_update_delete_motion_filing() {
     // Step 2: Get Motion Filing
     info!("Step 2: Getting Motion Filing");
     let get_response = client
-        .get(&format!("{}/motions_filings/{}", base_url, motion_filing_id))
+        .get(&format!(
+            "{}/motions_filings/{}",
+            base_url, motion_filing_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -104,9 +107,15 @@ async fn test_create_get_update_delete_motion_filing() {
     debug!("Get Response Body: {}", get_body);
 
     // Step 3: Update Motion Filing
-    info!("Step 3: Updating Motion Filing with ID: {}", motion_filing_id);
+    info!(
+        "Step 3: Updating Motion Filing with ID: {}",
+        motion_filing_id
+    );
     let update_response = client
-        .patch(&format!("{}/motions_filings/{}", base_url, motion_filing_id))
+        .patch(&format!(
+            "{}/motions_filings/{}",
+            base_url, motion_filing_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .json(&json!({
             "civ": "Updated Civil data",
@@ -137,7 +146,10 @@ async fn test_create_get_update_delete_motion_filing() {
         motion_filing_id
     );
     let get_response = client
-        .get(&format!("{}/motions_filings/{}", base_url, motion_filing_id))
+        .get(&format!(
+            "{}/motions_filings/{}",
+            base_url, motion_filing_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -149,9 +161,15 @@ async fn test_create_get_update_delete_motion_filing() {
     debug!("Get After Update Response Body: {}", get_body);
 
     // Step 5: Delete Motion Filing
-    info!("Step 5: Deleting Motion Filing with ID: {}", motion_filing_id);
+    info!(
+        "Step 5: Deleting Motion Filing with ID: {}",
+        motion_filing_id
+    );
     let delete_response = client
-        .delete(&format!("{}/motions_filings/{}", base_url, motion_filing_id))
+        .delete(&format!(
+            "{}/motions_filings/{}",
+            base_url, motion_filing_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -170,7 +188,10 @@ async fn test_create_get_update_delete_motion_filing() {
         motion_filing_id
     );
     let get_response = client
-        .get(&format!("{}/motions_filings/{}", base_url, motion_filing_id))
+        .get(&format!(
+            "{}/motions_filings/{}",
+            base_url, motion_filing_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await

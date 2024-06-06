@@ -137,10 +137,7 @@ pub async fn update_pretrial_intake(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to update pretrial intake with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to update pretrial intake with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to update pretrial intake",
@@ -210,10 +207,7 @@ pub async fn delete_pretrial_intake(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to delete pretrial intake with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to delete pretrial intake with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
@@ -237,9 +231,7 @@ pub async fn list_all_pretrial_intakes(
         .fetch_all(&pool)
         .await
     {
-        Ok(pretrial_intake_list) => {
-            (StatusCode::OK, Json(pretrial_intake_list)).into_response()
-        }
+        Ok(pretrial_intake_list) => (StatusCode::OK, Json(pretrial_intake_list)).into_response(),
         Err(e) => {
             error!("Failed to fetch pretrial intake list: {:?}", e);
             (

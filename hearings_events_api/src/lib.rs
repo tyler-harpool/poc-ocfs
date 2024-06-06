@@ -26,8 +26,14 @@ pub fn create_app(pool: PgPool) -> Router {
         .route("/hearings_events", get(handlers::list_all_hearings_events))
         .route("/hearings_events/:id", get(handlers::get_hearing_event))
         .route("/hearings_events", post(handlers::create_hearing_event))
-        .route("/hearings_events/:id", patch(handlers::update_hearing_event))
-        .route("/hearings_events/:id", delete(handlers::delete_hearing_event))
+        .route(
+            "/hearings_events/:id",
+            patch(handlers::update_hearing_event),
+        )
+        .route(
+            "/hearings_events/:id",
+            delete(handlers::delete_hearing_event),
+        )
         .layer(ServiceBuilder::new().layer(Extension(pool)).into_inner())
 }
 

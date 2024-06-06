@@ -1,7 +1,7 @@
 use database_utils::{establish_connection, run_migrations};
+use diversion_api::{create_app, setup_logging};
 use dotenv::dotenv;
 use log::{debug, info};
-use diversion_api::{create_app, setup_logging};
 use reqwest::Client;
 use serde_json::json;
 use std::net::SocketAddr;

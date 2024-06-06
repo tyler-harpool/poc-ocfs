@@ -1,7 +1,7 @@
 use database_utils::{establish_connection, run_migrations};
 use dotenv::dotenv;
-use log::{debug, info};
 use hearings_events_api::{create_app, setup_logging}; // Correctly reference the hearings_events_api crate
+use log::{debug, info};
 use reqwest::Client;
 use serde_json::json;
 use std::net::SocketAddr;
@@ -92,7 +92,10 @@ async fn test_create_get_update_delete_hearing_event() {
     // Step 2: Get Hearing Event
     info!("Step 2: Getting Hearing Event");
     let get_response = client
-        .get(&format!("{}/hearings_events/{}", base_url, hearing_event_id))
+        .get(&format!(
+            "{}/hearings_events/{}",
+            base_url, hearing_event_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -104,9 +107,15 @@ async fn test_create_get_update_delete_hearing_event() {
     debug!("Get Response Body: {}", get_body);
 
     // Step 3: Update Hearing Event
-    info!("Step 3: Updating Hearing Event with ID: {}", hearing_event_id);
+    info!(
+        "Step 3: Updating Hearing Event with ID: {}",
+        hearing_event_id
+    );
     let update_response = client
-        .patch(&format!("{}/hearings_events/{}", base_url, hearing_event_id))
+        .patch(&format!(
+            "{}/hearings_events/{}",
+            base_url, hearing_event_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .json(&json!({
             "civ": "Updated Civil data",
@@ -137,7 +146,10 @@ async fn test_create_get_update_delete_hearing_event() {
         hearing_event_id
     );
     let get_response = client
-        .get(&format!("{}/hearings_events/{}", base_url, hearing_event_id))
+        .get(&format!(
+            "{}/hearings_events/{}",
+            base_url, hearing_event_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -149,9 +161,15 @@ async fn test_create_get_update_delete_hearing_event() {
     debug!("Get After Update Response Body: {}", get_body);
 
     // Step 5: Delete Hearing Event
-    info!("Step 5: Deleting Hearing Event with ID: {}", hearing_event_id);
+    info!(
+        "Step 5: Deleting Hearing Event with ID: {}",
+        hearing_event_id
+    );
     let delete_response = client
-        .delete(&format!("{}/hearings_events/{}", base_url, hearing_event_id))
+        .delete(&format!(
+            "{}/hearings_events/{}",
+            base_url, hearing_event_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -170,7 +188,10 @@ async fn test_create_get_update_delete_hearing_event() {
         hearing_event_id
     );
     let get_response = client
-        .get(&format!("{}/hearings_events/{}", base_url, hearing_event_id))
+        .get(&format!(
+            "{}/hearings_events/{}",
+            base_url, hearing_event_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await

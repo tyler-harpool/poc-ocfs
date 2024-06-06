@@ -26,8 +26,14 @@ pub fn create_app(pool: PgPool) -> Router {
         .route("/pretrial_intake", get(handlers::list_all_pretrial_intakes))
         .route("/pretrial_intake/:id", get(handlers::get_pretrial_intake))
         .route("/pretrial_intake", post(handlers::create_pretrial_intake))
-        .route("/pretrial_intake/:id", patch(handlers::update_pretrial_intake))
-        .route("/pretrial_intake/:id", delete(handlers::delete_pretrial_intake))
+        .route(
+            "/pretrial_intake/:id",
+            patch(handlers::update_pretrial_intake),
+        )
+        .route(
+            "/pretrial_intake/:id",
+            delete(handlers::delete_pretrial_intake),
+        )
         .layer(ServiceBuilder::new().layer(Extension(pool)).into_inner())
 }
 

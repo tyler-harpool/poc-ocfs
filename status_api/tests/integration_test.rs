@@ -1,9 +1,9 @@
 use database_utils::{establish_connection, run_migrations};
 use dotenv::dotenv;
 use log::{debug, info};
-use status_api::{create_app, setup_logging};
 use reqwest::Client;
 use serde_json::json;
+use status_api::{create_app, setup_logging};
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
 use tokio::time::{sleep, Duration};
@@ -132,10 +132,7 @@ async fn test_create_get_update_delete_status() {
     info!("Updated Status with ID: {}", status_id);
 
     // Step 4: Verify Update
-    info!(
-        "Step 4: Verifying Update for Status with ID: {}",
-        status_id
-    );
+    info!("Step 4: Verifying Update for Status with ID: {}", status_id);
     let get_response = client
         .get(&format!("{}/status/{}", base_url, status_id))
         .header("X-Test-Client", "IntegrationTest")

@@ -137,10 +137,7 @@ pub async fn update_post_trial(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to update post trial with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to update post trial with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to update post trial",
@@ -210,10 +207,7 @@ pub async fn delete_post_trial(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to delete post trial with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to delete post trial with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
@@ -233,13 +227,8 @@ pub async fn list_all_post_trials(
 
     let query = "SELECT * FROM postTrial";
 
-    match sqlx::query_as::<_, PostTrial>(query)
-        .fetch_all(&pool)
-        .await
-    {
-        Ok(post_trial_list) => {
-            (StatusCode::OK, Json(post_trial_list)).into_response()
-        }
+    match sqlx::query_as::<_, PostTrial>(query).fetch_all(&pool).await {
+        Ok(post_trial_list) => (StatusCode::OK, Json(post_trial_list)).into_response(),
         Err(e) => {
             error!("Failed to fetch post trial list: {:?}", e);
             (

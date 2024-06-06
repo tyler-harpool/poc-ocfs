@@ -26,8 +26,14 @@ pub fn create_app(pool: PgPool) -> Router {
         .route("/civil_judgments", get(handlers::list_all_civil_judgments))
         .route("/civil_judgments/:id", get(handlers::get_civil_judgment))
         .route("/civil_judgments", post(handlers::create_civil_judgment))
-        .route("/civil_judgments/:id", patch(handlers::update_civil_judgment))
-        .route("/civil_judgments/:id", delete(handlers::delete_civil_judgment))
+        .route(
+            "/civil_judgments/:id",
+            patch(handlers::update_civil_judgment),
+        )
+        .route(
+            "/civil_judgments/:id",
+            delete(handlers::delete_civil_judgment),
+        )
         .layer(ServiceBuilder::new().layer(Extension(pool)).into_inner())
 }
 

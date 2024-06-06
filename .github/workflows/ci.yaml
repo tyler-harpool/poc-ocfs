@@ -1,72 +1,153 @@
-name: Rust Monorepo CI
+name: CI Pipeline
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        project:
-          - adr_api
-          - attorney_advocate_api
-          - case_data_api
-          - charges_api
-          - civil_judgments_api
-          - dependency_permanency_api
-          - diversion_api
-          - hearings_events_api
-          - motions_filings_api
-          - orders_api
-          - participants_api
-          - pleadings_api
-          - post_trial_api
-          - pretrial_intake_api
-          - probate_api
-          - sanctions_api
-          - status_api
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: app_user
+          POSTGRES_PASSWORD: dev_only_pwd
+          POSTGRES_DB: app_db
+        options: >-
+          --health-cmd "pg_isready -U postgres -d test_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgres://app_user:dev_only_pwd@localhost:5432/app_db
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Rust
+      - name: Set up GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.x'
+
+      - name: Use GitVersion
+        id: gitversion
+        run: gitversion /output json /config gitversion.yaml
+
+      - name: Set up Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: x86_64-unknown-linux-gnu
+          profile: minimal
+          override: true
 
       - name: Cache cargo registry
         uses: actions/cache@v2
         with:
           path: ~/.cargo/registry
-          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-registry
           restore-keys: |
-            ${{ runner.os }}-cargo-registry-
+            ${{ runner.os }}-cargo-registry
 
       - name: Cache cargo index
         uses: actions/cache@v2
         with:
-          path: ~/.cargo/git
-          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+          path: ~/.cargo/index
+          key: ${{ runner.os }}-cargo-index
           restore-keys: |
-            ${{ runner.os }}-cargo-index-
+            ${{ runner.os }}-cargo-index
 
-      - name: Cache build
+      - name: Cache cargo build
         uses: actions/cache@v2
         with:
           path: target
-          key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-build
           restore-keys: |
-            ${{ runner.os }}-cargo-build-
+            ${{ runner.os }}-cargo-build
 
-      - name: Build and Test
+      - name: Install SQLx CLI
+        run: cargo install sqlx-cli
+
+      - name: Run database migrations
+        run: sqlx migrate run --source database_utils/migrations
+
+      - name: Build
+        run: cargo build --release
+
+      - name: Run tests
+        run: cargo test -- --test-threads=1
+
+  docker-build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.x'
+
+      - name: Use GitVersion
+        id: gitversion
+        run: gitversion /output json /config gitversion.yaml
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker images
         run: |
-          cd ${{ matrix.project }}
-          cargo build --release
-          cargo test --release
+          VERSION=$(jq -r '.FullSemVer' <<<"${{ steps.gitversion.outputs.json }}")
+          
+          docker build -t ghcr.io/${{ github.repository }}/adr_api:$VERSION ./adr_api
+          docker build -t ghcr.io/${{ github.repository }}/attorney_advocate_api:$VERSION ./attorney_advocate_api
+          docker build -t ghcr.io/${{ github.repository }}/case_data_api:$VERSION ./case_data_api
+          docker build -t ghcr.io/${{ github.repository }}/charges_api:$VERSION ./charges_api
+          docker build -t ghcr.io/${{ github.repository }}/civil_judgments_api:$VERSION ./civil_judgments_api
+          docker build -t ghcr.io/${{ github.repository }}/dependency_permanency_api:$VERSION ./dependency_permanency_api
+          docker build -t ghcr.io/${{ github.repository }}/diversion_api:$VERSION ./diversion_api
+          docker build -t ghcr.io/${{ github.repository }}/hearings_events_api:$VERSION ./hearings_events_api
+          docker build -t ghcr.io/${{ github.repository }}/motions_filings_api:$VERSION ./motions_filings_api
+          docker build -t ghcr.io/${{ github.repository }}/orders_api:$VERSION ./orders_api
+          docker build -t ghcr.io/${{ github.repository }}/participants_api:$VERSION ./participants_api
+          docker build -t ghcr.io/${{ github.repository }}/pleadings_api:$VERSION ./pleadings_api
+          docker build -t ghcr.io/${{ github.repository }}/post_trial_api:$VERSION ./post_trial_api
+          docker build -t ghcr.io/${{ github.repository }}/pretrial_intake_api:$VERSION ./pretrial_intake_api
+          docker build -t ghcr.io/${{ github.repository }}/probate_api:$VERSION ./probate_api
+          docker build -t ghcr.io/${{ github.repository }}/sanctions_api:$VERSION ./sanctions_api
+          docker build -t ghcr.io/${{ github.repository }}/status_api:$VERSION ./status_api
+          
+          docker push ghcr.io/${{ github.repository }}/adr_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/attorney_advocate_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/case_data_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/charges_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/civil_judgments_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/dependency_permanency_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/diversion_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/hearings_events_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/motions_filings_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/orders_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/participants_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/pleadings_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/post_trial_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/pretrial_intake_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/probate_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/sanctions_api:$VERSION
+          docker push ghcr.io/${{ github.repository }}/status_api:$VERSION

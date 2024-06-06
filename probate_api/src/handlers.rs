@@ -132,8 +132,15 @@ pub async fn update_probate_review_monitor(
                 error!("No probate review monitor found with ID: {}", id);
                 (StatusCode::NOT_FOUND, "No probate review monitor found").into_response()
             } else {
-                info!("Successfully updated probate review monitor with ID: {}", id);
-                (StatusCode::OK, "Probate review monitor updated successfully").into_response()
+                info!(
+                    "Successfully updated probate review monitor with ID: {}",
+                    id
+                );
+                (
+                    StatusCode::OK,
+                    "Probate review monitor updated successfully",
+                )
+                    .into_response()
             }
         }
         Err(e) => {
@@ -154,7 +161,11 @@ pub async fn get_probate_review_monitor(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(&HeaderMap::new(), Some(id), "Fetching probate review monitor");
+    log_request(
+        &HeaderMap::new(),
+        Some(id),
+        "Fetching probate review monitor",
+    );
 
     let query = "SELECT * FROM probateReviewMonitor WHERE id = $1";
 
@@ -163,10 +174,19 @@ pub async fn get_probate_review_monitor(
         .fetch_one(&pool)
         .await
     {
-        Ok(probete_review_monitor) => (StatusCode::OK, Json(probete_review_monitor)).into_response(),
+        Ok(probete_review_monitor) => {
+            (StatusCode::OK, Json(probete_review_monitor)).into_response()
+        }
         Err(e) => {
-            error!("Failed to fetch probate review monitor for id {}: {:?}", id, e);
-            (StatusCode::NOT_FOUND, Json("Probate review monitor not found")).into_response()
+            error!(
+                "Failed to fetch probate review monitor for id {}: {:?}",
+                id, e
+            );
+            (
+                StatusCode::NOT_FOUND,
+                Json("Probate review monitor not found"),
+            )
+                .into_response()
         }
     }
 }
@@ -203,7 +223,10 @@ pub async fn delete_probate_review_monitor(
                 (
                     StatusCode::NO_CONTENT,
                     Json(DeleteResponse {
-                        message: format!("Successfully deleted probate review monitor with ID: {}", id),
+                        message: format!(
+                            "Successfully deleted probate review monitor with ID: {}",
+                            id
+                        ),
                     }),
                 )
                     .into_response()

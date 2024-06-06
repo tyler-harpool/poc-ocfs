@@ -26,8 +26,14 @@ pub fn create_app(pool: PgPool) -> Router {
         .route("/motions_filings", get(handlers::list_all_motions_filings))
         .route("/motions_filings/:id", get(handlers::get_motion_filing))
         .route("/motions_filings", post(handlers::create_motion_filing))
-        .route("/motions_filings/:id", patch(handlers::update_motion_filing))
-        .route("/motions_filings/:id", delete(handlers::delete_motion_filing))
+        .route(
+            "/motions_filings/:id",
+            patch(handlers::update_motion_filing),
+        )
+        .route(
+            "/motions_filings/:id",
+            delete(handlers::delete_motion_filing),
+        )
         .layer(ServiceBuilder::new().layer(Extension(pool)).into_inner())
 }
 

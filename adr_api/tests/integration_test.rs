@@ -1,7 +1,7 @@
+use adr_api::{create_app, setup_logging}; // Correctly reference the adr_api crate
 use database_utils::{establish_connection, run_migrations};
 use dotenv::dotenv;
 use log::{debug, info};
-use adr_api::{create_app, setup_logging}; // Correctly reference the adr_api crate
 use reqwest::Client;
 use serde_json::json;
 use std::net::SocketAddr;
@@ -132,10 +132,7 @@ async fn test_create_get_update_delete_adr() {
     info!("Updated ADR with ID: {}", adr_id);
 
     // Step 4: Verify Update
-    info!(
-        "Step 4: Verifying Update for ADR with ID: {}",
-        adr_id
-    );
+    info!("Step 4: Verifying Update for ADR with ID: {}", adr_id);
     let get_response = client
         .get(&format!("{}/adr/{}", base_url, adr_id))
         .header("X-Test-Client", "IntegrationTest")
@@ -165,10 +162,7 @@ async fn test_create_get_update_delete_adr() {
     info!("Deleted ADR with ID: {}", adr_id);
 
     // Step 6: Verify Deletion
-    info!(
-        "Step 6: Verifying Deletion for ADR with ID: {}",
-        adr_id
-    );
+    info!("Step 6: Verifying Deletion for ADR with ID: {}", adr_id);
     let get_response = client
         .get(&format!("{}/adr/{}", base_url, adr_id))
         .header("X-Test-Client", "IntegrationTest")

@@ -137,10 +137,7 @@ pub async fn update_hearing_event(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to update hearing event with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to update hearing event with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to update hearing event",
@@ -210,10 +207,7 @@ pub async fn delete_hearing_event(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to delete hearing event with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to delete hearing event with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
@@ -237,9 +231,7 @@ pub async fn list_all_hearings_events(
         .fetch_all(&pool)
         .await
     {
-        Ok(hearing_event_list) => {
-            (StatusCode::OK, Json(hearing_event_list)).into_response()
-        }
+        Ok(hearing_event_list) => (StatusCode::OK, Json(hearing_event_list)).into_response(),
         Err(e) => {
             error!("Failed to fetch hearing event list: {:?}", e);
             (

@@ -23,11 +23,26 @@ pub fn setup_logging() {
 pub fn create_app(pool: PgPool) -> Router {
     Router::new()
         .route("/", get(|| async { "Welcome to OCFS!" }))
-        .route("/probateReviewMonitor", get(handlers::list_all_probate_review_monitors))
-        .route("/probateReviewMonitor/:id", get(handlers::get_probate_review_monitor))
-        .route("/probateReviewMonitor", post(handlers::create_probate_review_monitor))
-        .route("/probateReviewMonitor/:id", patch(handlers::update_probate_review_monitor))
-        .route("/probateReviewMonitor/:id", delete(handlers::delete_probate_review_monitor))
+        .route(
+            "/probateReviewMonitor",
+            get(handlers::list_all_probate_review_monitors),
+        )
+        .route(
+            "/probateReviewMonitor/:id",
+            get(handlers::get_probate_review_monitor),
+        )
+        .route(
+            "/probateReviewMonitor",
+            post(handlers::create_probate_review_monitor),
+        )
+        .route(
+            "/probateReviewMonitor/:id",
+            patch(handlers::update_probate_review_monitor),
+        )
+        .route(
+            "/probateReviewMonitor/:id",
+            delete(handlers::delete_probate_review_monitor),
+        )
         .layer(ServiceBuilder::new().layer(Extension(pool)).into_inner())
 }
 

@@ -1,6 +1,6 @@
+use charges_api::{create_app, setup_logging, start_server};
 use database_utils::{establish_connection, run_migrations};
 use dotenv::dotenv;
-use charges_api::{create_app, setup_logging, start_server};
 
 #[tokio::main]
 async fn main() {

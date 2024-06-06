@@ -92,7 +92,10 @@ async fn test_create_get_update_delete_pretrial_intake() {
     // Step 2: Get Pretrial Intake
     info!("Step 2: Getting Pretrial Intake");
     let get_response = client
-        .get(&format!("{}/pretrial_intake/{}", base_url, pretrial_intake_id))
+        .get(&format!(
+            "{}/pretrial_intake/{}",
+            base_url, pretrial_intake_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -104,9 +107,15 @@ async fn test_create_get_update_delete_pretrial_intake() {
     debug!("Get Response Body: {}", get_body);
 
     // Step 3: Update Pretrial Intake
-    info!("Step 3: Updating Pretrial Intake with ID: {}", pretrial_intake_id);
+    info!(
+        "Step 3: Updating Pretrial Intake with ID: {}",
+        pretrial_intake_id
+    );
     let update_response = client
-        .patch(&format!("{}/pretrial_intake/{}", base_url, pretrial_intake_id))
+        .patch(&format!(
+            "{}/pretrial_intake/{}",
+            base_url, pretrial_intake_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .json(&json!({
             "civ": "Updated Civil data",
@@ -137,7 +146,10 @@ async fn test_create_get_update_delete_pretrial_intake() {
         pretrial_intake_id
     );
     let get_response = client
-        .get(&format!("{}/pretrial_intake/{}", base_url, pretrial_intake_id))
+        .get(&format!(
+            "{}/pretrial_intake/{}",
+            base_url, pretrial_intake_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -149,9 +161,15 @@ async fn test_create_get_update_delete_pretrial_intake() {
     debug!("Get After Update Response Body: {}", get_body);
 
     // Step 5: Delete Pretrial Intake
-    info!("Step 5: Deleting Pretrial Intake with ID: {}", pretrial_intake_id);
+    info!(
+        "Step 5: Deleting Pretrial Intake with ID: {}",
+        pretrial_intake_id
+    );
     let delete_response = client
-        .delete(&format!("{}/pretrial_intake/{}", base_url, pretrial_intake_id))
+        .delete(&format!(
+            "{}/pretrial_intake/{}",
+            base_url, pretrial_intake_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -170,7 +188,10 @@ async fn test_create_get_update_delete_pretrial_intake() {
         pretrial_intake_id
     );
     let get_response = client
-        .get(&format!("{}/pretrial_intake/{}", base_url, pretrial_intake_id))
+        .get(&format!(
+            "{}/pretrial_intake/{}",
+            base_url, pretrial_intake_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await

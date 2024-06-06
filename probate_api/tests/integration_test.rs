@@ -87,12 +87,18 @@ async fn test_create_get_update_delete_probate_review_monitor() {
         .and_then(|id| id.as_i64())
         .expect("ID missing") as i32;
 
-    info!("Created Probate Review Monitor with ID: {}", probate_review_monitor_id);
+    info!(
+        "Created Probate Review Monitor with ID: {}",
+        probate_review_monitor_id
+    );
 
     // Step 2: Get Probate Review Monitor
     info!("Step 2: Getting Probate Review Monitor");
     let get_response = client
-        .get(&format!("{}/probateReviewMonitor/{}", base_url, probate_review_monitor_id))
+        .get(&format!(
+            "{}/probateReviewMonitor/{}",
+            base_url, probate_review_monitor_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -104,9 +110,15 @@ async fn test_create_get_update_delete_probate_review_monitor() {
     debug!("Get Response Body: {}", get_body);
 
     // Step 3: Update Probate Review Monitor
-    info!("Step 3: Updating Probate Review Monitor with ID: {}", probate_review_monitor_id);
+    info!(
+        "Step 3: Updating Probate Review Monitor with ID: {}",
+        probate_review_monitor_id
+    );
     let update_response = client
-        .patch(&format!("{}/probateReviewMonitor/{}", base_url, probate_review_monitor_id))
+        .patch(&format!(
+            "{}/probateReviewMonitor/{}",
+            base_url, probate_review_monitor_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .json(&json!({
             "civ": "Updated Civil data",
@@ -129,7 +141,10 @@ async fn test_create_get_update_delete_probate_review_monitor() {
         .unwrap();
     assert_eq!(update_response.status(), 200);
 
-    info!("Updated Probate Review Monitor with ID: {}", probate_review_monitor_id);
+    info!(
+        "Updated Probate Review Monitor with ID: {}",
+        probate_review_monitor_id
+    );
 
     // Step 4: Verify Update
     info!(
@@ -137,7 +152,10 @@ async fn test_create_get_update_delete_probate_review_monitor() {
         probate_review_monitor_id
     );
     let get_response = client
-        .get(&format!("{}/probateReviewMonitor/{}", base_url, probate_review_monitor_id))
+        .get(&format!(
+            "{}/probateReviewMonitor/{}",
+            base_url, probate_review_monitor_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -149,9 +167,15 @@ async fn test_create_get_update_delete_probate_review_monitor() {
     debug!("Get After Update Response Body: {}", get_body);
 
     // Step 5: Delete Probate Review Monitor
-    info!("Step 5: Deleting Probate Review Monitor with ID: {}", probate_review_monitor_id);
+    info!(
+        "Step 5: Deleting Probate Review Monitor with ID: {}",
+        probate_review_monitor_id
+    );
     let delete_response = client
-        .delete(&format!("{}/probateReviewMonitor/{}", base_url, probate_review_monitor_id))
+        .delete(&format!(
+            "{}/probateReviewMonitor/{}",
+            base_url, probate_review_monitor_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -162,7 +186,10 @@ async fn test_create_get_update_delete_probate_review_monitor() {
             || delete_response.status() == 404
     );
 
-    info!("Deleted Probate Review Monitor with ID: {}", probate_review_monitor_id);
+    info!(
+        "Deleted Probate Review Monitor with ID: {}",
+        probate_review_monitor_id
+    );
 
     // Step 6: Verify Deletion
     info!(
@@ -170,7 +197,10 @@ async fn test_create_get_update_delete_probate_review_monitor() {
         probate_review_monitor_id
     );
     let get_response = client
-        .get(&format!("{}/probateReviewMonitor/{}", base_url, probate_review_monitor_id))
+        .get(&format!(
+            "{}/probateReviewMonitor/{}",
+            base_url, probate_review_monitor_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await

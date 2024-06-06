@@ -138,11 +138,7 @@ pub async fn update_status(
         }
         Err(e) => {
             error!("Failed to update status with ID: {}: {:?}", id, e);
-            (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                "Failed to update status",
-            )
-                .into_response()
+            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to update status").into_response()
         }
     }
 }
@@ -172,11 +168,7 @@ pub async fn delete_status(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(
-        &HeaderMap::new(),
-        Some(id),
-        "Attempting to delete status",
-    );
+    log_request(&HeaderMap::new(), Some(id), "Attempting to delete status");
 
     let query = "DELETE FROM status WHERE id = $1";
 
@@ -227,10 +219,7 @@ pub async fn list_all_statuses(
 
     let query = "SELECT * FROM status";
 
-    match sqlx::query_as::<_, Status>(query)
-        .fetch_all(&pool)
-        .await
-    {
+    match sqlx::query_as::<_, Status>(query).fetch_all(&pool).await {
         Ok(status_list) => (StatusCode::OK, Json(status_list)).into_response(),
         Err(e) => {
             error!("Failed to fetch status list: {:?}", e);

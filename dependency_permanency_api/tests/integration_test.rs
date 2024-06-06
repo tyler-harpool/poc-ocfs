@@ -1,7 +1,7 @@
 use database_utils::{establish_connection, run_migrations};
+use dependency_permanency_api::{create_app, setup_logging}; // Correctly reference the dependency_permanency_api crate
 use dotenv::dotenv;
 use log::{debug, info};
-use dependency_permanency_api::{create_app, setup_logging}; // Correctly reference the dependency_permanency_api crate
 use reqwest::Client;
 use serde_json::json;
 use std::net::SocketAddr;
@@ -87,12 +87,18 @@ async fn test_create_get_update_delete_dependency_permanency() {
         .and_then(|id| id.as_i64())
         .expect("ID missing") as i32;
 
-    info!("Created DependencyPermanency with ID: {}", dependency_permanency_id);
+    info!(
+        "Created DependencyPermanency with ID: {}",
+        dependency_permanency_id
+    );
 
     // Step 2: Get DependencyPermanency
     info!("Step 2: Getting DependencyPermanency");
     let get_response = client
-        .get(&format!("{}/dependencyPermanency/{}", base_url, dependency_permanency_id))
+        .get(&format!(
+            "{}/dependencyPermanency/{}",
+            base_url, dependency_permanency_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -104,9 +110,15 @@ async fn test_create_get_update_delete_dependency_permanency() {
     debug!("Get Response Body: {}", get_body);
 
     // Step 3: Update DependencyPermanency
-    info!("Step 3: Updating DependencyPermanency with ID: {}", dependency_permanency_id);
+    info!(
+        "Step 3: Updating DependencyPermanency with ID: {}",
+        dependency_permanency_id
+    );
     let update_response = client
-        .patch(&format!("{}/dependencyPermanency/{}", base_url, dependency_permanency_id))
+        .patch(&format!(
+            "{}/dependencyPermanency/{}",
+            base_url, dependency_permanency_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .json(&json!({
             "civ": "Updated Civil data",
@@ -129,7 +141,10 @@ async fn test_create_get_update_delete_dependency_permanency() {
         .unwrap();
     assert_eq!(update_response.status(), 200);
 
-    info!("Updated DependencyPermanency with ID: {}", dependency_permanency_id);
+    info!(
+        "Updated DependencyPermanency with ID: {}",
+        dependency_permanency_id
+    );
 
     // Step 4: Verify Update
     info!(
@@ -137,7 +152,10 @@ async fn test_create_get_update_delete_dependency_permanency() {
         dependency_permanency_id
     );
     let get_response = client
-        .get(&format!("{}/dependencyPermanency/{}", base_url, dependency_permanency_id))
+        .get(&format!(
+            "{}/dependencyPermanency/{}",
+            base_url, dependency_permanency_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -149,9 +167,15 @@ async fn test_create_get_update_delete_dependency_permanency() {
     debug!("Get After Update Response Body: {}", get_body);
 
     // Step 5: Delete DependencyPermanency
-    info!("Step 5: Deleting DependencyPermanency with ID: {}", dependency_permanency_id);
+    info!(
+        "Step 5: Deleting DependencyPermanency with ID: {}",
+        dependency_permanency_id
+    );
     let delete_response = client
-        .delete(&format!("{}/dependencyPermanency/{}", base_url, dependency_permanency_id))
+        .delete(&format!(
+            "{}/dependencyPermanency/{}",
+            base_url, dependency_permanency_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -162,7 +186,10 @@ async fn test_create_get_update_delete_dependency_permanency() {
             || delete_response.status() == 404
     );
 
-    info!("Deleted DependencyPermanency with ID: {}", dependency_permanency_id);
+    info!(
+        "Deleted DependencyPermanency with ID: {}",
+        dependency_permanency_id
+    );
 
     // Step 6: Verify Deletion
     info!(
@@ -170,7 +197,10 @@ async fn test_create_get_update_delete_dependency_permanency() {
         dependency_permanency_id
     );
     let get_response = client
-        .get(&format!("{}/dependencyPermanency/{}", base_url, dependency_permanency_id))
+        .get(&format!(
+            "{}/dependencyPermanency/{}",
+            base_url, dependency_permanency_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await

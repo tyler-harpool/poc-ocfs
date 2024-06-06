@@ -137,10 +137,7 @@ pub async fn update_diversion(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to update diversion with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to update diversion with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to update diversion",
@@ -210,10 +207,7 @@ pub async fn delete_diversion(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to delete diversion with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to delete diversion with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
@@ -233,10 +227,7 @@ pub async fn list_all_diversions(
 
     let query = "SELECT * FROM diversion";
 
-    match sqlx::query_as::<_, Diversion>(query)
-        .fetch_all(&pool)
-        .await
-    {
+    match sqlx::query_as::<_, Diversion>(query).fetch_all(&pool).await {
         Ok(diversion_list) => (StatusCode::OK, Json(diversion_list)).into_response(),
         Err(e) => {
             error!("Failed to fetch diversion list: {:?}", e);

@@ -137,7 +137,10 @@ pub async fn update_dependency_permanency(
             }
         }
         Err(e) => {
-            error!("Failed to update dependency permanency with ID: {}: {:?}", id, e);
+            error!(
+                "Failed to update dependency permanency with ID: {}: {:?}",
+                id, e
+            );
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to update dependency permanency",
@@ -151,7 +154,11 @@ pub async fn get_dependency_permanency(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(&HeaderMap::new(), Some(id), "Fetching dependency permanency");
+    log_request(
+        &HeaderMap::new(),
+        Some(id),
+        "Fetching dependency permanency",
+    );
 
     let query = "SELECT * FROM dependencyPermanency WHERE id = $1";
 
@@ -162,8 +169,15 @@ pub async fn get_dependency_permanency(
     {
         Ok(dependency_permanency) => (StatusCode::OK, Json(dependency_permanency)).into_response(),
         Err(e) => {
-            error!("Failed to fetch dependency permanency for id {}: {:?}", id, e);
-            (StatusCode::NOT_FOUND, Json("Dependency permanency not found")).into_response()
+            error!(
+                "Failed to fetch dependency permanency for id {}: {:?}",
+                id, e
+            );
+            (
+                StatusCode::NOT_FOUND,
+                Json("Dependency permanency not found"),
+            )
+                .into_response()
         }
     }
 }
@@ -200,14 +214,20 @@ pub async fn delete_dependency_permanency(
                 (
                     StatusCode::NO_CONTENT,
                     Json(DeleteResponse {
-                        message: format!("Successfully deleted dependency permanency with ID: {}", id),
+                        message: format!(
+                            "Successfully deleted dependency permanency with ID: {}",
+                            id
+                        ),
                     }),
                 )
                     .into_response()
             }
         }
         Err(e) => {
-            error!("Failed to delete dependency permanency with ID: {}: {:?}", id, e);
+            error!(
+                "Failed to delete dependency permanency with ID: {}: {:?}",
+                id, e
+            );
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
@@ -231,7 +251,9 @@ pub async fn list_all_dependency_permanencies(
         .fetch_all(&pool)
         .await
     {
-        Ok(dependency_permanency_list) => (StatusCode::OK, Json(dependency_permanency_list)).into_response(),
+        Ok(dependency_permanency_list) => {
+            (StatusCode::OK, Json(dependency_permanency_list)).into_response()
+        }
         Err(e) => {
             error!("Failed to fetch dependency permanency list: {:?}", e);
             (

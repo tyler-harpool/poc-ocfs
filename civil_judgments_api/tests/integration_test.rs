@@ -1,7 +1,7 @@
+use civil_judgments_api::{create_app, setup_logging};
 use database_utils::{establish_connection, run_migrations};
 use dotenv::dotenv;
 use log::{debug, info};
-use civil_judgments_api::{create_app, setup_logging};
 use reqwest::Client;
 use serde_json::json;
 use std::net::SocketAddr;
@@ -92,7 +92,10 @@ async fn test_create_get_update_delete_civil_judgment() {
     // Step 2: Get Civil Judgment
     info!("Step 2: Getting Civil Judgment");
     let get_response = client
-        .get(&format!("{}/civil_judgments/{}", base_url, civil_judgment_id))
+        .get(&format!(
+            "{}/civil_judgments/{}",
+            base_url, civil_judgment_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -104,9 +107,15 @@ async fn test_create_get_update_delete_civil_judgment() {
     debug!("Get Response Body: {}", get_body);
 
     // Step 3: Update Civil Judgment
-    info!("Step 3: Updating Civil Judgment with ID: {}", civil_judgment_id);
+    info!(
+        "Step 3: Updating Civil Judgment with ID: {}",
+        civil_judgment_id
+    );
     let update_response = client
-        .patch(&format!("{}/civil_judgments/{}", base_url, civil_judgment_id))
+        .patch(&format!(
+            "{}/civil_judgments/{}",
+            base_url, civil_judgment_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .json(&json!({
             "civ": "Updated Civil data",
@@ -137,7 +146,10 @@ async fn test_create_get_update_delete_civil_judgment() {
         civil_judgment_id
     );
     let get_response = client
-        .get(&format!("{}/civil_judgments/{}", base_url, civil_judgment_id))
+        .get(&format!(
+            "{}/civil_judgments/{}",
+            base_url, civil_judgment_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -149,9 +161,15 @@ async fn test_create_get_update_delete_civil_judgment() {
     debug!("Get After Update Response Body: {}", get_body);
 
     // Step 5: Delete Civil Judgment
-    info!("Step 5: Deleting Civil Judgment with ID: {}", civil_judgment_id);
+    info!(
+        "Step 5: Deleting Civil Judgment with ID: {}",
+        civil_judgment_id
+    );
     let delete_response = client
-        .delete(&format!("{}/civil_judgments/{}", base_url, civil_judgment_id))
+        .delete(&format!(
+            "{}/civil_judgments/{}",
+            base_url, civil_judgment_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await
@@ -170,7 +188,10 @@ async fn test_create_get_update_delete_civil_judgment() {
         civil_judgment_id
     );
     let get_response = client
-        .get(&format!("{}/civil_judgments/{}", base_url, civil_judgment_id))
+        .get(&format!(
+            "{}/civil_judgments/{}",
+            base_url, civil_judgment_id
+        ))
         .header("X-Test-Client", "IntegrationTest")
         .send()
         .await

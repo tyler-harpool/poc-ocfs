@@ -137,10 +137,7 @@ pub async fn update_civil_judgment(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to update civil judgment with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to update civil judgment with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to update civil judgment",
@@ -210,10 +207,7 @@ pub async fn delete_civil_judgment(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to delete civil judgment with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to delete civil judgment with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {

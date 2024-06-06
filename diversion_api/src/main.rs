@@ -1,6 +1,6 @@
 use database_utils::{establish_connection, run_migrations};
-use dotenv::dotenv;
 use diversion_api::{create_app, setup_logging, start_server};
+use dotenv::dotenv;
 
 #[tokio::main]
 async fn main() {

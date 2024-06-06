@@ -137,10 +137,7 @@ pub async fn update_motion_filing(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to update motion filing with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to update motion filing with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to update motion filing",
@@ -210,10 +207,7 @@ pub async fn delete_motion_filing(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to delete motion filing with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to delete motion filing with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
@@ -237,9 +231,7 @@ pub async fn list_all_motions_filings(
         .fetch_all(&pool)
         .await
     {
-        Ok(motion_filing_list) => {
-            (StatusCode::OK, Json(motion_filing_list)).into_response()
-        }
+        Ok(motion_filing_list) => (StatusCode::OK, Json(motion_filing_list)).into_response(),
         Err(e) => {
             error!("Failed to fetch motion filing list: {:?}", e);
             (

@@ -132,10 +132,7 @@ async fn test_create_get_update_delete_order() {
     info!("Updated Order with ID: {}", order_id);
 
     // Step 4: Verify Update
-    info!(
-        "Step 4: Verifying Update for Order with ID: {}",
-        order_id
-    );
+    info!("Step 4: Verifying Update for Order with ID: {}", order_id);
     let get_response = client
         .get(&format!("{}/orders/{}", base_url, order_id))
         .header("X-Test-Client", "IntegrationTest")
@@ -165,10 +162,7 @@ async fn test_create_get_update_delete_order() {
     info!("Deleted Order with ID: {}", order_id);
 
     // Step 6: Verify Deletion
-    info!(
-        "Step 6: Verifying Deletion for Order with ID: {}",
-        order_id
-    );
+    info!("Step 6: Verifying Deletion for Order with ID: {}", order_id);
     let get_response = client
         .get(&format!("{}/orders/{}", base_url, order_id))
         .header("X-Test-Client", "IntegrationTest")

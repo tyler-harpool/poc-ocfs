@@ -22,12 +22,30 @@ pub fn setup_logging() {
 
 pub fn create_app(pool: PgPool) -> Router {
     Router::new()
-        .route("/", get(|| async { "Welcome to Dependency Permanency API!" }))
-        .route("/dependencyPermanency", get(handlers::list_all_dependency_permanencies))
-        .route("/dependencyPermanency/:id", get(handlers::get_dependency_permanency))
-        .route("/dependencyPermanency", post(handlers::create_dependency_permanency))
-        .route("/dependencyPermanency/:id", patch(handlers::update_dependency_permanency))
-        .route("/dependencyPermanency/:id", delete(handlers::delete_dependency_permanency))
+        .route(
+            "/",
+            get(|| async { "Welcome to Dependency Permanency API!" }),
+        )
+        .route(
+            "/dependencyPermanency",
+            get(handlers::list_all_dependency_permanencies),
+        )
+        .route(
+            "/dependencyPermanency/:id",
+            get(handlers::get_dependency_permanency),
+        )
+        .route(
+            "/dependencyPermanency",
+            post(handlers::create_dependency_permanency),
+        )
+        .route(
+            "/dependencyPermanency/:id",
+            patch(handlers::update_dependency_permanency),
+        )
+        .route(
+            "/dependencyPermanency/:id",
+            delete(handlers::delete_dependency_permanency),
+        )
         .layer(ServiceBuilder::new().layer(Extension(pool)).into_inner())
 }
 

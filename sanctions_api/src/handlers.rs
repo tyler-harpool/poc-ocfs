@@ -137,10 +137,7 @@ pub async fn update_sanction(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to update sanction with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to update sanction with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to update sanction",
@@ -175,11 +172,7 @@ pub async fn delete_sanction(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(
-        &HeaderMap::new(),
-        Some(id),
-        "Attempting to delete sanction",
-    );
+    log_request(&HeaderMap::new(), Some(id), "Attempting to delete sanction");
 
     let query = "DELETE FROM sanctions WHERE id = $1";
 
@@ -210,10 +203,7 @@ pub async fn delete_sanction(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to delete sanction with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to delete sanction with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
@@ -233,10 +223,7 @@ pub async fn list_all_sanctions(
 
     let query = "SELECT * FROM sanctions";
 
-    match sqlx::query_as::<_, Sanction>(query)
-        .fetch_all(&pool)
-        .await
-    {
+    match sqlx::query_as::<_, Sanction>(query).fetch_all(&pool).await {
         Ok(sanction_list) => (StatusCode::OK, Json(sanction_list)).into_response(),
         Err(e) => {
             error!("Failed to fetch sanction list: {:?}", e);

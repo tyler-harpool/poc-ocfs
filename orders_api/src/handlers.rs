@@ -137,15 +137,8 @@ pub async fn update_order(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to update order with ID: {}: {:?}",
-                id, e
-            );
-            (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                "Failed to update order",
-            )
-                .into_response()
+            error!("Failed to update order with ID: {}: {:?}", id, e);
+            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to update order").into_response()
         }
     }
 }
@@ -175,11 +168,7 @@ pub async fn delete_order(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(
-        &HeaderMap::new(),
-        Some(id),
-        "Attempting to delete order",
-    );
+    log_request(&HeaderMap::new(), Some(id), "Attempting to delete order");
 
     let query = "DELETE FROM orders WHERE id = $1";
 
@@ -210,10 +199,7 @@ pub async fn delete_order(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to delete order with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to delete order with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
@@ -233,13 +219,8 @@ pub async fn list_all_orders(
 
     let query = "SELECT * FROM orders";
 
-    match sqlx::query_as::<_, Order>(query)
-        .fetch_all(&pool)
-        .await
-    {
-        Ok(order_list) => {
-            (StatusCode::OK, Json(order_list)).into_response()
-        }
+    match sqlx::query_as::<_, Order>(query).fetch_all(&pool).await {
+        Ok(order_list) => (StatusCode::OK, Json(order_list)).into_response(),
         Err(e) => {
             error!("Failed to fetch order list: {:?}", e);
             (

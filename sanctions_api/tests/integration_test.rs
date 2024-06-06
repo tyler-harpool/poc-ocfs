@@ -1,8 +1,8 @@
 use database_utils::{establish_connection, run_migrations};
 use dotenv::dotenv;
 use log::{debug, info};
-use sanctions_api::{create_app, setup_logging};
 use reqwest::Client;
+use sanctions_api::{create_app, setup_logging};
 use serde_json::json;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;

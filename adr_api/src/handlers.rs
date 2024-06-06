@@ -137,23 +137,13 @@ pub async fn update_adr(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to update ADR with ID: {}: {:?}",
-                id, e
-            );
-            (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                "Failed to update ADR",
-            )
-                .into_response()
+            error!("Failed to update ADR with ID: {}: {:?}", id, e);
+            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to update ADR").into_response()
         }
     }
 }
 
-pub async fn get_adr(
-    Extension(pool): Extension<PgPool>,
-    Path(id): Path<i32>,
-) -> impl IntoResponse {
+pub async fn get_adr(Extension(pool): Extension<PgPool>, Path(id): Path<i32>) -> impl IntoResponse {
     log_request(&HeaderMap::new(), Some(id), "Fetching ADR");
 
     let query = "SELECT * FROM adr WHERE id = $1";
@@ -175,11 +165,7 @@ pub async fn delete_adr(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(
-        &HeaderMap::new(),
-        Some(id),
-        "Attempting to delete ADR",
-    );
+    log_request(&HeaderMap::new(), Some(id), "Attempting to delete ADR");
 
     let query = "DELETE FROM adr WHERE id = $1";
 
@@ -210,10 +196,7 @@ pub async fn delete_adr(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to delete ADR with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to delete ADR with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
@@ -233,13 +216,8 @@ pub async fn list_all_adrs(
 
     let query = "SELECT * FROM adr";
 
-    match sqlx::query_as::<_, Adr>(query)
-        .fetch_all(&pool)
-        .await
-    {
-        Ok(adr_list) => {
-            (StatusCode::OK, Json(adr_list)).into_response()
-        }
+    match sqlx::query_as::<_, Adr>(query).fetch_all(&pool).await {
+        Ok(adr_list) => (StatusCode::OK, Json(adr_list)).into_response(),
         Err(e) => {
             error!("Failed to fetch ADR list: {:?}", e);
             (

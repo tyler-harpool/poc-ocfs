@@ -137,15 +137,8 @@ pub async fn update_charge(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to update charge with ID: {}: {:?}",
-                id, e
-            );
-            (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                "Failed to update charge",
-            )
-                .into_response()
+            error!("Failed to update charge with ID: {}: {:?}", id, e);
+            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to update charge").into_response()
         }
     }
 }
@@ -175,11 +168,7 @@ pub async fn delete_charge(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(
-        &HeaderMap::new(),
-        Some(id),
-        "Attempting to delete charge",
-    );
+    log_request(&HeaderMap::new(), Some(id), "Attempting to delete charge");
 
     let query = "DELETE FROM charges WHERE id = $1";
 
@@ -210,10 +199,7 @@ pub async fn delete_charge(
             }
         }
         Err(e) => {
-            error!(
-                "Failed to delete charge with ID: {}: {:?}",
-                id, e
-            );
+            error!("Failed to delete charge with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
@@ -233,13 +219,8 @@ pub async fn list_all_charges(
 
     let query = "SELECT * FROM charges";
 
-    match sqlx::query_as::<_, Charge>(query)
-        .fetch_all(&pool)
-        .await
-    {
-        Ok(charge_list) => {
-            (StatusCode::OK, Json(charge_list)).into_response()
-        }
+    match sqlx::query_as::<_, Charge>(query).fetch_all(&pool).await {
+        Ok(charge_list) => (StatusCode::OK, Json(charge_list)).into_response(),
         Err(e) => {
             error!("Failed to fetch charge list: {:?}", e);
             (

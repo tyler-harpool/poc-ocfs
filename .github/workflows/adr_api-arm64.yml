@@ -3,11 +3,11 @@ name: ARM64 - ADR API CI Pipeline
 on:
   pull_request:
     paths:
-      - .github/workflows/adr_api.yml
+      - .github/workflows/adr_api-arm64.yml
       - adr_api/**
   push:
     paths:
-      - .github/workflows/adr_api.yml
+      - .github/workflows/adr_api-arm64.yml
       - adr_api/**
     branches:
       - main

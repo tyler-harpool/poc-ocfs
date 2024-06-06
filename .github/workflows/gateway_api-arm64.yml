@@ -1,13 +1,13 @@
-name: gateway_api CI Pipeline
+name: ARM64 gateway_api CI Pipeline
 
 on:
   pull_request:
     paths:
-      - .github/workflows/gateway_api.yml
+      - .github/workflows/gateway_api-arm64.yml
       - gateway_api/**
   push:
     paths:
-      - .github/workflows/gateway_api.yml
+      - .github/workflows/gateway_api-arm64.yml
       - gateway_api/**
     branches:
       - main
@@ -117,6 +117,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
+          platforms: linux/arm64
           context: ./gateway_api
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}

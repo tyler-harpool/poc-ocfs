@@ -15,6 +15,14 @@ RUN cargo build --release --bin adr_api
 
 # We do not need the Rust toolchain to run the binary!
 FROM debian:bookworm-slim AS runtime
+
+# Install required dependencies
+RUN apt-get update && apt-get install -y \
+    libssl1.1 \
+    openssl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+
 WORKDIR /app
 COPY --from=builder /app/target/release/adr_api /usr/local/bin
 ENTRYPOINT ["/usr/local/bin/adr_api"]

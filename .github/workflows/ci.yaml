@@ -18,9 +18,9 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: app_user
-          POSTGRES_PASSWORD: dev_only_pwd
-          POSTGRES_DB: app_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
         options: >-
           --health-cmd "pg_isready -U postgres -d test_db"
           --health-interval 10s
@@ -28,20 +28,23 @@ jobs:
           --health-retries 5
 
     env:
-      DATABASE_URL: postgres://app_user:dev_only_pwd@localhost:5432/app_db
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.7
-        with:
-          versionSpec: '5.x'
+      - name: Install GitVersion
+        run: dotnet tool install --global GitVersion.Tool --version 5.*
+        env:
+          DOTNET_ROOT: /usr/share/dotnet
+          PATH: /usr/share/dotnet:$PATH
 
-      - name: Use GitVersion
-        id: gitversion
+      - name: Set up GitVersion
         run: gitversion /output json /config gitversion.yaml
+        env:
+          DOTNET_ROOT: /usr/share/dotnet
+          PATH: /usr/share/dotnet:$PATH
 
       - name: Set up Rust
         uses: actions-rs/toolchain@v1
@@ -93,14 +96,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.7
-        with:
-          versionSpec: '5.x'
+      - name: Install GitVersion
+        run: dotnet tool install --global GitVersion.Tool --version 5.*
+        env:
+          DOTNET_ROOT: /usr/share/dotnet
+          PATH: /usr/share/dotnet:$PATH
 
-      - name: Use GitVersion
-        id: gitversion
+      - name: Set up GitVersion
         run: gitversion /output json /config gitversion.yaml
+        env:
+          DOTNET_ROOT: /usr/share/dotnet
+          PATH: /usr/share/dotnet:$PATH
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1

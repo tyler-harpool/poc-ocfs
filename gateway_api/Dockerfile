@@ -17,11 +17,10 @@ RUN cargo build --release
 FROM debian:latest
 # Install required dependencies
 RUN apt-get update && apt-get install -y \
-    libssl1.1 \
+    libssl-dev \
     openssl \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/* \
-
+    && rm -rf /var/lib/apt/lists/*
 # Copy the built binary from the build stage
 COPY --from=builder /usr/src/app/target/release/gateway_api /usr/local/bin/gateway_api
 

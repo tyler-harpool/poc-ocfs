@@ -101,6 +101,10 @@ jobs:
         with:
           useConfigFile: true
 
+      - run: |
+          echo "FullSemVer (env.fullSemVer): ${{ env.fullSemVer }}"
+        name: Display GitVersion variables (without prefix)
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 

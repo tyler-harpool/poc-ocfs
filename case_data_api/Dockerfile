@@ -1,29 +1,18 @@
-# Use the official Rust image as a base image
-FROM rust:latest as builder
-
-# Set the working directory inside the container
+FROM lukemathwalker/cargo-chef:latest-rust-1.72.0 as chef
 WORKDIR /usr/src/app
 
-# Copy the Cargo.toml and Cargo.lock files
+FROM chef AS planner
 COPY Cargo.toml Cargo.lock ./
+RUN cargo chef prepare --recipe-path recipe.json
 
-# Copy the source code
+FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
 COPY src ./src
-
-# Build the application in release mode
 RUN cargo build --release
 
-# Create a new stage with a smaller base image
-FROM debian:buster-slim
-
-# Set the working directory inside the container
+FROM gcr.io/distroless/cc-debian11
 WORKDIR /usr/src/app
-
-# Copy the compiled binary from the builder stage
 COPY --from=builder /usr/src/app/target/release/case_data_api ./
 
-# Set the entrypoint to the binary
-ENTRYPOINT ["./case_data_api"]
-
-# Expose the port that the application will run on
-EXPOSE 3000
+CMD ["./case_data_api"]

@@ -70,7 +70,7 @@ jobs:
             ${{ runner.os }}-cargo-build
 
       - name: Install SQLx CLI
-        run: cargo install sqlx-cli
+        run: cargo install sqlx-cli --features postgres
 
       - name: Run database migrations
         run: sqlx migrate run --source database_utils/migrations

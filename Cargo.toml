@@ -10,6 +10,8 @@ members = [
     "orders_api",
     "charges_api",
     "pretrial_intake_api",
+    "civil_judgments_api",
+    "diversion_api",
    # utils
     "database_utils",
     "common"

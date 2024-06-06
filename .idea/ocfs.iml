@@ -14,6 +14,10 @@
       <sourceFolder url="file://$MODULE_DIR$/attorney_advocate_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/charges_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/charges_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/civil_judgments_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/civil_judgments_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/diversion_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/diversion_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/hearings_events_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/hearings_events_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/motions_filings_api/src" isTestSource="false" />
@@ -31,6 +35,8 @@
       <excludeFolder url="file://$MODULE_DIR$/participants_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/attorney_advocate_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/charges_api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/civil_judgments_api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/diversion_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/hearings_events_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/motions_filings_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/orders_api/target" />

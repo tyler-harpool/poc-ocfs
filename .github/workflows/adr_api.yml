@@ -113,8 +113,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
-        run: |
-          VERSION=$(jq -r '.FullSemVer' <<<"${{ steps.meta.outputs.tags  }}")
-          docker build -t ghcr.io/${{ github.repository }}/adr_api:$VERSION ./adr_api
-          docker push ghcr.io/${{ github.repository }}/adr_api:$VERSION
+#      - name: Build and push Docker image
+#        run: |
+#          VERSION=$(jq -r '.FullSemVer' <<<"${{ steps.meta.outputs.tags  }}")
+#          docker build -t ghcr.io/${{ github.repository }}/adr_api:$VERSION ./adr_api
+#          docker push ghcr.io/${{ github.repository }}/adr_api:$VERSION
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./adr_api
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

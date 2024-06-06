@@ -12,6 +12,7 @@ members = [
     "pretrial_intake_api",
     "civil_judgments_api",
     "diversion_api",
+    "sanctions_api",
    # utils
     "database_utils",
     "common"

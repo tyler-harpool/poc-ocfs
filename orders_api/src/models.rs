@@ -13,11 +13,11 @@ pub struct Order {
     pub traf: String,
     pub data_element: String,
     pub definition: String,
-    pub values: serde_json::Value,
-    pub currently_collected: String,
-    pub if_no_is_this_needed: String,
-    pub if_yes_where: String,
-    pub comments: String,
+    pub values: Option<serde_json::Value>, // Allow NULL values
+    pub currently_collected: Option<String>, // Allow NULL values
+    pub if_no_is_this_needed: Option<String>, // Allow NULL values
+    pub if_yes_where: Option<String>, // Allow NULL values
+    pub comments: Option<String>, // Allow NULL values
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

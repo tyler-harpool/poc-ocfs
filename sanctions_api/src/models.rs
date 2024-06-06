@@ -11,13 +11,13 @@ pub struct Sanction {
     pub juv: String,
     pub crim: String,
     pub traf: String,
-    pub data_element: Option<String>,
-    pub definition: Option<String>,
-    pub values: Option<serde_json::Value>,
-    pub currently_collected: Option<String>,
-    pub if_no_is_this_needed: Option<String>,
-    pub if_yes_where: Option<String>,
-    pub comments: Option<String>,
+    pub data_element: String,
+    pub definition: String,
+    pub values: Option<serde_json::Value>, // Allow NULL values
+    pub currently_collected: Option<String>, // Allow NULL values
+    pub if_no_is_this_needed: Option<String>, // Allow NULL values
+    pub if_yes_where: Option<String>, // Allow NULL values
+    pub comments: Option<String>, // Allow NULL values
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

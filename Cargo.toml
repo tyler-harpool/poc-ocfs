@@ -17,7 +17,9 @@ members = [
     "probate_api",
     "post_trial_api",
     "adr_api",
-   # utils
+    # Gateway
+    "gateway_api",
+    # utils
     "database_utils",
     "common"
 ]

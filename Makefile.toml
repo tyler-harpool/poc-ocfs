@@ -28,22 +28,124 @@ dependencies = [
 ]
 
 
+[tasks.setup]
+description = "Setup environment for running microservices"
+script = [
+    "echo Setting up environment variables",
+    "export DATABASE_URL=postgres://app_user:dev_only_pwd@localhost:5432/app_db"
+]
 
 
-[tasks.start-case-data-api]
-description = "Start the case_data_api"
-command = "cargo"
-args = ["run", "--package", "case_data_api"]
-cwd = "case_data_api/"
 
-[tasks.start-participants-api]
-description = "Start the participants_api"
-command = "cargo"
-args = ["run", "--package", "participants_api"]
-cwd = "participants_api/"
+[tasks.run_adr_api]
+description = "Run adr_api"
+script = ["cargo run -p adr_api &"]
+dependencies = ["setup"]
 
-[tasks.start-all]
-description = "Start all APIs"
-dependencies = ["start-case-data-api", "start-participants-api"]
+[tasks.run_attorney_advocate_api]
+description = "Run attorney_advocate_api"
+script = [" cargo run -p attorney_advocate_api &"]
+dependencies = ["setup"]
 
+[tasks.run_case_data_api]
+description = "Run case_data_api"
+script = [" cargo run -p case_data_api &"]
+dependencies = ["setup"]
 
+[tasks.run_charges_api]
+description = "Run charges_api"
+script = [" cargo run -p charges_api &"]
+dependencies = ["setup"]
+
+[tasks.run_civil_judgments_api]
+description = "Run civil_judgments_api"
+script = ["cargo run -p civil_judgments_api &"]
+dependencies = ["setup"]
+
+[tasks.run_dependency_permanency_api]
+description = "Run dependency_permanency_api"
+script = [" cargo run -p dependency_permanency_api &"]
+dependencies = ["setup"]
+
+[tasks.run_diversion_api]
+description = "Run diversion_api"
+script = [" cargo run -p diversion_api &"]
+dependencies = ["setup"]
+
+[tasks.run_gateway_api]
+description = "Run gateway_api"
+script = [" cargo run -p gateway_api &"]
+dependencies = ["setup"]
+
+[tasks.run_hearings_events_api]
+description = "Run hearings_events_api"
+script = [" cargo run -p hearings_events_api &"]
+dependencies = ["setup"]
+
+[tasks.run_motions_filings_api]
+description = "Run motions_filings_api"
+script = ["  cargo run -p motions_filings_api &"]
+dependencies = ["setup"]
+
+[tasks.run_orders_api]
+description = "Run orders_api"
+script = [" cargo run -p orders_api &"]
+dependencies = ["setup"]
+
+[tasks.run_participants_api]
+description = "Run participants_api"
+script = [" cargo run -p participants_api &"]
+dependencies = ["setup"]
+
+[tasks.run_pleadings_api]
+description = "Run pleadings_api"
+script = ["cargo run -p pleadings_api &"]
+dependencies = ["setup"]
+
+[tasks.run_post_trial_api]
+description = "Run post_trial_api"
+script = [" cargo run -p post_trial_api &"]
+dependencies = ["setup"]
+
+[tasks.run_pretrial_intake_api]
+description = "Run pretrial_intake_api"
+script = [" cargo run -p pretrial_intake_api &"]
+dependencies = ["setup"]
+
+[tasks.run_probate_api]
+description = "Run probate_api"
+script = [" cargo run -p probate_api &"]
+dependencies = ["setup"]
+
+[tasks.run_sanctions_api]
+description = "Run sanctions_api"
+script = [" cargo run -p sanctions_api &"]
+dependencies = ["setup"]
+
+[tasks.run_status_api]
+description = "Run status_api"
+script = [" cargo run -p status_api &"]
+dependencies = ["setup"]
+
+[tasks.run_all]
+description = "Run all microservices"
+dependencies = [
+    "run_adr_api",
+    "run_attorney_advocate_api",
+    "run_case_data_api",
+    "run_charges_api",
+    "run_civil_judgments_api",
+    "run_dependency_permanency_api",
+    "run_diversion_api",
+    "run_gateway_api",
+    "run_hearings_events_api",
+    "run_motions_filings_api",
+    "run_orders_api",
+    "run_participants_api",
+    "run_pleadings_api",
+    "run_post_trial_api",
+    "run_pretrial_intake_api",
+    "run_probate_api",
+    "run_sanctions_api",
+    "run_status_api"
+]

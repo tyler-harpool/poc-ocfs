@@ -22,6 +22,8 @@
       <sourceFolder url="file://$MODULE_DIR$/dependency_permanency_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/diversion_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/diversion_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/gateway_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gateway_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/hearings_events_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/hearings_events_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/motions_filings_api/src" isTestSource="false" />

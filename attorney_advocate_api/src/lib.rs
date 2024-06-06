@@ -47,7 +47,7 @@ pub fn create_app(pool: PgPool) -> Router {
 }
 
 pub async fn start_server(app: Router) {
-    let addr = SocketAddr::from(([0, 0, 0, 0], 3002));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 3001));
     let listener = TcpListener::bind(addr).await.unwrap();
     println!("Listening on {}", addr);
     axum::serve(listener, app.into_make_service())

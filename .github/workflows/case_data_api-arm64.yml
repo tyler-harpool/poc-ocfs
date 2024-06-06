@@ -1,13 +1,13 @@
-name: Case Data API CI Pipeline
+name: ARM64 -Case Data API CI Pipeline
 
 on:
   pull_request:
     paths:
-      - .github/workflows/case_data_api.yml
+      - .github/workflows/case_data_api-arm64.yml
       - case_data_api/**
   push:
     paths:
-      - .github/workflows/case_data_api.yml
+      - .github/workflows/case_data_api-arm64.yml
       - case_data_api/**
     branches:
       - main
@@ -117,7 +117,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          platforms: linux/amd64
+          platforms: linux/arm64
           context: ./case_data_api
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}

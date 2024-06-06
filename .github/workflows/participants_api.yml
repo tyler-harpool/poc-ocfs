@@ -46,13 +46,18 @@ jobs:
           profile: minimal
           override: true
 
-      - name: Cache cargo registry
+      - name: Cache cargo index
         uses: actions/cache@v2
         with:
-          path: ~/.cargo/registry
-          key: ${{ runner.os }}-cargo-registry
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-index
           restore-keys: |
-            ${{ runner.os }}-cargo-registry
+            ${{ runner.os }}-cargo-index
 
       - name: Cache cargo index
         uses: actions/cache@v2

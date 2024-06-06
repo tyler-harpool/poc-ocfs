@@ -57,7 +57,12 @@ jobs:
       - name: Cache cargo index
         uses: actions/cache@v2
         with:
-          path: ~/.cargo/index
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
           key: ${{ runner.os }}-cargo-index
           restore-keys: |
             ${{ runner.os }}-cargo-index

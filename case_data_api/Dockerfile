@@ -6,7 +6,7 @@ COPY Cargo.toml Cargo.lock ./
 RUN cargo chef prepare --recipe-path recipe.json
 
 FROM chef AS builder
-COPY --from=planner /app/recipe.json recipe.json
+COPY --from=planner /usr/src/app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 COPY src ./src
 RUN cargo build --release

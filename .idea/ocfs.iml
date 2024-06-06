@@ -28,8 +28,12 @@
       <sourceFolder url="file://$MODULE_DIR$/orders_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/pleadings_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/pleadings_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/post_trial_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/post_trial_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/pretrial_intake_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/pretrial_intake_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/probate_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/probate_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/sanctions_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/sanctions_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/status_api/src" isTestSource="false" />
@@ -46,7 +50,9 @@
       <excludeFolder url="file://$MODULE_DIR$/motions_filings_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/orders_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/pleadings_api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/post_trial_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/pretrial_intake_api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/probate_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/sanctions_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/status_api/target" />
     </content>

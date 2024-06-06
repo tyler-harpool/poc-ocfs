@@ -15,6 +15,8 @@ members = [
     "sanctions_api",
     "dependency_permanency_api",
     "probate_api",
+    "post_trial_api",
+    "adr_api",
    # utils
     "database_utils",
     "common"

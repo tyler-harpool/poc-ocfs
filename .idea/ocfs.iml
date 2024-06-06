@@ -16,6 +16,8 @@
       <sourceFolder url="file://$MODULE_DIR$/charges_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/civil_judgments_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/civil_judgments_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/dependency_permanency_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/dependency_permanency_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/diversion_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/diversion_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/hearings_events_api/src" isTestSource="false" />
@@ -28,6 +30,8 @@
       <sourceFolder url="file://$MODULE_DIR$/pleadings_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/pretrial_intake_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/pretrial_intake_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/sanctions_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sanctions_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/status_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/status_api/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/case_data_api/target" />
@@ -36,12 +40,14 @@
       <excludeFolder url="file://$MODULE_DIR$/attorney_advocate_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/charges_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/civil_judgments_api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/dependency_permanency_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/diversion_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/hearings_events_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/motions_filings_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/orders_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/pleadings_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/pretrial_intake_api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/sanctions_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/status_api/target" />
     </content>
     <orderEntry type="inheritedJdk" />

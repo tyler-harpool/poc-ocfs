@@ -13,6 +13,7 @@ members = [
     "civil_judgments_api",
     "diversion_api",
     "sanctions_api",
+    "dependency_permanency_api",
    # utils
     "database_utils",
     "common"

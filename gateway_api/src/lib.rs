@@ -44,7 +44,7 @@ pub fn create_app() -> Router {
 }
 
 pub async fn start_server(app: Router) {
-    let addr = SocketAddr::from(([0, 0, 0, 0], 8000));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 8001));
     let listener = TcpListener::bind(addr).await.unwrap();
     println!("Listening on {}", addr);
     axum::serve(listener, app.into_make_service())

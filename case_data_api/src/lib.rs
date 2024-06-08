@@ -1,6 +1,6 @@
 use sqlx::PgPool;
 use std::net::SocketAddr;
-
+use tower_http::cors::CorsLayer;
 use axum::{
     extract::Extension,
     routing::{delete, get, patch, post},
@@ -30,6 +30,7 @@ pub fn create_app(pool: PgPool) -> Router {
         .route("/case_data/:id", patch(handlers::update_case_data))
         .route("/case_data/:id", delete(handlers::delete_case_data))
         .layer(ServiceBuilder::new().layer(Extension(pool)).into_inner())
+        .layer(CorsLayer::permissive())
 }
 
 pub async fn start_server(app: Router) {

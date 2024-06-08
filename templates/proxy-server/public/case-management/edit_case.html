@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Case</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .group:hover .group-hover\:block {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto p-4">
+    <nav class="bg-white shadow p-4 mb-6 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Open Case Filing System</h1>
+        <ul class="flex space-x-4">
+            <li class="relative group">
+                <a href="#" class="text-blue-500 hover:underline">Case Management</a>
+                <ul class="absolute hidden group-hover:block bg-white shadow-lg rounded mt-1 space-y-2">
+                    <li><a href="all_cases.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">All Cases</a></li>
+                    <li><a href="create_case.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Create Case</a></li>
+                </ul>
+            </li>
+            <li><a href="document_management.html" class="text-blue-500 hover:underline">Document Management</a></li>
+            <li><a href="time_tracking.html" class="text-blue-500 hover:underline">Time Tracking</a></li>
+        </ul>
+    </nav>
+    <main class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4">Edit Case</h2>
+        <div id="message" class="hidden p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg"></div>
+        <form id="edit-case-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Case Number</label>
+                <input type="text" name="case_number" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Client Name</label>
+                <input type="text" name="client_name" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Case Type</label>
+                <input type="text" name="case_type" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Case Status</label>
+                <select name="case_status" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option value="Open">Open</option>
+                    <option value="Closed">Closed</option>
+                    <option value="Pending">Pending</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Date Opened</label>
+                <input type="date" name="date_opened" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Date Closed</label>
+                <input type="date" name="date_closed" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Assigned Attorney</label>
+                <input type="text" name="assigned_attorney" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Notes</label>
+                <textarea name="notes" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" rows="4"></textarea>
+            </div>
+            <div>
+                <button type="submit" class="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Save Case</button>
+            </div>
+        </form>
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const caseId = params.get('id');
+        if (caseId) {
+            fetch(`http://localhost:3002/case_data/${caseId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('[name="case_number"]').value = data.case_number || '';
+                    document.querySelector('[name="client_name"]').value = data.client_name || '';
+                    document.querySelector('[name="case_type"]').value = data.case_type || '';
+                    document.querySelector('[name="case_status"]').value = data.case_status || '';
+                    document.querySelector('[name="date_opened"]').value = data.date_opened || '';
+                    document.querySelector('[name="date_closed"]').value = data.date_closed || '';
+                    document.querySelector('[name="assigned_attorney"]').value = data.assigned_attorney || '';
+                    document.querySelector('[name="notes"]').value = data.notes || '';
+                })
+                .catch(error => console.error('Error loading case data:', error));
+        } else {
+            console.error('Case ID is missing');
+        }
+
+        document.getElementById('edit-case-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const jsonData = {};
+            formData.forEach((value, key) => jsonData[key] = value);
+
+            fetch(`http://localhost:3002/case_data/${caseId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('message').innerText = 'Case updated successfully!';
+                        document.getElementById('message').classList.remove('hidden');
+                        document.getElementById('message').classList.add('block');
+                    } else {
+                        document.getElementById('message').innerText = 'Failed to update the case.';
+                        document.getElementById('message').classList.remove('hidden');
+                        document.getElementById('message').classList.add('block');
+                        document.getElementById('message').classList.remove('text-green-700', 'bg-green-100');
+                        document.getElementById('message').classList.add('text-red-700', 'bg-red-100');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating case:', error);
+                    document.getElementById('message').innerText = 'Failed to update the case.';
+                    document.getElementById('message').classList.remove('hidden');
+                    document.getElementById('message').classList.add('block');
+                    document.getElementById('message').classList.remove('text-green-700', 'bg-green-100');
+                    document.getElementById('message').classList.add('text-red-700', 'bg-red-100');
+                });
+        });
+    });
+</script>
+</body>
+</html>

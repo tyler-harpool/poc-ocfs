@@ -550,6 +550,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "axum-extra",
+ "chrono",
  "common 0.1.0 (git+https://github.com/tyler-harpool/poc-ocfs.git)",
  "database_utils 0.1.0 (git+https://github.com/tyler-harpool/poc-ocfs.git)",
  "dotenv",
@@ -565,6 +566,7 @@ dependencies = [
  "tokio",
  "tokio-retry",
  "tower",
+ "tower-http",
  "tracing",
  "tracing-subscriber",
  "uuid",
@@ -617,7 +619,10 @@ checksum = "a21f936df1771bf62b77f047b726c4625ff2e8aa607c01ec06e5a05bd8463401"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
+ "js-sys",
  "num-traits",
+ "serde",
+ "wasm-bindgen",
  "windows-targets 0.52.5",
 ]
 
@@ -3272,6 +3277,22 @@ dependencies = [
  "tower-layer",
  "tower-service",
  "tracing",
+]
+
+[[package]]
+name = "tower-http"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1e9cd434a998747dd2c4276bc96ee2e0c7a2eadf3cae88e52be55a05fa9053f5"
+dependencies = [
+ "bitflags 2.5.0",
+ "bytes",
+ "http 1.1.0",
+ "http-body",
+ "http-body-util",
+ "pin-project-lite",
+ "tower-layer",
+ "tower-service",
 ]
 
 [[package]]

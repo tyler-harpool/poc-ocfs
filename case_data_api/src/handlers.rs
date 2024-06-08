@@ -22,29 +22,22 @@ pub async fn create_case_data(
     Json(input): Json<CaseData>,
 ) -> impl IntoResponse {
     let query = r#"
-        INSERT INTO CaseData (
-            civ, fam, prob, dep, juv, crim, traf, data_element,
-            definition, values, currently_collected, if_no_is_this_needed,
-            if_yes_where, comments
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+        INSERT INTO cases (
+            case_number, client_name, case_type, case_status,
+            date_opened, date_closed, assigned_attorney, notes
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING id
     "#;
 
     let result = sqlx::query(query)
-        .bind(&input.civ)
-        .bind(&input.fam)
-        .bind(&input.prob)
-        .bind(&input.dep)
-        .bind(&input.juv)
-        .bind(&input.crim)
-        .bind(&input.traf)
-        .bind(&input.data_element)
-        .bind(&input.definition)
-        .bind(&input.values)
-        .bind(&input.currently_collected)
-        .bind(&input.if_no_is_this_needed)
-        .bind(&input.if_yes_where)
-        .bind(&input.comments)
+        .bind(&input.case_number)
+        .bind(&input.client_name)
+        .bind(&input.case_type)
+        .bind(&input.case_status)
+        .bind(&input.date_opened)
+        .bind(&input.date_closed)
+        .bind(&input.assigned_attorney)
+        .bind(&input.notes)
         .fetch_one(&pool)
         .await;
 
@@ -55,20 +48,14 @@ pub async fn create_case_data(
 
             let response_data = CaseData {
                 id: Some(id),
-                civ: input.civ.clone(),
-                fam: input.fam.clone(),
-                prob: input.prob.clone(),
-                dep: input.dep.clone(),
-                juv: input.juv.clone(),
-                crim: input.crim.clone(),
-                traf: input.traf.clone(),
-                data_element: input.data_element.clone(),
-                definition: input.definition.clone(),
-                values: input.values.clone(),
-                currently_collected: input.currently_collected.clone(),
-                if_no_is_this_needed: input.if_no_is_this_needed.clone(),
-                if_yes_where: input.if_yes_where.clone(),
-                comments: input.comments.clone(),
+                case_number: input.case_number.clone(),
+                client_name: input.client_name.clone(),
+                case_type: input.case_type.clone(),
+                case_status: input.case_status.clone(),
+                date_opened: input.date_opened,
+                date_closed: input.date_closed,
+                assigned_attorney: input.assigned_attorney.clone(),
+                notes: input.notes.clone(),
             };
 
             (StatusCode::CREATED, Json(response_data)).into_response()
@@ -89,40 +76,29 @@ pub async fn update_case_data(
     info!("Updating case data with ID: {}", id);
 
     let query = r#"
-        UPDATE CaseData
+        UPDATE cases
         SET
-            civ = COALESCE($1, civ),
-            fam = COALESCE($2, fam),
-            prob = COALESCE($3, prob),
-            dep = COALESCE($4, dep),
-            juv = COALESCE($5, juv),
-            crim = COALESCE($6, crim),
-            traf = COALESCE($7, traf),
-            data_element = COALESCE($8, data_element),
-            definition = COALESCE($9, definition),
-            values = COALESCE($10, values),
-            currently_collected = COALESCE($11, currently_collected),
-            if_no_is_this_needed = COALESCE($12, if_no_is_this_needed),
-            if_yes_where = COALESCE($13, if_yes_where),
-            comments = COALESCE($14, comments)
-        WHERE id = $15
+            case_number = $1,
+            client_name = $2,
+            case_type = $3,
+            case_status = $4,
+            date_opened = $5,
+            date_closed = $6,
+            assigned_attorney = $7,
+            notes = $8
+        WHERE id = $9
     "#;
 
+
     match sqlx::query(query)
-        .bind(input.civ)
-        .bind(input.fam)
-        .bind(input.prob)
-        .bind(input.dep)
-        .bind(input.juv)
-        .bind(input.crim)
-        .bind(input.traf)
-        .bind(input.data_element)
-        .bind(input.definition)
-        .bind(input.values)
-        .bind(input.currently_collected)
-        .bind(input.if_no_is_this_needed)
-        .bind(input.if_yes_where)
-        .bind(input.comments)
+        .bind(input.case_number)
+        .bind(input.client_name)
+        .bind(input.case_type)
+        .bind(input.case_status)
+        .bind(input.date_opened)
+        .bind(input.date_closed)
+        .bind(input.assigned_attorney)
+        .bind(input.notes)
         .bind(id)
         .execute(&pool)
         .await
@@ -151,19 +127,19 @@ pub async fn get_case_data(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    log_request(&HeaderMap::new(), Some(id), "Fetching case data");
+    log_request(&HeaderMap::new(), Some(id), "Fetching case");
 
-    let query = "SELECT * FROM CaseData WHERE id = $1";
+    let query = "SELECT * FROM cases WHERE id = $1";
 
     match sqlx::query_as::<_, CaseData>(query)
         .bind(id)
         .fetch_one(&pool)
         .await
     {
-        Ok(case_data) => (StatusCode::OK, Json(case_data)).into_response(),
+        Ok(case) => (StatusCode::OK, Json(case)).into_response(),
         Err(e) => {
-            error!("Failed to fetch case data for id {}: {:?}", id, e);
-            (StatusCode::NOT_FOUND, Json("Case data not found")).into_response()
+            error!("Failed to fetch case for id {}: {:?}", id, e);
+            (StatusCode::NOT_FOUND, Json("Case not found")).into_response()
         }
     }
 }
@@ -178,7 +154,7 @@ pub async fn delete_case_data(
         "Attempting to delete case data",
     );
 
-    let query = "DELETE FROM CaseData WHERE id = $1";
+    let query = "DELETE FROM cases WHERE id = $1";
 
     match sqlx::query(query).bind(id).execute(&pool).await {
         Ok(result) => {
@@ -225,7 +201,7 @@ pub async fn list_all_case_data(
 ) -> impl IntoResponse {
     log_request(&_headers, None, "Listing all case data");
 
-    let query = "SELECT * FROM CaseData";
+    let query = "SELECT * FROM cases";
 
     match sqlx::query_as::<_, CaseData>(query).fetch_all(&pool).await {
         Ok(case_data_list) => (StatusCode::OK, Json(case_data_list)).into_response(),

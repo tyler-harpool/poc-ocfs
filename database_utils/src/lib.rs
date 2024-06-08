@@ -37,4 +37,5 @@ pub async fn run_migrations(pool: &Pool<Postgres>) {
     let migrations_dir = env::var("MIGRATIONS_DIR").expect("MIGRATIONS_DIR must be set");
     let migrator = Migrator::new(Path::new(&migrations_dir)).await.unwrap();
     migrator.run(pool).await.unwrap();
+
 }

@@ -21,6 +21,7 @@ members = [
     "gateway_api",
     # utils
     "database_utils",
-    "common"
+    "common",
+    # ui
 ]
 resolver = "2" # Add this line

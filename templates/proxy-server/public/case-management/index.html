@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Cases</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"></script>
+    <script>
+        document.addEventListener('htmx:afterRequest', (event) => {
+            if (event.detail.elt.id === "case-table-body") {
+                const cases = event.detail.successful ? JSON.parse(event.detail.xhr.response) : [];
+                const caseTableBody = document.getElementById('case-table-body');
+                caseTableBody.innerHTML = '';
+
+                if (cases.length === 0) {
+                    const noDataMessage = document.createElement('tr');
+                    noDataMessage.innerHTML = `
+                        <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">No cases available.</td>
+                    `;
+                    caseTableBody.appendChild(noDataMessage);
+                } else {
+                    cases.forEach(caseData => {
+                        const row = document.createElement('tr');
+                        row.classList.add('bg-white', 'border-b');
+                        row.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${caseData.case_number}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${caseData.client_name}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${caseData.case_type}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${caseData.case_status}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${caseData.date_opened || ''}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${caseData.date_closed || ''}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${caseData.assigned_attorney}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <a href="edit_case.html?id=${caseData.id}" class="text-blue-500 hover:underline">Edit</a>
+                            </td>
+                        `;
+                        caseTableBody.appendChild(row);
+                    });
+                }
+            }
+        });
+    </script>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto p-4">
+    <nav class="bg-white shadow p-4 mb-6 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Open Case Filing System</h1>
+        <ul class="flex space-x-4">
+            <li><a href="case_management.html" class="text-blue-500 hover:underline">Case Management</a></li>
+            <li><a href="document_management.html" class="text-blue-500 hover:underline">Document Management</a></li>
+            <li><a href="time_tracking.html" class="text-blue-500 hover:underline">Time Tracking</a></li>
+            <li><a href="all_cases.html" class="text-blue-500 hover:underline">All Cases</a></li>
+        </ul>
+    </nav>
+    <main class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4">All Cases</h2>
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Case Number
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Client Name
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Case Type
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Case Status
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date Opened
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date Closed
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Assigned Attorney
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                </th>
+            </tr>
+            </thead>
+            <tbody id="case-table-body" class="bg-white divide-y divide-gray-200" hx-get="http://localhost:3002/case_data" hx-trigger="load">
+            <!-- Cases will be loaded here -->
+            </tbody>
+        </table>
+    </main>
+</div>
+</body>
+</html>

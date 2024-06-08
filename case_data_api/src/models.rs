@@ -1,41 +1,30 @@
-use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde::{Serialize, Deserialize};
 use sqlx::FromRow;
+use chrono::NaiveDate;
 
-#[derive(Serialize, Deserialize, FromRow, Clone, Debug)]
+#[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct CaseData {
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub id: Option<i32>, // Use i32 instead of i64
-    pub civ: Option<String>,
-    pub fam: Option<String>,
-    pub prob: Option<String>,
-    pub dep: Option<String>,
-    pub juv: Option<String>,
-    pub crim: Option<String>,
-    pub traf: Option<String>,
-    pub data_element: String,
-    pub definition: Option<String>,
-    pub values: Option<Value>,
-    pub currently_collected: Option<String>,
-    pub if_no_is_this_needed: Option<String>,
-    pub if_yes_where: Option<String>,
-    pub comments: Option<String>,
+    pub id: Option<i32>,
+    pub case_number: String,
+    pub client_name: String,
+    pub case_type: String,
+    pub case_status: String,
+    pub date_opened: Option<NaiveDate>,
+    pub date_closed: Option<NaiveDate>,
+    pub assigned_attorney: String,
+    pub notes: Option<String>,
 }
+
 
 #[derive(Serialize, Deserialize, FromRow, Debug)]
 pub struct UpdateCaseData {
-    pub civ: Option<String>,
-    pub fam: Option<String>,
-    pub prob: Option<String>,
-    pub dep: Option<String>,
-    pub juv: Option<String>,
-    pub crim: Option<String>,
-    pub traf: Option<String>,
-    pub data_element: Option<String>,
-    pub definition: Option<String>,
-    pub values: Option<Value>,
-    pub currently_collected: Option<String>,
-    pub if_no_is_this_needed: Option<String>,
-    pub if_yes_where: Option<String>,
-    pub comments: Option<String>,
+    pub id: Option<i32>,
+    pub case_number: String,
+    pub client_name: String,
+    pub case_type: String,
+    pub case_status: String,
+    pub date_opened: Option<chrono::NaiveDate>,
+    pub date_closed: Option<chrono::NaiveDate>,
+    pub assigned_attorney: String,
+    pub notes: Option<String>,
 }

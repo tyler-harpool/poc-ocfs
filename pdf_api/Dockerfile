@@ -19,18 +19,12 @@ RUN apt-get update && \
     libxrandr-dev \
     libxi-dev \
     libglu1-mesa-dev \
-    curl
+    curl \
+    wget \
+    unzip
 
-# Install PDFium
-RUN mkdir /pdfium && \
-    cd /pdfium && \
-    git clone --depth 1 --branch chrome/4867 https://pdfium.googlesource.com/pdfium.git && \
-    cd pdfium && \
-    mkdir build && \
-    cd build && \
-    cmake .. -DCMAKE_BUILD_TYPE=Release && \
-    make -j$(nproc) && \
-    make install
+
+
 
 # Set the working directory
 WORKDIR /app
@@ -40,7 +34,9 @@ COPY . .
 
 # Build the Rust application
 RUN cargo build --release
-
+# Copy PDFium library
+COPY pdfium/linux/lib/libpdfium.so /usr/local/lib
+RUN ls /usr/local/lib/libpdfium.so
 # Expose the port the app runs on
 EXPOSE 3017
 

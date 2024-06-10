@@ -12,14 +12,6 @@ use tokio::task;
 use image::DynamicImage;
 use std::sync::{Arc, Mutex};
 
-// Ensure the images directory exists
-async fn ensure_images_dir() -> std::io::Result<()> {
-    let path = Path::new("images");
-    if !path.exists() {
-        tokio::fs::create_dir(path).await?;
-    }
-    Ok(())
-}
 
 fn extract_filename_from_path(path: &Path) -> Option<String> {
     path.file_stem()

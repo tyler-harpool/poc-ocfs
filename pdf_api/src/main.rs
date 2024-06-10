@@ -15,7 +15,7 @@ async fn main() -> std::io::Result<()> {
             .route("/ocr", web::post().to(upload_file))
 
     })
-        .bind("127.0.0.1:3017")?
+        .bind("0.0.0.0:3017")?
         .run()
         .await
 }

@@ -98,3 +98,7 @@ pub async fn forward_sanctions() -> Result<Json<Value>, StatusCode> {
 pub async fn forward_status() -> Result<Json<Value>, StatusCode> {
     forward_request("/status", 3016).await
 }
+
+pub async fn forward_pdf() -> Result<Json<Value>, StatusCode> {
+    forward_request("/ocr", 3017).await
+}

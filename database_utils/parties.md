@@ -1,12 +1,13 @@
-```erDiagram
-participants {
-INT participant_id PK
-INT case_id FK
-INT participant_type_id FK
-INT party_id FK
-TIMESTAMP created_at
-TIMESTAMP updated_at
-}
+```mermaid
+erDiagram
+    participants {
+        INT participant_id PK
+        INT case_id FK
+        INT participant_type_id FK
+        INT party_id FK
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
 
     party {
         INT party_id PK
@@ -19,4 +20,5 @@ TIMESTAMP updated_at
     }
 
     participants }o--|| party : ""
+
 ```

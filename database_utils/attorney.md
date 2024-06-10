@@ -1,12 +1,13 @@
-```erDiagram
-attorney_advocate {
-INT advocate_id PK
-INT case_id FK
-INT attorney_id FK
-VARCHAR role
-TIMESTAMP created_at
-TIMESTAMP updated_at
-}
+```mermaid
+erDiagram
+    attorney_advocate {
+        INT advocate_id PK
+        INT case_id FK
+        INT attorney_id FK
+        VARCHAR role
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
 
     attorney {
         INT attorney_id PK
@@ -28,4 +29,5 @@ TIMESTAMP updated_at
 
     attorney_advocate }o--|| attorney : ""
     attorney }o--|| firm : ""
+
 ```

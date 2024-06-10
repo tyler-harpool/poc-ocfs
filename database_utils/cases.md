@@ -1,12 +1,13 @@
-```erDiagram
-case {
-INT case_id PK
-VARCHAR case_number
-DATE case_date
-TEXT description
-TIMESTAMP created_at
-TIMESTAMP updated_at
-}
+```mermaid
+erDiagram
+    case {
+        INT case_id PK
+        VARCHAR case_number
+        DATE case_date
+        TEXT description
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
 
     attorney_advocate {
         INT advocate_id PK
@@ -139,4 +140,5 @@ TIMESTAMP updated_at
     case ||--o{ sanctions : ""
     case ||--o{ status : ""
     case ||--o{ gateway : ""
+
 ```

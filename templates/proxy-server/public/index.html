@@ -35,12 +35,24 @@
         .highlight {
             color: #1E40AF; /* Highlight phrases with blue */
         }
+        .sidebar-hidden {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-visible {
+            transform: translateX(0);
+            transition: transform 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
 <div class="flex">
+    <!-- Mobile Menu Button -->
+    <button id="sidebar-toggle" class="p-4 bg-gray-800 text-white md:hidden md:sidebar-visible">
+        <i class="fas fa-bars"></i>
+    </button>
     <!-- Left Sidebar -->
-    <aside class="w-64 bg-gray-800 text-white h-screen">
+    <aside class="w-full md:w-64 bg-gray-800 text-white h-screen md:fixed">
         <div class="p-4 text-center">
             <h2 class="text-2xl font-semibold">OCFS</h2>
         </div>
@@ -109,9 +121,9 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-6">
+    <main class="flex-1 p-6 ml-0 md:ml-64">
         <h1 class="text-3xl font-semibold mb-4">Welcome to the <span class="highlight">Open Case Filing System</span></h1>
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <section class="col-span-2">
                 <section class="grid grid-cols-2 gap-4">
                     <div class="p-4 bg-gray-50 rounded-lg shadow card">
@@ -307,7 +319,7 @@
     </main>
 </div>
 <footer class="bg-gray-800 text-white py-6 mt-8">
-    <div class="container mx-auto flex justify-between items-center">
+    <div class="container mx-auto flex  flex-col md:flex-row justify-between items-center">
         <div>
             <h2 class="text-2xl font-semibold">Open Case Filing System</h2>
             <p class="text-gray-400">Enhancing judicial efficiency through technology</p>
@@ -325,6 +337,16 @@
 </footer>
 
 <script>
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar.classList.contains('sidebar-hidden')) {
+            sidebar.classList.remove('sidebar-hidden');
+            sidebar.classList.add('sidebar-visible');
+        } else {
+            sidebar.classList.remove('sidebar-visible');
+            sidebar.classList.add('sidebar-hidden');
+        }
+    });
     function toggleMenu(menuId) {
         const menu = document.getElementById(menuId);
         if (menu.classList.contains('hidden-submenu')) {

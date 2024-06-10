@@ -1,5 +1,13 @@
 [workspace]
 members = [
+    # Gateway
+    "gateway_api",
+    # utils
+    "database_utils",
+    "common",
+    # ui
+    "ui",
+    # API
     "case_data_api",
     "participants_api",
     "attorney_advocate_api",
@@ -17,11 +25,12 @@ members = [
     "probate_api",
     "post_trial_api",
     "adr_api",
-    # Gateway
-    "gateway_api",
-    # utils
-    "database_utils",
-    "common",
-    # ui
+    "pdf_api"
 ]
 resolver = "2" # Add this line
+[profile.wasm-release]
+inherits = "release"
+opt-level = 'z'
+lto = true
+codegen-units = 1
+panic = "abort"

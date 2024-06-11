@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hidden-submenu {
+    display: none;
+}
+.show-submenu {
+    display: block;
+}

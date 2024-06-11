@@ -20,7 +20,6 @@ wasm-bindgen = "=0.2.92"
 thiserror = "1"
 tracing = { version = "0.1", optional = true }
 http = "1"
-web-sys = "0.3"
 
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
@@ -37,12 +36,12 @@ ssr = [
 ]
 
 # Defines a size-optimized profile for the WASM bundle in release mode
-#[profile.wasm-release]
-#inherits = "release"
-#opt-level = 'z'
-#lto = true
-#codegen-units = 1
-#panic = "abort"
+[profile.wasm-release]
+inherits = "release"
+opt-level = 'z'
+lto = true
+codegen-units = 1
+panic = "abort"
 
 [package.metadata.leptos]
 # The name used by wasm-bindgen/cargo-leptos for the JS/WASM bundle. Defaults to the crate name
@@ -57,10 +56,13 @@ site-pkg-dir = "pkg"
 
 # [Optional] The source CSS file. If it ends with .sass or .scss then it will be compiled by dart-sass into CSS. The CSS is optimized by Lightning CSS before being written to <site-root>/<site-pkg>/app.css
 #style-file = "style/main.scss"
-tailwind-input-file = "style/tailwind.css"
 # Assets source dir. All files found here will be copied and synchronized to site-root.
-# The assets-dir cannot have a subdirectory with the same name/path as site-pkg-dir.
+# The assets-dir cannot have a sub directory with the same name/path as site-pkg-dir.
 #
+
+tailwind-input-file = "style/tailwind.css"
+tailwind-config-file = "tailwind.config.js"
+
 # Optional. Env: LEPTOS_ASSETS_DIR.
 assets-dir = "public"
 

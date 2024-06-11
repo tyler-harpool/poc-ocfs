@@ -8,3 +8,7 @@
 .show-submenu {
     display: block;
 }
+.card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.2s;
+}

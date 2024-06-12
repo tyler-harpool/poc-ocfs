@@ -89,7 +89,7 @@ pub fn HomePage() -> impl IntoView {
                     </div>
 
                     // search
-                    <div class="mb-8">
+                    <div class="mb-8 w-full">
                     <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg p-4 rounded-lg shadow-lg w-full max-w-4xl mx-auto outline outline-offset-2 outline-cyan-500">
                     <nav class="flex flex-wrap justify-center space-x-4 text-white text-sm">
                         <input id="search" type="text" class="w-full bg-gray-800 text-white p-2 rounded focus:outline-none" placeholder="Search for cases..."/>

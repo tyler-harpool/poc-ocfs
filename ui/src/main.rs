@@ -1,6 +1,8 @@
 
 pub mod components;
 pub mod pages;
+
+
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
@@ -10,7 +12,7 @@ async fn main() {
     use ui::app::*;
     use ui::fileserv::file_and_error_handler;
  
-    
+
     // Setting get_configuration(None) means we'll be using cargo-leptos's env values
     // For deployment these variables are:
     // <https://github.com/leptos-rs/start-axum#executing-a-server-on-a-remote-machine-without-the-toolchain>

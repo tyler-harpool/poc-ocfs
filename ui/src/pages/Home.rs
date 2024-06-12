@@ -1,6 +1,6 @@
 use leptos::*;
 
-use crate::components::utils::toggle_sidebar;
+
 use crate::components::Sidebar;
 
 #[component]
@@ -28,7 +28,7 @@ pub fn HomePage() -> impl IntoView {
    
                     <div class="mt-8 space-y-6 mr-2 ">
                         <div>
-                            <h2 class="text-sm font-semibold text-cyanw-500 uppercase tracking-wider">"Upcoming Hearings"</h2>
+                            <h2 class="text-sm font-semibold text-cyan-500 uppercase tracking-wider">"Upcoming Hearings"</h2>
                             <ul class="mt-4 text-gray-400 ">
                                 <li class="mb-2 hover:text-white transition-colors duration-300">"Case 2024-001: Hearing on June 15"</li>
                                 <li class="mb-2 hover:text-white transition-colors duration-300">"Case 2024-002: Hearing on June 20"</li>
@@ -38,7 +38,7 @@ pub fn HomePage() -> impl IntoView {
                         </div>
 
                         <div>
-                            <h2 class="text-sm font-semibold text-cyanw-500 uppercase tracking-wider">"Pending Motions"</h2>
+                            <h2 class="text-sm font-semibold text-cyan-500 uppercase tracking-wider">"Pending Motions"</h2>
                             <ul class="mt-4 text-gray-400">
                                 <li class="mb-2 hover:text-white transition-colors duration-300">"Case 2024-005: Motion to Dismiss"</li>
                                 <li class="mb-2 hover:text-white transition-colors duration-300">"Case 2024-006: Motion for Summary Judgment"</li>
@@ -47,7 +47,7 @@ pub fn HomePage() -> impl IntoView {
                         </div>
 
                         <div>
-                            <h2 class="text-sm font-semibold text-cyanw-500 uppercase tracking-wider">"Recent Filings"</h2>
+                            <h2 class="text-sm font-semibold text-cyan-500 uppercase tracking-wider">"Recent Filings"</h2>
                             <ul class="mt-4 text-gray-400">
                                 <li class="mb-2 hover:text-white transition-colors duration-300">"Case 2024-008: Plaintiff&apos;s Response"</li>
                                 <li class="mb-2 hover:text-white transition-colors duration-300">"Case 2024-009: Defendant&apos;s Answer"</li>
@@ -56,7 +56,7 @@ pub fn HomePage() -> impl IntoView {
                         </div>
 
                         <div>
-                            <h2 class="text-sm font-semibold text-cyanw-500 uppercase tracking-wider">"Courtroom Assignments"</h2>
+                            <h2 class="text-sm font-semibold text-cyan-500 uppercase tracking-wider">"Courtroom Assignments"</h2>
                             <ul class="mt-4 text-gray-400">
                                 <li class="mb-2 hover:text-white transition-colors duration-300">"Case 2024-011: Courtroom 3B"</li>
                                 <li class="mb-2 hover:text-white transition-colors duration-300">"Case 2024-012: Courtroom 2A"</li>
@@ -159,56 +159,56 @@ pub fn HomePage() -> impl IntoView {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr class="hover:bg-cyan-100 hover:text-gray-900">
                                         <td class="border-t border-gray-700 px-4 py-2">"2024-001"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"May 9, 2024"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Filing of Motion"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Leslie Alexander vs. State"</td>
                                         <td class="border-t border-gray-700 px-4 py-2 text-right">"Pending"</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="hover:bg-cyan-100 hover:text-gray-900">
                                         <td class="border-t border-gray-700 px-4 py-2">"2024-002"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"May 5, 2024"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Initial Hearing"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Michael Foster vs. State"</td>
                                         <td class="border-t border-gray-700 px-4 py-2 text-right">"Scheduled"</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="hover:bg-cyan-100 hover:text-gray-900">
                                         <td class="border-t border-gray-700 px-4 py-2">"2024-003"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Apr 28, 2024"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Evidence Submission"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Dries Vincent vs. State"</td>
                                         <td class="border-t border-gray-700 px-4 py-2 text-right">"Under Review"</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="hover:bg-cyan-100 hover:text-gray-900">
                                         <td class="border-t border-gray-700 px-4 py-2">"2024-004"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Apr 23, 2024"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Final Judgment"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Lindsay Walton vs. State"</td>
                                         <td class="border-t border-gray-700 px-4 py-2 text-right">"Closed"</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="hover:bg-cyan-100 hover:text-gray-900">
                                         <td class="border-t border-gray-700 px-4 py-2">"2024-005"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Apr 18, 2024"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Pre-Trial Conference"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Courtney Henry vs. State"</td>
                                         <td class="border-t border-gray-700 px-4 py-2 text-right">"Scheduled"</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="hover:bg-cyan-100 hover:text-gray-900">
                                         <td class="border-t border-gray-700 px-4 py-2">"2024-006"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Apr 14, 2024"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Evidence Submission"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Tom Cook vs. State"</td>
                                         <td class="border-t border-gray-700 px-4 py-2 text-right">"Under Review"</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="hover:bg-cyan-100 hover:text-gray-900">
                                         <td class="border-t border-gray-700 px-4 py-2">"2024-007"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Apr 10, 2024"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Initial Hearing"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Whitney Francis vs. State"</td>
                                         <td class="border-t border-gray-700 px-4 py-2 text-right">"Scheduled"</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="hover:bg-cyan-100 hover:text-gray-900">
                                         <td class="border-t border-gray-700 px-4 py-2">"2024-008"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Apr 6, 2024"</td>
                                         <td class="border-t border-gray-700 px-4 py-2">"Filing of Complaint"</td>

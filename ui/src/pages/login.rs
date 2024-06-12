@@ -1,8 +1,5 @@
 use leptos::*;
 
-use crate::components::utils::toggle_sidebar;
-use crate::components::Sidebar;
-
 #[component]
 pub fn Login() -> impl IntoView {
     view! {

@@ -2,6 +2,7 @@ pub mod app;
 pub mod error_template;
 pub mod components;
 pub mod pages;
+
 #[cfg(feature = "ssr")]
 pub mod fileserv;
 #[cfg(feature = "hydrate")]

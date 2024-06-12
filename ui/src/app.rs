@@ -7,8 +7,8 @@ use crate::pages::home::HomePage;
 use crate::pages::test::Test;
 use crate::pages::participant::Participant;
 use crate::pages::login::Login;
+
 // use crate::components::{Navbar, Sidebar, Footer, TopBar};
-use crate::components::utils::toggle_menu;
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
@@ -34,9 +34,11 @@ pub fn App() -> impl IntoView {
                     <Routes>
                         <Route path="/" view=Login />
                         <Route path="/dashboard/overview" view=HomePage />
+                        <Route path="/test" view=Test />
                         // <Route path="/cases" view=CaseList />
                         // <Route path="/cases/:id" view=CaseDetails />
                         <Route path="/participants" view=Participant />
+                            // <Route path="/island" view=Island />
                         // <Route path="/filings" view=FilingsList />
                         // <Route path="/events" view=EventsCalendar />
                         // <Route path="/reports" view=ReportsList />

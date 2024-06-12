@@ -1,7 +1,12 @@
 use leptos::*;
-use crate::components::utils::toggle_menu;
+
+
+
+
+
 #[component]
 pub fn Sidebar() -> impl IntoView {
+
     view! {
         <aside id="sidebar" class="w-full lg:w-64 bg-gray-800 h-full text-white">
         <div class="p-4 text-center">

@@ -6,16 +6,16 @@ use crate::components::Sidebar;
 #[component]
 pub fn HomePage() -> impl IntoView {
     view! {
-        <header class="mt-auto p-4 text-white border-b-4 border-cyan-500 bg-gray-800">
-        <div class="container mx-auto flex justify-between items-center ">
-            <h1 class="text-2xl font-semibold text-cyan-500">"Open Case Filing System"</h1>
-            <button class="text-white md:hidden" on:click=move |_| toggle_sidebar("sidebar")>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-    </header>
+    //     <header class="mt-auto p-4 text-white border-b-4 border-cyan-500 bg-gray-800">
+    //     <div class="container mx-auto flex justify-between items-center ">
+    //         <h1 class="text-2xl font-semibold text-cyan-500">"Open Case Filing System"</h1>
+    //         <button class="text-white md:hidden" on:click=move |_| toggle_sidebar("sidebar")>
+    //             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    //                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    //             </svg>
+    //         </button>
+    //     </div>
+    // </header>
         <div class="flex">
         <div class="flex flex-col min-h-screen text-white ">
 
@@ -90,7 +90,7 @@ pub fn HomePage() -> impl IntoView {
 
                     // search
                     <div class="mb-8 w-full">
-                    <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg p-4 rounded-lg shadow-lg w-full max-w-4xl mx-auto outline outline-offset-2 outline-cyan-500">
+                    <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg w-full max-w-4xl mx-auto outline outline-offset-2 outline-cyan-500">
                     <nav class="flex flex-wrap justify-center space-x-4 text-white text-sm">
                         <input id="search" type="text" class="w-full bg-gray-800 text-white p-2 rounded focus:outline-none" placeholder="Search for cases..."/>
                     </nav>
@@ -148,7 +148,7 @@ pub fn HomePage() -> impl IntoView {
                     <div class="bg-gray-800 p-6 rounded-lg outline outline-offset-2 outline-cyan-500">
                         <h3 class="text-lg font-semibold mb-4">"Recent Case Activity"</h3>
                         <div class="overflow-x-auto">
-                            <table class="min-w-full bg-gray-800">
+                            <table class="min-w-full bg-gray-800 hover:table-fixed">
                                 <thead>
                                     <tr>
                                         <th class="px-4 py-2 text-left text-gray-400">"Case ID"</th>

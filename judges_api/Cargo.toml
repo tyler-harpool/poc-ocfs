@@ -1,5 +1,5 @@
 [package]
-name = "status_api"
+name = "judges_api"
 version = "0.1.0"
 edition = "2021"
 
@@ -22,11 +22,10 @@ env_logger = "0.11.3"
 
 headers = "0.4.0"
 axum-extra = {  version = "0.9.3", features=["typed-header"] }
-database_utils = { workspace = true }
-common = { workspace = true }
+#database_utils = { path = "../database_utils" }
 #common = { path = "../common"}
-# common = { git = "https://github.com/tyler-harpool/poc-ocfs.git", version = "0.1.0" }
-# database_utils = { git = "https://github.com/tyler-harpool/poc-ocfs.git", version = "0.1.0"}
+common = { git = "https://github.com/tyler-harpool/poc-ocfs.git", version = "0.1.0" }
+database_utils = { git = "https://github.com/tyler-harpool/poc-ocfs.git", version = "0.1.0" }
 
 [dev-dependencies]
 tokio = { version = "1", features = ["full"] }
@@ -37,5 +36,3 @@ reqwest = { version = "0.12.4", features = ["json"] }
 [[bin]]
 name = "status_api"
 path = "src/main.rs"
-
-

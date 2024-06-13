@@ -7,7 +7,7 @@ use crate::pages::home::HomePage;
 use crate::pages::test::Test;
 use crate::pages::participant::Participant;
 use crate::pages::login::Login;
-
+use crate::pages::judges::Judges;
 // use crate::components::{Navbar, Sidebar, Footer, TopBar};
 #[component]
 pub fn App() -> impl IntoView {
@@ -43,6 +43,7 @@ pub fn App() -> impl IntoView {
                         // <Route path="/events" view=EventsCalendar />
                         // <Route path="/reports" view=ReportsList />
                         // <Route path="/settings" view=Settings />
+                         <Route path="/judges/:id" view=Judges />
                     </Routes>
                 </Router>
             

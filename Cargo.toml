@@ -25,12 +25,21 @@ members = [
     "probate_api",
     "post_trial_api",
     "adr_api",
-    "pdf_api"
+    "pdf_api",
+    "judges_api"
 ]
 resolver = "2" # Add this line
+# Defines a size-optimized profile for the WASM bundle in release mode
 [profile.wasm-release]
 inherits = "release"
 opt-level = 'z'
 lto = true
 codegen-units = 1
 panic = "abort"
+
+
+
+[workspace.dependencies]
+database_utils = { path = "database_utils" }
+common = { path = "common"}
+

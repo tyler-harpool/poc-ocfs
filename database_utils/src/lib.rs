@@ -34,8 +34,11 @@ pub async fn establish_connection() -> PgPool {
 }
 
 pub async fn run_migrations(pool: &Pool<Postgres>) {
+    let cargo_path = env::var("CARGO_MANIFEST_DIR").unwrap();
     let migrations_dir = env::var("MIGRATIONS_DIR").expect("MIGRATIONS_DIR must be set");
-    let migrator = Migrator::new(Path::new(&migrations_dir)).await.unwrap();
+    let path = Path::new(&cargo_path).join(&migrations_dir);
+    println!("Running migrations from: {:?}", path);
+    let migrator = Migrator::new(path).await.unwrap();
     migrator.run(pool).await.unwrap();
 
 }

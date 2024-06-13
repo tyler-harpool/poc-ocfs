@@ -42,6 +42,8 @@
       <sourceFolder url="file://$MODULE_DIR$/sanctions_api/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/status_api/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/status_api/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/pdf_api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ui/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/case_data_api/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/participants_api/target" />

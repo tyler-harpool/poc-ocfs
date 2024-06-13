@@ -25,8 +25,10 @@ sqlx = { version = "0.7.4", features = ["postgres", "uuid", "runtime-tokio-nativ
 leptos-use = "0.10.10"
 web-sys = { version = "0.3.69", features = ["Window", "Document", "Element"] }
 serde = { version = "1.0.203", features = ["derive"] }
-reqwest = "0.12.4"
-
+reqwest = { version = "0.11", features = ["json"] }
+serde_json = "1.0"
+gloo-net = "0.5.0"
+log = "0.4.21"
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
 ssr = [
@@ -42,13 +44,7 @@ ssr = [
     "dep:sqlx",
 ]
 
-# Defines a size-optimized profile for the WASM bundle in release mode
-[profile.wasm-release]
-inherits = "release"
-opt-level = 'z'
-lto = true
-codegen-units = 1
-panic = "abort"
+
 
 [package.metadata.leptos]
 # The name used by wasm-bindgen/cargo-leptos for the JS/WASM bundle. Defaults to the crate name

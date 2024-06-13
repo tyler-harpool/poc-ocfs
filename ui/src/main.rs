@@ -1,6 +1,4 @@
 
-pub mod components;
-pub mod pages;
 
 
 #[cfg(feature = "ssr")]

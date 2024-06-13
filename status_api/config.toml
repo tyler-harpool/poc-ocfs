@@ -1,0 +1,4 @@
+# [env]
+# DATABASE_URL="postgres://app_user:dev_only_pwd@localhost:5432/app_db"
+# RUST_LOG="debug"
+# MIGRATIONS_DIR="database_utils/migrations"

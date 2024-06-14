@@ -3,6 +3,8 @@ use leptos::*;
 #[component]
 pub fn Login() -> impl IntoView {
     view! {
+
+        
         <div class="bg-gradient-to-r from-cyan-800 to-blue-900 flex items-center justify-center min-h-screen flex-col">
         <div class="text-center mb-8">
             <h1 class="text-4xl font-extrabold text-white mb-2">"Open Case Filing System"</h1>

@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 
 
-pub fn judge(path: &str) -> String {
-    format!("http://localhost:3018/judges/{path}")
+pub fn judge() -> String {
+    format!("http://localhost:3018/judges")
 }
 
 #[cfg(not(feature = "ssr"))]

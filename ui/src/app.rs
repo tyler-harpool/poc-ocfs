@@ -51,8 +51,8 @@ pub fn App() -> impl IntoView {
                         // <Route path="/events" view=EventsCalendar />
                         // <Route path="/reports" view=ReportsList />
                         // <Route path="/settings" view=Settings />
-                        //  <Route path="/judges/:id" view=Judges />
-                        //  <Route path="/judges" view=AllJudges />
+                         <Route path="/judges/:id" view=Judges />
+                         <Route path="/judges" view=AllJudges />
                     </Routes>
                 </Router>
             

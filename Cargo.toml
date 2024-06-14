@@ -26,7 +26,8 @@ members = [
     "post_trial_api",
     "adr_api",
     "pdf_api",
-    "judges_api"
+    "judges_api",
+    "docket_api"
 ]
 resolver = "2" # Add this line
 # Defines a size-optimized profile for the WASM bundle in release mode

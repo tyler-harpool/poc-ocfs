@@ -4,7 +4,7 @@ use crate::components::card::Card; // Ensure this import is added
 #[component]
 pub fn Dashboard() -> impl IntoView {
     view! {
-        <div class="p-4">
+        <div class="p-4 text-black">
             <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <Card title="Total Cases".to_string() count="120".to_string() />

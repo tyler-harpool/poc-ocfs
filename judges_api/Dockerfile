@@ -20,10 +20,10 @@ FROM debian:buster-slim
 WORKDIR /usr/src/app
 
 # Copy the compiled binary from the builder stage
-COPY --from=builder /usr/src/app/target/release/status_api ./
+COPY --from=builder /usr/src/app/target/release/judges_api ./
 
 # Set the entrypoint to the binary
-ENTRYPOINT ["./status_api"]
+ENTRYPOINT ["./judges_api"]
 
 # Expose the port that the application will run on
 EXPOSE 3000

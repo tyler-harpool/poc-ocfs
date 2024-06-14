@@ -4,18 +4,18 @@ use axum::{
     response::IntoResponse,
     Json,
 };
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize,Serialize};
 use sqlx::{PgPool, Row};
 use tracing::{error, info};
 
-use crate::models::{Judges, UpdateJudges};
+use crate::models::{Judges, UpdateJudge};
 
 #[derive(Serialize)]
 struct DeleteResponse {
     message: String,
 }
 
-pub async fn create_Judges(
+pub async fn create_judge(
     headers: HeaderMap,
     Extension(pool): Extension<PgPool>,
     Json(input): Json<Judges>,
@@ -32,8 +32,8 @@ pub async fn create_Judges(
             nomination_date_1, committee_referral_date_1, hearing_date_1,
             judiciary_committee_action_1, committee_action_date_1, senate_vote_type_1,
             ayes_nays_1, confirmation_date_1, commission_date_1,
-            service_as_chief_Judges_begin_1, service_as_chief_Judges_end_1,
-            second_service_as_chief_Judges_begin_1, second_service_as_chief_Judges_end_1,
+            service_as_chief_judge_begin_1, service_as_chief_judge_end_1,
+            second_service_as_chief_judge_begin_1, second_service_as_chief_judge_end_1,
             senior_status_date_1, termination_1, termination_date_1,
             court_type_2, court_name_2, appointment_title_2,
             appointing_president_2, party_of_appointing_president_2, reappointing_president_2,
@@ -41,45 +41,45 @@ pub async fn create_Judges(
             statute_authorizing_new_seat_2, recess_appointment_date_2, nomination_date_2,
             committee_referral_date_2, hearing_date_2, judiciary_committee_action_2,
             committee_action_date_2, senate_vote_type_2, ayes_nays_2,
-            confirmation_date_2, commission_date_2, service_as_chief_Judges_begin_2,
-            service_as_chief_Judges_end_2, second_service_as_chief_Judges_begin_2,
-            second_service_as_chief_Judges_end_2, senior_status_date_2, termination_2,
+            confirmation_date_2, commission_date_2, service_as_chief_judge_begin_2,
+            service_as_chief_judge_end_2, second_service_as_chief_judge_begin_2,
+            second_service_as_chief_judge_end_2, senior_status_date_2, termination_2,
             termination_date_2, court_type_3, court_name_3, appointment_title_3,
             appointing_president_3, party_of_appointing_president_3, reappointing_president_3,
             party_of_reappointing_president_3, aba_rating_3, seat_id_3,
             statute_authorizing_new_seat_3, recess_appointment_date_3, nomination_date_3,
             committee_referral_date_3, hearing_date_3, judiciary_committee_action_3,
             committee_action_date_3, senate_vote_type_3, ayes_nays_3,
-            confirmation_date_3, commission_date_3, service_as_chief_Judges_begin_3,
-            service_as_chief_Judges_end_3, second_service_as_chief_Judges_begin_3,
-            second_service_as_chief_Judges_end_3, senior_status_date_3, termination_3,
+            confirmation_date_3, commission_date_3, service_as_chief_judge_begin_3,
+            service_as_chief_judge_end_3, second_service_as_chief_judge_begin_3,
+            second_service_as_chief_judge_end_3, senior_status_date_3, termination_3,
             termination_date_3, court_type_4, court_name_4, appointment_title_4,
             appointing_president_4, party_of_appointing_president_4, reappointing_president_4,
             party_of_reappointing_president_4, aba_rating_4, seat_id_4,
             statute_authorizing_new_seat_4, recess_appointment_date_4, nomination_date_4,
             committee_referral_date_4, hearing_date_4, judiciary_committee_action_4,
             committee_action_date_4, senate_vote_type_4, ayes_nays_4,
-            confirmation_date_4, commission_date_4, service_as_chief_Judges_begin_4,
-            service_as_chief_Judges_end_4, second_service_as_chief_Judges_begin_4,
-            second_service_as_chief_Judges_end_4, senior_status_date_4, termination_4,
+            confirmation_date_4, commission_date_4, service_as_chief_judge_begin_4,
+            service_as_chief_judge_end_4, second_service_as_chief_judge_begin_4,
+            second_service_as_chief_judge_end_4, senior_status_date_4, termination_4,
             termination_date_4, court_type_5, court_name_5, appointment_title_5,
             appointing_president_5, party_of_appointing_president_5, reappointing_president_5,
             party_of_reappointing_president_5, aba_rating_5, seat_id_5,
             statute_authorizing_new_seat_5, recess_appointment_date_5, nomination_date_5,
             committee_referral_date_5, hearing_date_5, judiciary_committee_action_5,
             committee_action_date_5, senate_vote_type_5, ayes_nays_5,
-            confirmation_date_5, commission_date_5, service_as_chief_Judges_begin_5,
-            service_as_chief_Judges_end_5, second_service_as_chief_Judges_begin_5,
-            second_service_as_chief_Judges_end_5, senior_status_date_5, termination_5,
+            confirmation_date_5, commission_date_5, service_as_chief_judge_begin_5,
+            service_as_chief_judge_end_5, second_service_as_chief_judge_begin_5,
+            second_service_as_chief_judge_end_5, senior_status_date_5, termination_5,
             termination_date_5, court_type_6, court_name_6, appointment_title_6,
             appointing_president_6, party_of_appointing_president_6, reappointing_president_6,
             party_of_reappointing_president_6, aba_rating_6, seat_id_6,
             statute_authorizing_new_seat_6, recess_appointment_date_6, nomination_date_6,
             committee_referral_date_6, hearing_date_6, judiciary_committee_action_6,
             committee_action_date_6, senate_vote_type_6, ayes_nays_6,
-            confirmation_date_6, commission_date_6, service_as_chief_Judges_begin_6,
-            service_as_chief_Judges_end_6, second_service_as_chief_Judges_begin_6,
-            second_service_as_chief_Judges_end_6, senior_status_date_6, termination_6,
+            confirmation_date_6, commission_date_6, service_as_chief_judge_begin_6,
+            service_as_chief_judge_end_6, second_service_as_chief_judge_begin_6,
+            second_service_as_chief_judge_end_6, senior_status_date_6, termination_6,
             termination_date_6, other_federal_judicial_service_1, other_federal_judicial_service_2,
             other_federal_judicial_service_3, other_federal_judicial_service_4,
             school_1, degree_1, degree_year_1, school_2, degree_2, degree_year_2,
@@ -146,10 +146,10 @@ pub async fn create_Judges(
         .bind(&input.ayes_nays_1)
         .bind(&input.confirmation_date_1)
         .bind(&input.commission_date_1)
-        .bind(&input.service_as_chief_Judges_begin_1)
-        .bind(&input.service_as_chief_Judges_end_1)
-        .bind(&input.second_service_as_chief_Judges_begin_1)
-        .bind(&input.second_service_as_chief_Judges_end_1)
+        .bind(&input.service_as_chief_judge_begin_1)
+        .bind(&input.service_as_chief_judge_end_1)
+        .bind(&input.second_service_as_chief_judge_begin_1)
+        .bind(&input.second_service_as_chief_judge_end_1)
         .bind(&input.senior_status_date_1)
         .bind(&input.termination_1)
         .bind(&input.termination_date_1)
@@ -173,10 +173,10 @@ pub async fn create_Judges(
         .bind(&input.ayes_nays_2)
         .bind(&input.confirmation_date_2)
         .bind(&input.commission_date_2)
-        .bind(&input.service_as_chief_Judges_begin_2)
-        .bind(&input.service_as_chief_Judges_end_2)
-        .bind(&input.second_service_as_chief_Judges_begin_2)
-        .bind(&input.second_service_as_chief_Judges_end_2)
+        .bind(&input.service_as_chief_judge_begin_2)
+        .bind(&input.service_as_chief_judge_end_2)
+        .bind(&input.second_service_as_chief_judge_begin_2)
+        .bind(&input.second_service_as_chief_judge_end_2)
         .bind(&input.senior_status_date_2)
         .bind(&input.termination_2)
         .bind(&input.termination_date_2)
@@ -200,10 +200,10 @@ pub async fn create_Judges(
         .bind(&input.ayes_nays_3)
         .bind(&input.confirmation_date_3)
         .bind(&input.commission_date_3)
-        .bind(&input.service_as_chief_Judges_begin_3)
-        .bind(&input.service_as_chief_Judges_end_3)
-        .bind(&input.second_service_as_chief_Judges_begin_3)
-        .bind(&input.second_service_as_chief_Judges_end_3)
+        .bind(&input.service_as_chief_judge_begin_3)
+        .bind(&input.service_as_chief_judge_end_3)
+        .bind(&input.second_service_as_chief_judge_begin_3)
+        .bind(&input.second_service_as_chief_judge_end_3)
         .bind(&input.senior_status_date_3)
         .bind(&input.termination_3)
         .bind(&input.termination_date_3)
@@ -227,10 +227,10 @@ pub async fn create_Judges(
         .bind(&input.ayes_nays_4)
         .bind(&input.confirmation_date_4)
         .bind(&input.commission_date_4)
-        .bind(&input.service_as_chief_Judges_begin_4)
-        .bind(&input.service_as_chief_Judges_end_4)
-        .bind(&input.second_service_as_chief_Judges_begin_4)
-        .bind(&input.second_service_as_chief_Judges_end_4)
+        .bind(&input.service_as_chief_judge_begin_4)
+        .bind(&input.service_as_chief_judge_end_4)
+        .bind(&input.second_service_as_chief_judge_begin_4)
+        .bind(&input.second_service_as_chief_judge_end_4)
         .bind(&input.senior_status_date_4)
         .bind(&input.termination_4)
         .bind(&input.termination_date_4)
@@ -254,10 +254,10 @@ pub async fn create_Judges(
         .bind(&input.ayes_nays_5)
         .bind(&input.confirmation_date_5)
         .bind(&input.commission_date_5)
-        .bind(&input.service_as_chief_Judges_begin_5)
-        .bind(&input.service_as_chief_Judges_end_5)
-        .bind(&input.second_service_as_chief_Judges_begin_5)
-        .bind(&input.second_service_as_chief_Judges_end_5)
+        .bind(&input.service_as_chief_judge_begin_5)
+        .bind(&input.service_as_chief_judge_end_5)
+        .bind(&input.second_service_as_chief_judge_begin_5)
+        .bind(&input.second_service_as_chief_judge_end_5)
         .bind(&input.senior_status_date_5)
         .bind(&input.termination_5)
         .bind(&input.termination_date_5)
@@ -281,10 +281,10 @@ pub async fn create_Judges(
         .bind(&input.ayes_nays_6)
         .bind(&input.confirmation_date_6)
         .bind(&input.commission_date_6)
-        .bind(&input.service_as_chief_Judges_begin_6)
-        .bind(&input.service_as_chief_Judges_end_6)
-        .bind(&input.second_service_as_chief_Judges_begin_6)
-        .bind(&input.second_service_as_chief_Judges_end_6)
+        .bind(&input.service_as_chief_judge_begin_6)
+        .bind(&input.service_as_chief_judge_end_6)
+        .bind(&input.second_service_as_chief_judge_begin_6)
+        .bind(&input.second_service_as_chief_judge_end_6)
         .bind(&input.senior_status_date_6)
         .bind(&input.termination_6)
         .bind(&input.termination_date_6)
@@ -356,10 +356,10 @@ pub async fn create_Judges(
                 ayes_nays_1: input.ayes_nays_1.clone(),
                 confirmation_date_1: input.confirmation_date_1.clone(),
                 commission_date_1: input.commission_date_1.clone(),
-                // service_as_chief_Judges_begin_1: input.service_as_chief_Judges_begin_1.clone(),
-                // service_as_chief_Judges_end_1: input.service_as_chief_Judges_end_1.clone(),
-                // second_service_as_chief_Judges_begin_1: input.second_service_as_chief_Judges_begin_1.clone(),
-                // second_service_as_chief_Judges_end_1: input.second_service_as_chief_Judges_end_1.clone(),
+                service_as_chief_judge_begin_1: input.service_as_chief_judge_begin_1.clone(),
+                service_as_chief_judge_end_1: input.service_as_chief_judge_end_1.clone(),
+                second_service_as_chief_judge_begin_1: input.second_service_as_chief_judge_begin_1.clone(),
+                second_service_as_chief_judge_end_1: input.second_service_as_chief_judge_end_1.clone(),
                 senior_status_date_1: input.senior_status_date_1.clone(),
                 termination_1: input.termination_1.clone(),
                 termination_date_1: input.termination_date_1.clone(),
@@ -383,10 +383,10 @@ pub async fn create_Judges(
                 ayes_nays_2: input.ayes_nays_2.clone(),
                 confirmation_date_2: input.confirmation_date_2.clone(),
                 commission_date_2: input.commission_date_2.clone(),
-                // service_as_chief_Judges_begin_2: input.service_as_chief_Judges_begin_2.clone(),
-                // service_as_chief_Judges_end_2: input.service_as_chief_Judges_end_2.clone(),
-                // second_service_as_chief_Judges_begin_2: input.second_service_as_chief_Judges_begin_2.clone(),
-                // second_service_as_chief_Judges_end_2: input.second_service_as_chief_Judges_end_2.clone(),
+                service_as_chief_judge_begin_2: input.service_as_chief_judge_begin_2.clone(),
+                service_as_chief_judge_end_2: input.service_as_chief_judge_end_2.clone(),
+                second_service_as_chief_judge_begin_2: input.second_service_as_chief_judge_begin_2.clone(),
+                second_service_as_chief_judge_end_2: input.second_service_as_chief_judge_end_2.clone(),
                 senior_status_date_2: input.senior_status_date_2.clone(),
                 termination_2: input.termination_2.clone(),
                 termination_date_2: input.termination_date_2.clone(),
@@ -410,10 +410,10 @@ pub async fn create_Judges(
                 ayes_nays_3: input.ayes_nays_3.clone(),
                 confirmation_date_3: input.confirmation_date_3.clone(),
                 commission_date_3: input.commission_date_3.clone(),
-                // service_as_chief_Judges_begin_3: input.service_as_chief_Judges_begin_3.clone(),
-                // service_as_chief_Judges_end_3: input.service_as_chief_Judges_end_3.clone(),
-                // second_service_as_chief_Judges_begin_3: input.second_service_as_chief_Judges_begin_3.clone(),
-                // second_service_as_chief_Judges_end_3: input.second_service_as_chief_Judges_end_3.clone(),
+                service_as_chief_judge_begin_3: input.service_as_chief_judge_begin_3.clone(),
+                service_as_chief_judge_end_3: input.service_as_chief_judge_end_3.clone(),
+                second_service_as_chief_judge_begin_3: input.second_service_as_chief_judge_begin_3.clone(),
+                second_service_as_chief_judge_end_3: input.second_service_as_chief_judge_end_3.clone(),
                 senior_status_date_3: input.senior_status_date_3.clone(),
                 termination_3: input.termination_3.clone(),
                 termination_date_3: input.termination_date_3.clone(),
@@ -437,10 +437,10 @@ pub async fn create_Judges(
                 ayes_nays_4: input.ayes_nays_4.clone(),
                 confirmation_date_4: input.confirmation_date_4.clone(),
                 commission_date_4: input.commission_date_4.clone(),
-                // service_as_chief_Judges_begin_4: input.service_as_chief_Judges_begin_4.clone(),
-                // service_as_chief_Judges_end_4: input.service_as_chief_Judges_end_4.clone(),
-                // second_service_as_chief_Judges_begin_4: input.second_service_as_chief_Judges_begin_4.clone(),
-                // second_service_as_chief_Judges_end_4: input.second_service_as_chief_Judges_end_4.clone(),
+                service_as_chief_judge_begin_4: input.service_as_chief_judge_begin_4.clone(),
+                service_as_chief_judge_end_4: input.service_as_chief_judge_end_4.clone(),
+                second_service_as_chief_judge_begin_4: input.second_service_as_chief_judge_begin_4.clone(),
+                second_service_as_chief_judge_end_4: input.second_service_as_chief_judge_end_4.clone(),
                 senior_status_date_4: input.senior_status_date_4.clone(),
                 termination_4: input.termination_4.clone(),
                 termination_date_4: input.termination_date_4.clone(),
@@ -464,10 +464,10 @@ pub async fn create_Judges(
                 ayes_nays_5: input.ayes_nays_5.clone(),
                 confirmation_date_5: input.confirmation_date_5.clone(),
                 commission_date_5: input.commission_date_5.clone(),
-                // service_as_chief_Judges_begin_5: input.service_as_chief_Judges_begin_5.clone(),
-                // service_as_chief_Judges_end_5: input.service_as_chief_Judges_end_5.clone(),
-                // second_service_as_chief_Judges_begin_5: input.second_service_as_chief_Judges_begin_5.clone(),
-                // second_service_as_chief_Judges_end_5: input.second_service_as_chief_Judges_end_5.clone(),
+                service_as_chief_judge_begin_5: input.service_as_chief_judge_begin_5.clone(),
+                service_as_chief_judge_end_5: input.service_as_chief_judge_end_5.clone(),
+                second_service_as_chief_judge_begin_5: input.second_service_as_chief_judge_begin_5.clone(),
+                second_service_as_chief_judge_end_5: input.second_service_as_chief_judge_end_5.clone(),
                 senior_status_date_5: input.senior_status_date_5.clone(),
                 termination_5: input.termination_5.clone(),
                 termination_date_5: input.termination_date_5.clone(),
@@ -491,10 +491,10 @@ pub async fn create_Judges(
                 ayes_nays_6: input.ayes_nays_6.clone(),
                 confirmation_date_6: input.confirmation_date_6.clone(),
                 commission_date_6: input.commission_date_6.clone(),
-                // service_as_chief_Judges_begin_6: input.service_as_chief_Judges_begin_6.clone(),
-                // service_as_chief_Judges_end_6: input.service_as_chief_Judges_end_6.clone(),
-                // second_service_as_chief_Judges_begin_6: input.second_service_as_chief_Judges_begin_6.clone(),
-                // second_service_as_chief_Judges_end_6: input.second_service_as_chief_Judges_end_6.clone(),
+                service_as_chief_judge_begin_6: input.service_as_chief_judge_begin_6.clone(),
+                service_as_chief_judge_end_6: input.service_as_chief_judge_end_6.clone(),
+                second_service_as_chief_judge_begin_6: input.second_service_as_chief_judge_begin_6.clone(),
+                second_service_as_chief_judge_end_6: input.second_service_as_chief_judge_end_6.clone(),
                 senior_status_date_6: input.senior_status_date_6.clone(),
                 termination_6: input.termination_6.clone(),
                 termination_date_6: input.termination_date_6.clone(),
@@ -524,19 +524,19 @@ pub async fn create_Judges(
             (StatusCode::CREATED, Json(response_data)).into_response()
         }
         Err(e) => {
-            error!("Failed to create Judges: {:?}", e);
+            error!("Failed to create Judge: {:?}", e);
             StatusCode::INTERNAL_SERVER_ERROR.into_response()
         }
     }
 }
 
-pub async fn update_Judges(
+pub async fn update_judge(
     _headers: HeaderMap,
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
-    Json(input): Json<UpdateJudges>,
+    Json(input): Json<UpdateJudge>,
 ) -> impl IntoResponse {
-    info!("Updating Judges with ID: {}", id);
+    info!("Updating Judge with ID: {}", id);
 
     let query = r#"
         UPDATE Judges
@@ -579,10 +579,10 @@ pub async fn update_Judges(
             ayes_nays_1 = COALESCE($36, ayes_nays_1),
             confirmation_date_1 = COALESCE($37, confirmation_date_1),
             commission_date_1 = COALESCE($38, commission_date_1),
-            service_as_chief_Judges_begin_1 = COALESCE($39, service_as_chief_Judges_begin_1),
-            service_as_chief_Judges_end_1 = COALESCE($40, service_as_chief_Judges_end_1),
-            second_service_as_chief_Judges_begin_1 = COALESCE($41, second_service_as_chief_Judges_begin_1),
-            second_service_as_chief_Judges_end_1 = COALESCE($42, second_service_as_chief_Judges_end_1),
+            service_as_chief_judge_begin_1 = COALESCE($39, service_as_chief_judge_begin_1),
+            service_as_chief_judge_end_1 = COALESCE($40, service_as_chief_judge_end_1),
+            second_service_as_chief_judge_begin_1 = COALESCE($41, second_service_as_chief_judge_begin_1),
+            second_service_as_chief_judge_end_1 = COALESCE($42, second_service_as_chief_judge_end_1),
             senior_status_date_1 = COALESCE($43, senior_status_date_1),
             termination_1 = COALESCE($44, termination_1),
             termination_date_1 = COALESCE($45, termination_date_1),
@@ -606,10 +606,10 @@ pub async fn update_Judges(
             ayes_nays_2 = COALESCE($63, ayes_nays_2),
             confirmation_date_2 = COALESCE($64, confirmation_date_2),
             commission_date_2 = COALESCE($65, commission_date_2),
-            service_as_chief_Judges_begin_2 = COALESCE($66, service_as_chief_Judges_begin_2),
-            service_as_chief_Judges_end_2 = COALESCE($67, service_as_chief_Judges_end_2),
-            second_service_as_chief_Judges_begin_2 = COALESCE($68, second_service_as_chief_Judges_begin_2),
-            second_service_as_chief_Judges_end_2 = COALESCE($69, second_service_as_chief_Judges_end_2),
+            service_as_chief_judge_begin_2 = COALESCE($66, service_as_chief_judge_begin_2),
+            service_as_chief_judge_end_2 = COALESCE($67, service_as_chief_judge_end_2),
+            second_service_as_chief_judge_begin_2 = COALESCE($68, second_service_as_chief_judge_begin_2),
+            second_service_as_chief_judge_end_2 = COALESCE($69, second_service_as_chief_judge_end_2),
             senior_status_date_2 = COALESCE($70, senior_status_date_2),
             termination_2 = COALESCE($71, termination_2),
             termination_date_2 = COALESCE($72, termination_date_2),
@@ -633,10 +633,10 @@ pub async fn update_Judges(
             ayes_nays_3 = COALESCE($90, ayes_nays_3),
             confirmation_date_3 = COALESCE($91, confirmation_date_3),
             commission_date_3 = COALESCE($92, commission_date_3),
-            service_as_chief_Judges_begin_3 = COALESCE($93, service_as_chief_Judges_begin_3),
-            service_as_chief_Judges_end_3 = COALESCE($94, service_as_chief_Judges_end_3),
-            second_service_as_chief_Judges_begin_3 = COALESCE($95, second_service_as_chief_Judges_begin_3),
-            second_service_as_chief_Judges_end_3 = COALESCE($96, second_service_as_chief_Judges_end_3),
+            service_as_chief_judge_begin_3 = COALESCE($93, service_as_chief_judge_begin_3),
+            service_as_chief_judge_end_3 = COALESCE($94, service_as_chief_judge_end_3),
+            second_service_as_chief_judge_begin_3 = COALESCE($95, second_service_as_chief_judge_begin_3),
+            second_service_as_chief_judge_end_3 = COALESCE($96, second_service_as_chief_judge_end_3),
             senior_status_date_3 = COALESCE($97, senior_status_date_3),
             termination_3 = COALESCE($98, termination_3),
             termination_date_3 = COALESCE($99, termination_date_3),
@@ -660,10 +660,10 @@ pub async fn update_Judges(
             ayes_nays_4 = COALESCE($117, ayes_nays_4),
             confirmation_date_4 = COALESCE($118, confirmation_date_4),
             commission_date_4 = COALESCE($119, commission_date_4),
-            service_as_chief_Judges_begin_4 = COALESCE($120, service_as_chief_Judges_begin_4),
-            service_as_chief_Judges_end_4 = COALESCE($121, service_as_chief_Judges_end_4),
-            second_service_as_chief_Judges_begin_4 = COALESCE($122, second_service_as_chief_Judges_begin_4),
-            second_service_as_chief_Judges_end_4 = COALESCE($123, second_service_as_chief_Judges_end_4),
+            service_as_chief_judge_begin_4 = COALESCE($120, service_as_chief_judge_begin_4),
+            service_as_chief_judge_end_4 = COALESCE($121, service_as_chief_judge_end_4),
+            second_service_as_chief_judge_begin_4 = COALESCE($122, second_service_as_chief_judge_begin_4),
+            second_service_as_chief_judge_end_4 = COALESCE($123, second_service_as_chief_judge_end_4),
             senior_status_date_4 = COALESCE($124, senior_status_date_4),
             termination_4 = COALESCE($125, termination_4),
             termination_date_4 = COALESCE($126, termination_date_4),
@@ -687,10 +687,10 @@ pub async fn update_Judges(
             ayes_nays_5 = COALESCE($144, ayes_nays_5),
             confirmation_date_5 = COALESCE($145, confirmation_date_5),
             commission_date_5 = COALESCE($146, commission_date_5),
-            service_as_chief_Judges_begin_5 = COALESCE($147, service_as_chief_Judges_begin_5),
-            service_as_chief_Judges_end_5 = COALESCE($148, service_as_chief_Judges_end_5),
-            second_service_as_chief_Judges_begin_5 = COALESCE($149, second_service_as_chief_Judges_begin_5),
-            second_service_as_chief_Judges_end_5 = COALESCE($150, second_service_as_chief_Judges_end_5),
+            service_as_chief_judge_begin_5 = COALESCE($147, service_as_chief_judge_begin_5),
+            service_as_chief_judge_end_5 = COALESCE($148, service_as_chief_judge_end_5),
+            second_service_as_chief_judge_begin_5 = COALESCE($149, second_service_as_chief_judge_begin_5),
+            second_service_as_chief_judge_end_5 = COALESCE($150, second_service_as_chief_judge_end_5),
             senior_status_date_5 = COALESCE($151, senior_status_date_5),
             termination_5 = COALESCE($152, termination_5),
             termination_date_5 = COALESCE($153, termination_date_5),
@@ -714,10 +714,10 @@ pub async fn update_Judges(
             ayes_nays_6 = COALESCE($171, ayes_nays_6),
             confirmation_date_6 = COALESCE($172, confirmation_date_6),
             commission_date_6 = COALESCE($173, commission_date_6),
-            service_as_chief_Judges_begin_6 = COALESCE($174, service_as_chief_Judges_begin_6),
-            service_as_chief_Judges_end_6 = COALESCE($175, service_as_chief_Judges_end_6),
-            second_service_as_chief_Judges_begin_6 = COALESCE($176, second_service_as_chief_Judges_begin_6),
-            second_service_as_chief_Judges_end_6 = COALESCE($177, second_service_as_chief_Judges_end_6),
+            service_as_chief_judge_begin_6 = COALESCE($174, service_as_chief_judge_begin_6),
+            service_as_chief_judge_end_6 = COALESCE($175, service_as_chief_judge_end_6),
+            second_service_as_chief_judge_begin_6 = COALESCE($176, second_service_as_chief_judge_begin_6),
+            second_service_as_chief_judge_end_6 = COALESCE($177, second_service_as_chief_judge_end_6),
             senior_status_date_6 = COALESCE($178, senior_status_date_6),
             termination_6 = COALESCE($179, termination_6),
             termination_date_6 = COALESCE($180, termination_date_6),
@@ -784,10 +784,10 @@ pub async fn update_Judges(
         .bind(input.ayes_nays_1)
         .bind(input.confirmation_date_1)
         .bind(input.commission_date_1)
-        .bind(input.service_as_chief_Judges_begin_1)
-        .bind(input.service_as_chief_Judges_end_1)
-        .bind(input.second_service_as_chief_Judges_begin_1)
-        .bind(input.second_service_as_chief_Judges_end_1)
+        .bind(input.service_as_chief_judge_begin_1)
+        .bind(input.service_as_chief_judge_end_1)
+        .bind(input.second_service_as_chief_judge_begin_1)
+        .bind(input.second_service_as_chief_judge_end_1)
         .bind(input.senior_status_date_1)
         .bind(input.termination_1)
         .bind(input.termination_date_1)
@@ -811,10 +811,10 @@ pub async fn update_Judges(
         .bind(input.ayes_nays_2)
         .bind(input.confirmation_date_2)
         .bind(input.commission_date_2)
-        .bind(input.service_as_chief_Judges_begin_2)
-        .bind(input.service_as_chief_Judges_end_2)
-        .bind(input.second_service_as_chief_Judges_begin_2)
-        .bind(input.second_service_as_chief_Judges_end_2)
+        .bind(input.service_as_chief_judge_begin_2)
+        .bind(input.service_as_chief_judge_end_2)
+        .bind(input.second_service_as_chief_judge_begin_2)
+        .bind(input.second_service_as_chief_judge_end_2)
         .bind(input.senior_status_date_2)
         .bind(input.termination_2)
         .bind(input.termination_date_2)
@@ -838,10 +838,10 @@ pub async fn update_Judges(
         .bind(input.ayes_nays_3)
         .bind(input.confirmation_date_3)
         .bind(input.commission_date_3)
-        .bind(input.service_as_chief_Judges_begin_3)
-        .bind(input.service_as_chief_Judges_end_3)
-        .bind(input.second_service_as_chief_Judges_begin_3)
-        .bind(input.second_service_as_chief_Judges_end_3)
+        .bind(input.service_as_chief_judge_begin_3)
+        .bind(input.service_as_chief_judge_end_3)
+        .bind(input.second_service_as_chief_judge_begin_3)
+        .bind(input.second_service_as_chief_judge_end_3)
         .bind(input.senior_status_date_3)
         .bind(input.termination_3)
         .bind(input.termination_date_3)
@@ -865,10 +865,10 @@ pub async fn update_Judges(
         .bind(input.ayes_nays_4)
         .bind(input.confirmation_date_4)
         .bind(input.commission_date_4)
-        .bind(input.service_as_chief_Judges_begin_4)
-        .bind(input.service_as_chief_Judges_end_4)
-        .bind(input.second_service_as_chief_Judges_begin_4)
-        .bind(input.second_service_as_chief_Judges_end_4)
+        .bind(input.service_as_chief_judge_begin_4)
+        .bind(input.service_as_chief_judge_end_4)
+        .bind(input.second_service_as_chief_judge_begin_4)
+        .bind(input.second_service_as_chief_judge_end_4)
         .bind(input.senior_status_date_4)
         .bind(input.termination_4)
         .bind(input.termination_date_4)
@@ -892,10 +892,10 @@ pub async fn update_Judges(
         .bind(input.ayes_nays_5)
         .bind(input.confirmation_date_5)
         .bind(input.commission_date_5)
-        .bind(input.service_as_chief_Judges_begin_5)
-        .bind(input.service_as_chief_Judges_end_5)
-        .bind(input.second_service_as_chief_Judges_begin_5)
-        .bind(input.second_service_as_chief_Judges_end_5)
+        .bind(input.service_as_chief_judge_begin_5)
+        .bind(input.service_as_chief_judge_end_5)
+        .bind(input.second_service_as_chief_judge_begin_5)
+        .bind(input.second_service_as_chief_judge_end_5)
         .bind(input.senior_status_date_5)
         .bind(input.termination_5)
         .bind(input.termination_date_5)
@@ -919,10 +919,10 @@ pub async fn update_Judges(
         .bind(input.ayes_nays_6)
         .bind(input.confirmation_date_6)
         .bind(input.commission_date_6)
-        .bind(input.service_as_chief_Judges_begin_6)
-        .bind(input.service_as_chief_Judges_end_6)
-        .bind(input.second_service_as_chief_Judges_begin_6)
-        .bind(input.second_service_as_chief_Judges_end_6)
+        .bind(input.service_as_chief_judge_begin_6)
+        .bind(input.service_as_chief_judge_end_6)
+        .bind(input.second_service_as_chief_judge_begin_6)
+        .bind(input.second_service_as_chief_judge_end_6)
         .bind(input.senior_status_date_6)
         .bind(input.termination_6)
         .bind(input.termination_date_6)
@@ -953,21 +953,21 @@ pub async fn update_Judges(
     {
         Ok(result) => {
             if result.rows_affected() == 0 {
-                error!("No Judges found with ID: {}", id);
-                (StatusCode::NOT_FOUND, "No Judges found").into_response()
+                error!("No Judge found with ID: {}", id);
+                (StatusCode::NOT_FOUND, "No Judge found").into_response()
             } else {
-                info!("Successfully updated Judges with ID: {}", id);
-                (StatusCode::OK, "Judges updated successfully").into_response()
+                info!("Successfully updated Judge with ID: {}", id);
+                (StatusCode::OK, "Judge updated successfully").into_response()
             }
         }
         Err(e) => {
-            error!("Failed to update Judges with ID: {}: {:?}", id, e);
-            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to update Judges").into_response()
+            error!("Failed to update Judge with ID: {}: {:?}", id, e);
+            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to update Judge").into_response()
         }
     }
 }
 
-pub async fn get_Judges(
+pub async fn get_judge(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
@@ -978,15 +978,15 @@ pub async fn get_Judges(
         .fetch_one(&pool)
         .await
     {
-        Ok(Judges) => (StatusCode::OK, Json(Judges)).into_response(),
+        Ok(judge) => (StatusCode::OK, Json(judge)).into_response(),
         Err(e) => {
-            error!("Failed to fetch Judges for id {}: {:?}", id, e);
-            (StatusCode::NOT_FOUND, Json("Judges not found")).into_response()
+            error!("Failed to fetch Judge for id {}: {:?}", id, e);
+            (StatusCode::NOT_FOUND, Json("Judge not found")).into_response()
         }
     }
 }
 
-pub async fn delete_Judges(
+pub async fn delete_judge(
     Extension(pool): Extension<PgPool>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
@@ -996,34 +996,34 @@ pub async fn delete_Judges(
         Ok(result) => {
             let affected = result.rows_affected();
             if affected == 0 {
-                error!("Judges not found with ID: {}", id);
+                error!("Judge not found with ID: {}", id);
                 (
                     StatusCode::NOT_FOUND,
                     Json(DeleteResponse {
-                        message: format!("Judges not found with ID: {}", id),
+                        message: format!("Judge not found with ID: {}", id),
                     }),
                 )
                     .into_response()
             } else {
                 info!(
-                    "Successfully deleted {} Judges record(s) with ID: {}",
+                    "Successfully deleted {} Judge record(s) with ID: {}",
                     affected, id
                 );
                 (
                     StatusCode::NO_CONTENT,
                     Json(DeleteResponse {
-                        message: format!("Successfully deleted Judges with ID: {}", id),
+                        message: format!("Successfully deleted Judge with ID: {}", id),
                     }),
                 )
                     .into_response()
             }
         }
         Err(e) => {
-            error!("Failed to delete Judges with ID: {}: {:?}", id, e);
+            error!("Failed to delete Judge with ID: {}: {:?}", id, e);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(DeleteResponse {
-                    message: format!("Failed to delete Judges with ID: {}", id),
+                    message: format!("Failed to delete Judge with ID: {}", id),
                 }),
             )
                 .into_response()
@@ -1031,18 +1031,18 @@ pub async fn delete_Judges(
     }
 }
 
-pub async fn list_all_Judges(
-    _headers: HeaderMap, // Prefix with an underscore if not used
+pub async fn list_all_judges(
+    _headers: HeaderMap,
     Extension(pool): Extension<PgPool>,
 ) -> impl IntoResponse {
-    let query = "SELECT * FROM Judges LIMIT 0, 100";
+    let query = "SELECT * FROM Judges LIMIT 1000";
 
     match sqlx::query_as::<_, Judges>(query).fetch_all(&pool).await {
-        Ok(Judges_list) => {
-            let total_records = Judges_list.len();
+        Ok(judges_list) => {
+            let total_records = judges_list.len();
             info!("Listing all Judges: total records = {}", total_records);
 
-            (StatusCode::OK, Json(Judges_list)).into_response()
+            (StatusCode::OK, Json(judges_list)).into_response()
         }
         Err(e) => {
             error!("Failed to fetch Judges list: {:?}", e);

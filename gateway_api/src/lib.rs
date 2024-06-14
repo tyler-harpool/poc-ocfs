@@ -41,10 +41,14 @@ pub fn create_app() -> Router {
         .route("/api/probate", get(handlers::forward_probate))
         .route("/api/sanctions", get(handlers::forward_sanctions))
         .route("/api/status", get(handlers::forward_status))
+        .route("/api/pdf", get(handlers::forward_pdf))
+        .route("/api/judges", get(handlers::forward_judges))
+
+
 }
 
 pub async fn start_server(app: Router) {
-    let addr = SocketAddr::from(([0, 0, 0, 0], 8001));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 8000));
     let listener = TcpListener::bind(addr).await.unwrap();
     println!("Listening on {}", addr);
     axum::serve(listener, app.into_make_service())

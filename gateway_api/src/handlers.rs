@@ -104,5 +104,5 @@ pub async fn forward_pdf() -> Result<Json<Value>, StatusCode> {
 }
 
 pub async fn forward_judges() -> Result<Json<Value>, StatusCode> {
-    forward_request("/ocr", 3018).await
+    forward_request("/judges", 3018).await
 }

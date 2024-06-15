@@ -256,12 +256,3 @@ pub struct Judges {
     pub other_nominations_recess_appointments: Option<String>,
 }
 
-
-
-#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone)]
-pub struct User {
-    pub created: usize,
-    pub id: String,
-    pub karma: i32,
-    pub about: Option<String>,
-}

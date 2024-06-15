@@ -1,10 +1,11 @@
 use axum::{
-    extract::{Extension, Path},
+    extract::{Extension, Path, Query},
     http::{HeaderMap, StatusCode},
     response::IntoResponse,
     Json,
 };
 use serde::Serialize;
+use serde::Deserialize;
 use sqlx::{PgPool, Row};
 use tracing::{error, info};
 
@@ -13,6 +14,12 @@ use crate::models::{Judges, UpdateJudge};
 #[derive(Serialize)]
 struct DeleteResponse {
     message: String,
+}
+
+#[derive(Deserialize)]
+pub struct DateRangeQuery {
+    pub start_date: String,
+    pub end_date: String,
 }
 
 pub async fn create_judge(
@@ -1051,6 +1058,211 @@ pub async fn list_all_judges(
                 Json("Failed to fetch Judges list"),
             )
                 .into_response()
+        }
+    }
+}
+
+
+
+
+pub async fn get_judges_by_nomination_date_range(
+    Extension(pool): Extension<PgPool>,
+    Query(date_range): Query<DateRangeQuery>,
+) -> impl IntoResponse {
+    let query = "SELECT * FROM Judges WHERE nomination_date_1 BETWEEN $1::timestamp AND $2::timestamp";
+
+    match sqlx::query_as::<_, Judges>(query)
+        .bind(&date_range.start_date)
+        .bind(&date_range.end_date)
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(judges_list) => {
+            let total_records = judges_list.len();
+            info!(
+                "Listing Judges for nomination date range {} to {}: total records = {}",
+                date_range.start_date, date_range.end_date, total_records
+            );
+
+            (StatusCode::OK, Json(judges_list)).into_response()
+        }
+        Err(e) => {
+            error!(
+                "Failed to fetch Judges for nomination date range {} to {}: {:?}",
+                date_range.start_date, date_range.end_date, e
+            );
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json("Failed to fetch Judges list"),
+            )
+                .into_response()
+        }
+    }
+}
+
+
+pub async fn get_judges_by_professional_career(
+    Path(keyword): Path<String>,
+    Extension(pool): Extension<PgPool>,
+) -> impl IntoResponse {
+    let query = "SELECT * FROM Judges WHERE professional_career ILIKE '%' || $1 || '%'";
+
+    match sqlx::query_as::<_, Judges>(query)
+        .bind(&keyword)
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(judges_list) => {
+            let total_records = judges_list.len();
+            info!(
+                "Listing Judges for professional career containing {}: total records = {}",
+                keyword, total_records
+            );
+
+            (StatusCode::OK, Json(judges_list)).into_response()
+        }
+        Err(e) => {
+            error!(
+                "Failed to fetch Judges for professional career containing {}: {:?}",
+                keyword, e
+            );
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json("Failed to fetch Judges list"),
+            )
+                .into_response()
+        }
+    }
+}
+
+
+pub async fn get_judges_by_court(
+    Extension(pool): Extension<PgPool>,
+    Path(court_name): Path<String>,
+) -> impl IntoResponse {
+    let query = "
+        SELECT * FROM Judges 
+        WHERE court_name_1 = $1 OR court_name_2 = $1 OR court_name_3 = $1 OR court_name_4 = $1 OR court_name_5 = $1 OR court_name_6 = $1
+    ";
+
+    let court_name_clone = court_name.clone(); // Clone the value to use in the error log
+    match sqlx::query_as::<_, Judges>(query)
+        .bind(court_name)
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(judges) => (StatusCode::OK, Json(judges)).into_response(),
+        Err(e) => {
+            error!("Failed to fetch Judges for court {}: {:?}", court_name_clone, e);
+            (StatusCode::INTERNAL_SERVER_ERROR, Json("Failed to fetch Judges")).into_response()
+        }
+    }
+}
+
+
+pub async fn get_judges_by_president(
+    Extension(pool): Extension<PgPool>,
+    Path(president_name): Path<String>,
+) -> impl IntoResponse {
+    let president_name_clone = president_name.clone(); // Clone the value to use in the error log
+    let query = "
+        SELECT * FROM Judges 
+        WHERE appointing_president_1 = $1 OR appointing_president_2 = $1 OR appointing_president_3 = $1 OR appointing_president_4 = $1 OR appointing_president_5 = $1 OR appointing_president_6 = $1
+    ";
+
+    match sqlx::query_as::<_, Judges>(query)
+        .bind(president_name)
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(judges) => (StatusCode::OK, Json(judges)).into_response(),
+        Err(e) => {
+            error!("Failed to fetch Judges for president {}: {:?}", president_name_clone, e);
+            (StatusCode::INTERNAL_SERVER_ERROR, Json("Failed to fetch Judges")).into_response()
+        }
+    }
+}
+
+pub async fn get_judges_by_aba_rating(
+    Extension(pool): Extension<PgPool>,
+    Path(aba_rating): Path<String>,
+) -> impl IntoResponse {
+    let aba_rating_clone = aba_rating.clone(); // Clone the value to use in the error log
+    let query = "
+        SELECT * FROM Judges 
+        WHERE aba_rating_1 = $1 OR aba_rating_2 = $1 OR aba_rating_3 = $1 OR aba_rating_4 = $1 OR aba_rating_5 = $1 OR aba_rating_6 = $1
+    ";
+
+    match sqlx::query_as::<_, Judges>(query)
+        .bind(aba_rating)
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(judges) => (StatusCode::OK, Json(judges)).into_response(),
+        Err(e) => {
+            error!("Failed to fetch Judges for ABA rating {}: {:?}", aba_rating_clone, e);
+            (StatusCode::INTERNAL_SERVER_ERROR, Json("Failed to fetch Judges")).into_response()
+        }
+    }
+}
+
+
+pub async fn get_judges_by_gender(
+    Extension(pool): Extension<PgPool>,
+    Path(gender): Path<String>,
+) -> impl IntoResponse {
+    let gender_clone = gender.clone(); // Clone the value to use in the error log
+    let query = "SELECT * FROM Judges WHERE gender = $1";
+
+    match sqlx::query_as::<_, Judges>(query)
+        .bind(gender)
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(judges) => (StatusCode::OK, Json(judges)).into_response(),
+        Err(e) => {
+            error!("Failed to fetch Judges for gender {}: {:?}", gender_clone, e);
+            (StatusCode::INTERNAL_SERVER_ERROR, Json("Failed to fetch Judges")).into_response()
+        }
+    }
+}
+
+pub async fn get_judges_by_birth_year_range(
+    Extension(pool): Extension<PgPool>,
+    Path((start_year, end_year)): Path<(i32, i32)>,
+) -> impl IntoResponse {
+    let query = "SELECT * FROM Judges WHERE birth_year BETWEEN $1 AND $2";
+
+    match sqlx::query_as::<_, Judges>(query)
+        .bind(start_year)
+        .bind(end_year)
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(judges) => (StatusCode::OK, Json(judges)).into_response(),
+        Err(e) => {
+            error!("Failed to fetch Judges for birth year range {}-{}: {:?}", start_year, end_year, e);
+            (StatusCode::INTERNAL_SERVER_ERROR, Json("Failed to fetch Judges")).into_response()
+        }
+    }
+}
+
+pub async fn get_judges_by_race_ethnicity(
+    Extension(pool): Extension<PgPool>,
+    Path(race_ethnicity): Path<String>,
+) -> impl IntoResponse {
+    let race_ethnicity_clone = race_ethnicity.clone(); // Clone the value to use in the error log
+    let query = "SELECT * FROM Judges WHERE race_or_ethnicity = $1";
+
+    match sqlx::query_as::<_, Judges>(query)
+        .bind(race_ethnicity)
+        .fetch_all(&pool)
+        .await
+    {
+        Ok(judges) => (StatusCode::OK, Json(judges)).into_response(),
+        Err(e) => {
+            error!("Failed to fetch Judges for race/ethnicity {}: {:?}", race_ethnicity_clone, e);
+            (StatusCode::INTERNAL_SERVER_ERROR, Json("Failed to fetch Judges")).into_response()
         }
     }
 }

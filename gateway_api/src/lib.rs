@@ -1,6 +1,6 @@
 
 use std::net::SocketAddr;
-
+use tower_http::cors::CorsLayer;
 use axum::{
     routing::get,
     Router,
@@ -43,6 +43,7 @@ pub fn create_app() -> Router {
         .route("/api/status", get(handlers::forward_status))
         .route("/api/pdf", get(handlers::forward_pdf))
         .route("/api/judges", get(handlers::forward_judges))
+        .layer(CorsLayer::permissive())
 
 
 }

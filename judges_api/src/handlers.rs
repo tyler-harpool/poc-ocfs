@@ -4,7 +4,7 @@ use axum::{
     response::IntoResponse,
     Json,
 };
-use serde::{Deserialize,Serialize};
+use serde::Serialize;
 use sqlx::{PgPool, Row};
 use tracing::{error, info};
 
@@ -16,7 +16,7 @@ struct DeleteResponse {
 }
 
 pub async fn create_judge(
-    headers: HeaderMap,
+    _headers: HeaderMap,
     Extension(pool): Extension<PgPool>,
     Json(input): Json<Judges>,
 ) -> impl IntoResponse {

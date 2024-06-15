@@ -43,14 +43,7 @@ pub fn Navbar() -> impl IntoView {
         </div>
 
 
-        <div class="mt-8 flex items-center">
-            <img src="https://via.placeholder.com/40" class="w-10 h-10 rounded-full mr-4" alt="User profile picture" />
-            <div>
-                <p class="text-sm font-semibold">"Tyler"</p>
-                <p class="text-xs text-gray-400">"Tyler@example.com"</p>
-            </div>
-        </div>
-        
+
     </div>
 </div>
 

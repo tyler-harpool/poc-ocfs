@@ -43,4 +43,3 @@ panic = "abort"
 [workspace.dependencies]
 database_utils = { path = "database_utils" }
 common = { path = "common"}
-

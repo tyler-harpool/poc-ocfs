@@ -3,13 +3,14 @@ use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
 
-use crate::components::{Navbar, Sidebar};
+use crate::components::{Navbar, Sidebar, Dashboard, Settings, Footer};
 use crate::pages::all_judges::AllJudges;
 use crate::pages::home::HomePage;
 use crate::pages::judges::Judges;
 use crate::pages::login::Login;
 use crate::pages::participant::Participant;
 use crate::pages::test::Test;
+
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
@@ -48,11 +49,9 @@ pub fn App() -> impl IntoView {
                         // <Route path="/cases" view=CaseList />
                         // <Route path="/cases/:id" view=CaseDetails />
                         <Route path="/participants" view=Participant />
-                            // <Route path="/island" view=Island />
-                        // <Route path="/filings" view=FilingsList />
-                        // <Route path="/events" view=EventsCalendar />
-                        // <Route path="/reports" view=ReportsList />
-                        // <Route path="/settings" view=Settings />
+                        <Route path="/events" view=Dashboard />
+                        <Route path="/reports" view=Dashboard />
+                        <Route path="/settings" view=Settings />
                          <Route path="/judges/:id" view=Judges />
                          <Route path="/judges" view=AllJudges />
                     </Routes>
@@ -63,23 +62,7 @@ pub fn App() -> impl IntoView {
             </div>
             </div>
             </div>
-            <footer class="bg-gray-800 text-white py-6 mt-auto w-full border-t-4 border-cyan-500">
-            <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
-                <div>
-                    <h2 class="text-2xl font-semibold">Open Case Filing System</h2>
-                    <p class="text-gray-400">Enhancing judicial efficiency through technology</p>
-                </div>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Facebook</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Twitter</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Linkedin</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Github</a>
-                </div>
-            </div>
-            <div class="text-center text-gray-500 mt-4">
-                &copy; 2024 Open Case Filing System. All rights reserved.
-            </div>
-        </footer>
+        <Footer />
 
         </div>
         </Router>

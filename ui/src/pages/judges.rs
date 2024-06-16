@@ -1,4 +1,5 @@
-use crate::api::judges::get::{self, Judges};
+use crate::api::judges::get::{self};
+use crate::api::judges::models::Judges;
 use leptos::*;
 use leptos_router::*;
 use chrono::Utc;

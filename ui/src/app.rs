@@ -5,8 +5,8 @@ use leptos_router::*;
 
 use crate::components::{Navbar, Sidebar, Dashboard, Settings, Footer};
 use crate::pages::all_judges::AllJudges;
-use crate::pages::home::HomePage;
 use crate::pages::judges::Judges;
+use crate::pages::home::HomePage;
 use crate::pages::login::Login;
 use crate::pages::participant::Participant;
 use crate::pages::test::Test;

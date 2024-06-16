@@ -1,15 +1,12 @@
-use crate::api::judges::get::{self, Judges};
+
+use crate::api::judges::models::Judges;
 use leptos::*;
 use reqwest::Error;
+#[allow(unused_imports)]
 use web_sys::window;
-use serde::Deserialize;
-use serde_json::json;
 
-#[derive(Deserialize)]
-struct DateRangeQuery {
-    start_date: String,
-    end_date: String,
-}
+
+
 
 pub async fn fetch_all_judges() -> Result<Vec<Judges>, Error> {
     let response = reqwest::get("http://localhost:8000/api/judges").await?;
@@ -128,4 +125,3 @@ pub fn AllJudges() -> impl IntoView {
         </div>
     }
 }
-

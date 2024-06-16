@@ -1,11 +1,59 @@
-
-use crate::api::judges::models::Judges;
 use leptos::*;
+use crate::api::judges::models::Judges;
+
+
+
 use reqwest::Error;
 #[allow(unused_imports)]
 use web_sys::window;
 
 
+
+#[component]
+pub fn JudgeDetail(judge: Judges) -> impl IntoView {
+    let court_name = judge.court_name_1.clone().unwrap_or_default();
+    let appointing_president = judge.appointing_president_1.clone().unwrap_or_default();
+    let nomination_date = judge.nomination_date_1.map_or("N/A".to_string(), |d| d.format("%Y-%m-%d").to_string());
+    let gender = judge.gender.clone().unwrap_or_default();
+
+    view! {
+        <li key={judge.id.unwrap_or_default()} class="bg-gray-900 p-6 rounded-lg shadow-md border-2 border-cyan-500 transition hover:border-pink-500">
+            <a href={format!("/judges/{}", judge.id.unwrap_or_default())} class="block">
+                <div class="flex items-center mb-4">
+                    <h2 class="text-xl font-bold text-white">
+                        {judge.first_name.clone().unwrap_or_default()}{" "}
+                        {judge.middle_name.clone().unwrap_or_default()}{" "}
+                        {judge.last_name.clone().unwrap_or_default()}
+                    </h2>
+                </div>
+                <p class="text-gray-300">
+                    <span class="font-semibold text-gray-400">"Court Name: "</span>
+                    <a href={format!("/judges/court/{}", court_name)} class="text-cyan-500 hover:text-pink-500">
+                        {court_name}
+                    </a>
+                </p>
+                <p class="text-gray-300">
+                    <span class="font-semibold text-gray-400">"Appointing President: "</span>
+                    <a href={format!("/judges/president/{}", appointing_president)} class="text-cyan-500 hover:text-pink-500">
+                        {appointing_president}
+                    </a>
+                </p>
+                <p class="text-gray-300">
+                    <span class="font-semibold text-gray-400">"Nomination Date: "</span>
+                    <a href={format!("http://localhost:8000/api/judges/nomination_date_range?start_date={}&end_date={}", nomination_date, nomination_date)} class="text-cyan-500 hover:text-pink-500">
+                        {nomination_date}
+                    </a>
+                </p>
+                <p class="text-gray-300">
+                    <span class="font-semibold text-gray-400">"Gender: "</span>
+                    <a href={format!("/judges/gender/{}", gender)} class="text-cyan-500 hover:text-pink-500">
+                        {gender}
+                    </a>
+                </p>
+            </a>
+        </li>
+    }
+}
 
 
 pub async fn fetch_all_judges() -> Result<Vec<Judges>, Error> {
@@ -81,41 +129,7 @@ pub fn AllJudges() -> impl IntoView {
                         view! {
                             <ul class="space-y-6">
                                 {filtered_judges.into_iter().map(|judge| view! {
-                                    <li key={judge.id.unwrap_or_default()} class="bg-gray-900 p-6 rounded-lg shadow-md border-2 border-cyan-500 transition hover:border-pink-500">
-                                    <a href={format!("/judges/{}", judge.id.unwrap_or_default())} class="block">
-                                        <div class="flex items-center mb-4">
-                                            <h2 class="text-xl font-bold text-white">
-                                                {judge.first_name.clone().unwrap_or_default()}{" "}
-                                                {judge.middle_name.clone().unwrap_or_default()}{" "}
-                                                {judge.last_name.clone().unwrap_or_default()}
-                                            </h2>
-                                        </div>
-                                        <p class="text-gray-300">
-                                            <span class="font-semibold text-gray-400">"Court Name: "</span>
-                                            <a href={format!("/judges/court/{}", judge.court_name_1.clone().unwrap_or_default())} class="text-cyan-500 hover:text-pink-500">
-                                                {judge.court_name_1.clone().unwrap_or_default()}
-                                            </a>
-                                        </p>
-                                        <p class="text-gray-300">
-                                            <span class="font-semibold text-gray-400">"Appointing President: "</span>
-                                            <a href={format!("/judges/president/{}", judge.appointing_president_1.clone().unwrap_or_default())} class="text-cyan-500 hover:text-pink-500">
-                                                {judge.appointing_president_1.clone().unwrap_or_default()}
-                                            </a>
-                                        </p>
-                                        <p class="text-gray-300">
-                                            <span class="font-semibold text-gray-400">"Nomination Date: "</span>
-                                            <a href={format!("http://localhost:8000/api/judges/nomination_date_range?start_date={}&end_date={}", judge.nomination_date_1.map_or("".to_string(), |d| d.format("%Y-%m-%d").to_string()), judge.nomination_date_1.map_or("".to_string(), |d| d.format("%Y-%m-%d").to_string()))} class="text-cyan-500 hover:text-pink-500">
-                                                {judge.nomination_date_1.map_or("N/A".to_string(), |date| date.format("%Y-%m-%d").to_string())}
-                                            </a>
-                                        </p>
-                                        <p class="text-gray-300">
-                                            <span class="font-semibold text-gray-400">"Gender: "</span>
-                                            <a href={format!("/judges/gender/{}", judge.gender.clone().unwrap_or_default())} class="text-cyan-500 hover:text-pink-500">
-                                                {judge.gender.clone().unwrap_or_default()}
-                                            </a>
-                                        </p>
-                                    </a>
-                                    </li>
+                                    <JudgeDetail judge={judge.clone()} />
                                 }).collect::<Vec<_>>()}
                             </ul>
                         }.into_any()
@@ -125,3 +139,4 @@ pub fn AllJudges() -> impl IntoView {
         </div>
     }
 }
+

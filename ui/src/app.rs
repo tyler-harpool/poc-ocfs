@@ -4,8 +4,8 @@ use leptos_meta::*;
 use leptos_router::*;
 
 use crate::components::{Navbar, Sidebar, Dashboard, Settings, Footer};
-use crate::pages::all_judges::AllJudges;
-use crate::pages::judges::Judges;
+use crate::pages::judges::id::Id as JudgeId;
+use crate::pages::judges::list::List as JudgeList;
 use crate::pages::home::HomePage;
 use crate::pages::login::Login;
 use crate::pages::participant::Participant;
@@ -52,8 +52,8 @@ pub fn App() -> impl IntoView {
                         <Route path="/events" view=Dashboard />
                         <Route path="/reports" view=Dashboard />
                         <Route path="/settings" view=Settings />
-                         <Route path="/judges/:id" view=Judges />
-                         <Route path="/judges" view=AllJudges />
+                         <Route path="/judges/:id" view=JudgeId />
+                         <Route path="/judges" view=JudgeList />
                     </Routes>
             
 

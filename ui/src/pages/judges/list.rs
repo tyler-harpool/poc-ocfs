@@ -77,7 +77,7 @@ fn local_storage_set(key: &str, value: &str) {
 }
 
 #[component]
-pub fn AllJudges() -> impl IntoView {
+pub fn List() -> impl IntoView {
     let (fetch_signal, _set_fetch_signal) = create_signal(());
     let judges = create_resource(move || fetch_signal.get(), |_| async {
         fetch_all_judges().await.ok()

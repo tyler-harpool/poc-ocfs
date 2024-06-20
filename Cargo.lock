@@ -5762,6 +5762,7 @@ dependencies = [
  "tower",
  "tower-http",
  "tracing",
+ "urlencoding",
  "wasm-bindgen",
  "web-sys",
 ]

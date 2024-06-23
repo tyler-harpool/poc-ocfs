@@ -6,7 +6,7 @@ use chrono::Utc;
 use chrono::DateTime;
 
 #[component]
-pub fn Judges() -> impl IntoView {
+pub fn Id() -> impl IntoView {
     let params = use_params_map();
     let judge = create_resource(
         move || params.get().get("id").cloned().unwrap_or_default(),

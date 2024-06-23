@@ -57,7 +57,7 @@ pub fn JudgeDetail(judge: Judges) -> impl IntoView {
 
 
 pub async fn fetch_all_judges() -> Result<Vec<Judges>, Error> {
-    let response = reqwest::get("http://localhost:8000/api/judges").await?;
+    let response = reqwest::get("http://localhost:8000/api/judges/gender/male").await?;
     let judges = response.json::<Vec<Judges>>().await?;
     Ok(judges)
 }
@@ -77,7 +77,7 @@ fn local_storage_set(key: &str, value: &str) {
 }
 
 #[component]
-pub fn AllJudges() -> impl IntoView {
+pub fn JudgesbyGender() -> impl IntoView {
     let (fetch_signal, _set_fetch_signal) = create_signal(());
     let judges = create_resource(move || fetch_signal.get(), |_| async {
         fetch_all_judges().await.ok()

@@ -1,7 +1,6 @@
 FROM rust:slim AS builder
 
-RUN rustup target add x86_64-unknown-linux-musl && \
-        rustup target add wasm32-unknown-unknown
+RUN rustup target add wasm32-unknown-unknown
 
 RUN apt update && apt install -y musl-tools musl-dev
 RUN update-ca-certificates

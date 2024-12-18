@@ -1,58 +1,49 @@
-
-use std::net::SocketAddr;
+use axum::{Router, routing::get, middleware::from_fn};
+use std::sync::Arc;
 use tower_http::cors::CorsLayer;
-use axum::{
-    routing::get,
-    Router,
-};
 
-use tokio::net::TcpListener;
+mod handlers;
+mod middleware;
 
-use tracing_subscriber::EnvFilter;
-
-pub mod handlers;
-
-pub fn setup_logging() {
-    tracing_subscriber::fmt()
-        .with_env_filter(EnvFilter::from_default_env())
-        .init();
+pub struct AppState {
+    pub store: async_session::MemoryStore,
+    pub oauth_client: oauth2::basic::BasicClient,
+    pub http_client: reqwest::Client,
 }
 
-pub fn create_app() -> Router {
+
+pub fn create_router(app_state: Arc<AppState>) -> Router {
+    let app_state_for_middleware = app_state.clone();
+
     Router::new()
-        .route("/", get(handlers::forward_adr))
-        .route("/api/adr", get(handlers::forward_attorney_adr))
-        .route("/api/attorney_advocate", get(handlers::forward_attorney_advocate))
-        .route("/api/case_data", get(handlers::forward_case_data))
-        .route("/api/charges", get(handlers::forward_charges))
-        .route("/api/civil_judgments", get(handlers::forward_civil_judgments))
-        .route(
-            "/api/dependency_permanency",
-            get(handlers::forward_dependency_permanency),
-        )
-        .route("/api/diversion", get(handlers::forward_diversion))
-        .route("/api/hearings_events", get(handlers::forward_hearings_events))
-        .route("/api/motions_filings", get(handlers::forward_motions_filings))
-        .route("/api/orders", get(handlers::forward_orders))
-        .route("/api/participants", get(handlers::forward_participants))
-        .route("/api/pleadings", get(handlers::forward_pleadings))
-        .route("/api/post_trial", get(handlers::forward_post_trial))
-        .route("/api/pretrial_intake", get(handlers::forward_pretrial_intake))
-        .route("/api/probate", get(handlers::forward_probate))
-        .route("/api/sanctions", get(handlers::forward_sanctions))
-        .route("/api/status", get(handlers::forward_status))
-        .route("/api/pdf", get(handlers::forward_pdf))
-        .route("/api/judges", get(handlers::forward_judges))
-        .layer(CorsLayer::permissive())
+        .route("/", get(handlers::root))
+        .route("/auth/discord", get(handlers::discord_auth))
+        .route("/auth/authorized", get(handlers::login_authorized))
+        .route("/logout", get(handlers::logout))
+        .route("/adr", get(handlers::forward_adr))
+        .route("/attorney_advocates", get(handlers::forward_attorney_advocate))
+        .route("/case_data", get(handlers::forward_case_data))
+        .route("/charges", get(handlers::forward_charges))
+        .route("/civil_judgments", get(handlers::forward_civil_judgments))
+        .route("/dependencyPermanency", get(handlers::forward_dependency_permanency))
+        .route("/diversions", get(handlers::forward_diversion))
+        .route("/hearings_events", get(handlers::forward_hearings_events))
+        .route("/motions_filings", get(handlers::forward_motions_filings))
+        .route("/orders", get(handlers::forward_orders))
+        .route("/participants", get(handlers::forward_participants))
+        .route("/pleadings", get(handlers::forward_pleadings))
+        .route("/postTrial", get(handlers::forward_post_trial))
+        .route("/pretrial_intake", get(handlers::forward_pretrial_intake))
+        .route("/probateReviewMonitor", get(handlers::forward_probate))
+        .route("/sanctions", get(handlers::forward_sanctions))
+        .route("/status", get(handlers::forward_status))
+        .route("/ocr", get(handlers::forward_pdf))
+        .route("/judges", get(handlers::forward_judges))
+        .layer(CorsLayer::new())
+        .layer(from_fn(move |req, next| {
+            middleware::auth_middleware(app_state_for_middleware.clone(), req, next)
+        }))
+        .with_state(app_state)
 
 
-}
-
-pub async fn start_server(app: Router) {
-    let addr = SocketAddr::from(([0, 0, 0, 0], 8000));
-    let listener = TcpListener::bind(addr).await.unwrap();
-    println!("Listening on {}", addr);
-    axum::serve(listener, app.into_make_service())
-        .await
-        .unwrap();
-}
+    }
